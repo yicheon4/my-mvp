@@ -3,6 +3,9 @@ import { Microphone, Stop, SpeakerHigh, Keyboard, ArrowLeft, ArrowRight, BookOpe
 import { BottomSheet, KeyboardInput, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
 import { people, stories } from './story-data';
 import type { StoryScene } from './story-data';
+import { loadAppearance, saveAppearance } from './world/avatar-runtime';
+import type { Catalog } from './world/avatar-runtime';
+import optionsV3 from './world/options-v3.json';
 import '@fontsource/cormorant-garamond/500.css';
 import '@fontsource/noto-sans-kr/400.css';
 import '@fontsource/noto-sans-kr/500.css';
@@ -54,6 +57,8 @@ export default function Prototype(){
  const [initial]=useState(readSaved);
  const [page,setPage]=useState<Page>('home');
  const [look,setLook]=useState<Look>(readLook);
+ // v3 appearance (separate save key). Not shown on screen yet; the old look above still drives home and wardrobe.
+ const [appearance]=useState(()=>loadAppearance(localStorage,optionsV3 as Catalog));
  const [closet,setCloset]=useState<ClosetTab|null>(null);
  const avatarArt=avatarArts[look.outfit*4+look.hair*2+look.makeup];
  const [character,setCharacter]=useState(initial.session?.version===2?initial.session.character:0);
@@ -78,6 +83,7 @@ export default function Prototype(){
  const {screenRef}=useScreenPortal();
  useEffect(()=>{const root=screenRef.current;if(!root)return;const previous=root.style.overflow;root.scrollTop=0;root.style.overflow="clip";return()=>{root.style.overflow=previous;};},[page,sheet,closet]);
  useEffect(()=>{try{localStorage.setItem(LOOK_STORE,JSON.stringify(look));}catch{setError('꾸미기 설정을 저장할 수 없어요.');}},[look]);
+ useEffect(()=>{try{saveAppearance(localStorage,appearance);}catch{setError('꾸미기 설정을 저장할 수 없어요.');}},[appearance]);
  const person=session?.version===2?people[session.character]:{...legacyPeople[session?.character??0],relation:'룸메이트'};
  const chosen=people[character];
  const chosenScene=stories[character][scene];
