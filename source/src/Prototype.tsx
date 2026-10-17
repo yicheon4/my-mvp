@@ -80,6 +80,8 @@ export default function Prototype(){
  const artOf=(mapId:MapId)=>mapArt[mapId][world.timeOfDay];
  const homeMapOf=(i:number):MapId=>MAP_IDS.find(m=>worldMaps[m].npcs.some(n=>n.person===i))??'living-room';
  const [closet,setCloset]=useState<ClosetTab|null>(null);
+ // When a customize tab opens, bring the selected card into view (the rail starts at the first item otherwise).
+ useEffect(()=>{if(!closet||!presetData)return;const id=requestAnimationFrame(()=>{const el=document.querySelector<HTMLElement>('.preset-panel .preset-card[aria-pressed=true]');let sc=el?.parentElement??null;while(sc&&sc.scrollWidth<=sc.clientWidth)sc=sc.parentElement;if(!el||!sc)return;const r=el.getBoundingClientRect(),p=sc.getBoundingClientRect();const k=sc.clientWidth/Math.max(1,p.width);sc.scrollLeft+=((r.left+r.width/2)-(p.left+p.width/2))*k;});return()=>cancelAnimationFrame(id);},[closet,presetData]);
  const avatarArt=avatarArts[look.outfit*4+look.hair*2+look.makeup];
  const [character,setCharacter]=useState(initial.session?.version===2?initial.session.character:0);
  const [scene,setScene]=useState(initial.session?.version===2?initial.session.scene:0);
