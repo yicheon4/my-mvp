@@ -103,3 +103,11 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - World save: `persona-world:world:v1` {mapId, x, y, direction, timeOfDay, lookId}; invalid positions return to the map spawn. Keep `persona-world-v1` and `persona-world-look-v1` untouched.
 - `looks[].mini` stays null until a matching mini sheet exists; the map then shows the default white-tee mini with a visible notice. Never report the default mini as matching a look.
 - NPCs on the map are shown as portrait badges (no NPC minis yet). Talking from the map opens profile → scenes (place pre-selected if a free scene matches) → existing demo chat; leaving returns to the same map spot. Locked NPCs open the paywall preview only.
+
+## v9 complete-character presets (2026-10-17, supersedes the v7 three-look picker and v8 layered parts)
+- My character = {head (7 identities: face+eyes+nose+mouth+brows+hair), look (15 complete outfits incl. shoes), extra (none | necklace | bag, single slot)}. One complete full-body frame per selection from `public/persona-v9/manifest.json` (`sourceRect` per key, never split atlases into thirds, never cut/layer parts, uniform contain scaling only).
+- Files: `public/persona-v9/` (handoff assets, manifest, catalog copied as-is) plus `thumbs/` (downscaled copies only: head cards from identity images, look cards from each head×look `_none` frame). `src/presets/presets.ts` (state/validation/save, `npm run test:presets`), `src/presets/CharacterFrame.tsx` (loading, latest-selection-wins, retry on error, no silent fallback).
+- Saved only under `persona-world-presets-v9`; older look saves are never mapped to a head. 26 premium extras stay locked (disabled, not saved, no art, no price/payment).
+- Home avatar and the customize panel read the same `presetSel` state. Atlases load only for the current head×look; cards use thumbnails.
+- `scripts/export-github-static.py` copies `persona-v9/` as a folder (runtime-relative paths). The single-HTML export cannot embed these 190MB of atlases.
+- The map mini is still the fixed default (white tee/jeans); the map notice states it differs from the selected preset. Per-preset minis are not made.

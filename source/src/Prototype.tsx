@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { Microphone, Stop, SpeakerHigh, Keyboard, ArrowLeft, ArrowRight, BookOpen, Sparkle, Check, X, PencilSimple, Trash, LockSimple, Chats, PaperPlaneTilt, House, TShirt, Scissors, Flower, BookmarkSimple, Heart, MapPin, Crown, CreditCard, Sun, MoonStars, Footprints } from '@phosphor-icons/react';
-import { BottomSheet, KeyboardInput, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
+import { BottomSheet, Carousel, KeyboardInput, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
 import { people, stories } from './story-data';
 import type { StoryScene } from './story-data';
 import WorldMap from './world/WorldMap';
-import { looks, mapArt, worldMaps, MAP_IDS } from './world/world-data';
+import { mapArt, worldMaps, MAP_IDS } from './world/world-data';
+import CharacterFrame from './presets/CharacterFrame';
+import { DEFAULT_SELECTION, loadPresetData, readSelection, saveSelection, lookThumb, headThumb } from './presets/presets';
+import type { Catalog as PresetCatalog, Manifest as PresetManifest, Selection as PresetSelection, Extra } from './presets/presets';
 import type { MapId } from './world/world-data';
 import { loadWorld, saveWorld } from './world/world-engine';
 import type { WorldState } from './world/world-engine';
@@ -41,7 +44,7 @@ const avatarArts=[
 ];
 const rooms=[{name:'비 오는 저녁',detail:'포근한 램프와 창밖의 빗소리',art:'/art/home-evening.png'}, {name:'노을빛 오후',detail:'따뜻한 햇살이 머무는 방',art:'/art/home-sunset.png'}];
 const wardrobe={outfit:{title:'옷',icon:TShirt,options:['아이보리 니트','로즈 리본 블라우스']},hair:{title:'헤어',icon:Scissors,options:['롱 웨이브','반묶음 리본']},makeup:{title:'메이크업',icon:Flower,options:['내추럴 피치','로지 글로우']}};
-type ClosetTab = keyof typeof wardrobe | 'background' | 'look';
+type ClosetTab = 'head' | 'look' | 'extra';
 const STORE='persona-world-v1';
 function readSaved(){try {const x=JSON.parse(localStorage.getItem(STORE)||'{}');return {notes:Array.isArray(x.notes)?x.notes.filter((n:Phrase)=>n&&typeof n.id==='string'&&typeof n.en==='string'&&typeof n.ko==='string'):[],session:x.session&&Array.isArray(x.session.turns)&&Array.isArray(x.session.phrases)&&(x.session.version===2?people[x.session.character]&&stories[x.session.character]?.[x.session.scene]:legacyPeople[x.session.character]&&legacyScenes[x.session.scene])?x.session:null};}catch{return {notes:[],session:null};}}
 function demoReply(text:string,count:number,character=0){
@@ -62,7 +65,18 @@ export default function Prototype(){
  // v7 world state (separate versioned key): look, map, feet position, day/night. The old look key above is kept untouched.
  const [world,setWorld]=useState<WorldState>(()=>loadWorld(localStorage));
  const [origin,setOrigin]=useState<'home'|'world'>('home');
- const currentLook=looks.find(l=>l.id===world.lookId)??looks[0];
+ // v9 character presets: {head, look, extra} -> one complete full-body frame. Saved under persona-world-presets-v9 only.
+ const [presetData,setPresetData]=useState<{catalog:PresetCatalog;manifest:PresetManifest}|null>(null);
+ const [presetError,setPresetError]=useState(false);
+ const [presetSel,setPresetSel]=useState<PresetSelection>(DEFAULT_SELECTION);
+ const loadPresets=()=>{setPresetError(false);loadPresetData().then(d=>{setPresetData(d);setPresetSel(readSelection(d.catalog,localStorage));}).catch(()=>setPresetError(true));};
+ useEffect(loadPresets,[]);
+ useEffect(()=>{if(!presetData)return;try{saveSelection(presetSel,presetData.catalog,localStorage);}catch{setError('꾸미기 설정을 저장할 수 없어요.');}},[presetSel,presetData]);
+ const headName=presetData?.catalog.heads.find(h=>h.id===presetSel.head)?.name??'';
+ const lookName=presetData?.catalog.looks.find(l=>l.id===presetSel.look)?.name??'';
+ const extraName=presetData?.catalog.extras.find(e=>e.id===presetSel.extra)?.name??'';
+ const characterLabel=presetData?`나의 캐릭터 · ${headName} · ${lookName}${presetSel.extra!=='none'?` · ${extraName}`:''}`:'나의 캐릭터';
+ const pickPreset=(patch:Partial<PresetSelection>)=>setPresetSel(s=>({...s,...patch}));
  const artOf=(mapId:MapId)=>mapArt[mapId][world.timeOfDay];
  const homeMapOf=(i:number):MapId=>MAP_IDS.find(m=>worldMaps[m].npcs.some(n=>n.person===i))??'living-room';
  const [closet,setCloset]=useState<ClosetTab|null>(null);
@@ -145,13 +159,17 @@ export default function Prototype(){
   <div className="home-shade"/>
   <header className="home-header"><div className="wordmark"><Sparkle size={23} weight="thin"/><span>PERSONA WORLD</span></div></header>
   <div className="home-welcome"><span className="eyebrow">여기는, 나의 작은 세계</span><h1>오늘도 나답게.</h1></div>
-  <img key={currentLook.id} className="player-avatar" src={currentLook.art} alt={`나의 캐릭터 · ${currentLook.name} · ${currentLook.detail}`}/>
+  <CharacterFrame className="player-avatar" selection={presetSel} manifest={presetData?.manifest??null} label={characterLabel} dataError={presetError} onRetryData={loadPresets}/>
   <nav className="home-left" aria-label="나의 기록"><button className="home-menu diary-shortcut" onClick={()=>go('notebook')}><BookOpen size={25} weight="thin"/><span>나의 메모장</span>{notes.length>0&&<small>{notes.length}</small>}</button></nav>
-  <nav className="home-right" aria-label="나의 캐릭터 꾸미기"><span className="rail-label">MY STYLE</span><button className={`home-menu ${closet==='look'?'active':''}`} aria-label="착장 바꾸기" aria-expanded={closet==='look'} onClick={()=>{keyboard.hide();setCloset(closet==='look'?null:'look');}}><TShirt size={24} weight="thin"/><span>착장</span></button><button className="home-menu" aria-label={world.timeOfDay==='day'?'밤으로 바꾸기':'낮으로 바꾸기'} onClick={()=>setWorld(w=>({...w,timeOfDay:w.timeOfDay==='day'?'night':'day'}))}>{world.timeOfDay==='day'?<Sun size={24} weight="thin"/>:<MoonStars size={24} weight="thin"/>}<span>{world.timeOfDay==='day'?'낮':'밤'}</span></button></nav>
-  {!closet?<footer className="home-footer"><div className="home-caption"><span>YOUR STORY, YOUR WORLD</span><p>이곳에서, 나의 말로 조금 더 가까이.</p></div><button className="gold-button story-start" onClick={()=>go('world')}><Footprints size={19}/>나의 세계로 나가기<ArrowRight size={20}/></button><button className="home-resume" onClick={startFromHome}>바로 이야기 시작하기</button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}</footer>:<section className="closet-panel" aria-label="착장 고르기"><div className="closet-heading"><div><p className="eyebrow">MAKE IT YOURS</p><h2>나의 착장</h2></div><button className="icon-button" aria-label="꾸미기 닫기" onClick={()=>setCloset(null)}><X size={20}/></button></div><div className="closet-options look-options">{looks.map(l=>{const selected=l.id===currentLook.id;return <button key={l.id} className={`style-card look-card ${selected?'selected':''}`} aria-pressed={selected} onClick={()=>setWorld(w=>({...w,lookId:l.id}))}><div className="style-preview"><img src={l.art} alt=""/></div><span>{l.name}</span>{selected&&<Check size={15}/>}</button>;})}</div><p className="closet-help"><Check size={12}/>완성 착장 3종 · 선택은 자동 저장돼요. 얼굴·헤어·부위별 꾸미기는 준비 중이에요.</p></section>}
+  <nav className="home-right" aria-label="나의 캐릭터 꾸미기"><span className="rail-label">MY STYLE</span><button className={`home-menu ${closet?'active':''}`} aria-label="꾸미기 열기" aria-expanded={!!closet} onClick={()=>{keyboard.hide();setCloset(closet?null:'head');}}><TShirt size={24} weight="thin"/><span>꾸미기</span></button><button className="home-menu" aria-label={world.timeOfDay==='day'?'밤으로 바꾸기':'낮으로 바꾸기'} onClick={()=>setWorld(w=>({...w,timeOfDay:w.timeOfDay==='day'?'night':'day'}))}>{world.timeOfDay==='day'?<Sun size={24} weight="thin"/>:<MoonStars size={24} weight="thin"/>}<span>{world.timeOfDay==='day'?'낮':'밤'}</span></button></nav>
+  {!closet?<footer className="home-footer"><div className="home-caption"><span>YOUR STORY, YOUR WORLD</span><p>이곳에서, 나의 말로 조금 더 가까이.</p></div><button className="gold-button story-start" onClick={()=>go('world')}><Footprints size={19}/>나의 세계로 나가기<ArrowRight size={20}/></button><button className="home-resume" onClick={startFromHome}>바로 이야기 시작하기</button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}</footer>:<section className="closet-panel preset-panel" aria-label="꾸미기"><div className="closet-heading"><div><p className="eyebrow">MAKE IT YOURS</p><h2>나의 캐릭터</h2></div><button className="icon-button" aria-label="꾸미기 닫기" onClick={()=>setCloset(null)}><X size={20}/></button></div><div className="closet-tabs preset-tabs" role="tablist" aria-label="꾸미기 종류">{([['head','인물'],['look','착장'],['extra','추가 아이템']] as const).map(([t,label])=><button role="tab" aria-selected={closet===t} key={t} onClick={()=>setCloset(t)}>{label}</button>)}</div>
+   {!presetData?<p className="closet-help">{presetError?<>목록을 불러오지 못했어요. <button className="text-link" onClick={loadPresets}>다시 시도</button></>:'불러오는 중…'}</p>:closet==='head'?<Carousel ariaLabel="인물 선택" className="preset-rail" contentClassName="preset-track">{presetData.catalog.heads.map(h=>{const on=h.id===presetSel.head;return <button key={h.id} className={`preset-card head-card ${on?'selected':''}`} aria-pressed={on} aria-label={`인물 ${h.name}`} onClick={()=>pickPreset({head:h.id})}><span className="preset-face"><img src={headThumb(h.id)} alt="" loading="lazy" draggable={false}/></span><span>{h.name}</span>{on&&<Check size={13}/>}</button>;})}</Carousel>
+   :closet==='look'?<Carousel ariaLabel="착장 선택" className="preset-rail" contentClassName="preset-track">{presetData.catalog.looks.map(l=>{const on=l.id===presetSel.look;return <button key={l.id} className={`preset-card look-card ${on?'selected':''}`} aria-pressed={on} aria-label={`착장 ${l.name}`} onClick={()=>pickPreset({look:l.id})}><span className="preset-body"><img src={lookThumb(presetSel.head,l.id)} alt="" loading="lazy" draggable={false}/></span><span>{l.name}</span>{on&&<Check size={13}/>}</button>;})}</Carousel>
+   :<div className="preset-extras"><div className="extra-free" role="radiogroup" aria-label="무료 추가 아이템 (하나만 선택)">{presetData.catalog.extras.filter(e=>!e.locked).map(e=>{const on=e.id===presetSel.extra;return <button key={e.id} role="radio" aria-checked={on} className={on?'selected':''} onClick={()=>pickPreset({extra:e.id as Extra})}>{e.name}</button>;})}</div><p className="extra-note">무료 아이템은 한 번에 하나만 착용할 수 있어요.</p><p className="extra-locked-title"><LockSimple size={12}/>유료 예정 · 잠김 {presetData.catalog.extras.filter(e=>e.locked).length}종 <small>착용 그림 준비 전 · 구매 불가</small></p><Carousel ariaLabel="유료 예정 아이템" className="preset-rail locked-rail" contentClassName="preset-track">{presetData.catalog.extras.filter(e=>e.locked).map(e=><button key={e.id} className="locked-chip" disabled aria-disabled="true" aria-label={`${e.name} 잠김`}><LockSimple size={11}/>{e.name}</button>)}</Carousel></div>}
+   <p className="closet-help"><Check size={12}/>얼굴·헤어는 인물로, 옷·신발은 착장으로 함께 바뀌어요. 선택은 자동 저장돼요.</p></section>}
   {error&&<div role="alert" className="home-error">{error}</div>}
  </section>}
- {page==='world'&&<WorldMap initial={world} people={people} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);go('home');}}/>}
+ {page==='world'&&<WorldMap initial={world} people={people} lookLabel={presetData?`${headName} · ${lookName}`:'선택한 캐릭터'} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);go('home');}}/>}
  {page==='prepare'&&<>
   {heading('누구와 이야기할까?','서로 다른 여섯 사람, 너와 이어질 이야기.')}
   <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>지금 만날 수 있는 3명</span><span><LockSimple size={13}/>친밀도 쌓기 3명</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">친밀도 쌓기는 유료 콘텐츠 이름이에요.<br/>현재는 결제 흐름을 살펴볼 수 있는 체험 버전이에요.</p></main></MobileScroll>

@@ -10,6 +10,7 @@
     "test:sites": "node --test tests/sites-worker.test.mjs",
     "test:avatar": "node --test tests/avatar-runtime.test.ts",
     "test:world": "node --test tests/world-engine.test.ts",
+    "test:presets": "node --test tests/presets.test.ts",
     "predev": "npm run check:runtime",
     "dev": "vite",
     "prebuild": "npm run check:runtime",

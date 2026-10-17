@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Sun, MoonStars, ChatCircleDots, DoorOpen, Info } from '@phosphor-icons/react';
-import { worldMaps, mapArt, defaultMini, looks, WORLD_W, WORLD_H } from './world-data';
+import { worldMaps, mapArt, defaultMini, WORLD_W, WORLD_H } from './world-data';
 import type { Direction, MapId, Npc, WorldMapDef } from './world-data';
 import { canOccupy, portalAt, arrival, nearestNpc, miniHeight } from './world-engine';
 import type { WorldState } from './world-engine';
@@ -9,6 +9,7 @@ import { stepPosition, frameAt } from './avatar-runtime';
 type Person = { name: string; art: string; locked: boolean };
 type Props = {
   initial: WorldState;
+  lookLabel: string;
   people: Person[];
   onSave: (state: WorldState) => void;
   onTalk: (person: number, state: WorldState) => void;
@@ -29,7 +30,7 @@ function image(src: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 const typing = () => { const el = document.activeElement as HTMLElement | null; return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); };
 
-export default function WorldMap({ initial, people, onSave, onTalk, onHome }: Props) {
+export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, onHome }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<WorldState>(initial);
@@ -47,7 +48,6 @@ export default function WorldMap({ initial, people, onSave, onTalk, onHome }: Pr
   const busy = useRef(false);
   const nearRef = useRef<Npc | null>(null);
   const debug = typeof location !== 'undefined' && location.search.includes('worlddebug');
-  const look = looks.find(l => l.id === initial.lookId) ?? looks[0];
   if (debug) (window as any).__pwWorld = stateRef;
   const cb = useRef({ onSave, onTalk });
   cb.current = { onSave, onTalk };
@@ -75,7 +75,7 @@ export default function WorldMap({ initial, people, onSave, onTalk, onHome }: Pr
     const mini = image(defaultMini.art);
     let view = { w: 1, h: 1, dpr: 1 };
     const resize = () => {
-      const r = wrap.getBoundingClientRect();
+      const r = { width: wrap.clientWidth, height: wrap.clientHeight }; // layout px; the phone frame is CSS-scaled
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       view = { w: r.width, h: r.height, dpr };
       canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
@@ -166,7 +166,7 @@ export default function WorldMap({ initial, people, onSave, onTalk, onHome }: Pr
       <div className="world-place"><span className="eyebrow">PERSONA WORLD</span><strong>{map.name}</strong></div>
       <button className="world-time" onClick={toggleTime} aria-label={time === 'day' ? '밤으로 바꾸기' : '낮으로 바꾸기'}>{time === 'day' ? <Sun size={17} /> : <MoonStars size={17} />}<span>{time === 'day' ? '낮' : '밤'}</span></button>
     </header>
-    <p className="world-notice"><Info size={12} />미니 캐릭터는 아직 기본 복장(흰 티·청바지) 그림만 있어요. 「{look.name}」 미니는 준비 중이에요.</p>
+    <p className="world-notice"><Info size={12} />맵의 미니 캐릭터는 아직 기본 모습(흰 티·청바지) 하나뿐이라 「{lookLabel}」 모습과 다르게 보여요. 맞춤 미니는 준비 중이에요.</p>
     {loading && <p className="world-loading">맵을 불러오는 중…</p>}
     {door && !person && <p className="world-door"><DoorOpen size={14} />{door}(으)로 이어지는 길</p>}
     <div className="world-stick" onPointerDown={e => { stick.current = { x: 0, y: 0, active: true, id: e.pointerId }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* capture is optional */ } stickMove(e); }} onPointerMove={stickMove} onPointerUp={stickEnd} onPointerCancel={stickEnd} onLostPointerCapture={stickEnd} data-scroll-drag="ignore" aria-label="이동 조이스틱">
