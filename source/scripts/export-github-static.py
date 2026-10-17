@@ -8,7 +8,7 @@ release=root.parent  # my-mvp 저장소 최상단 = Vercel이 그대로 배포�
 out.mkdir(parents=True,exist_ok=True)
 images={}
 for p in build.rglob('*'):
- if p.is_file() and p.suffix in ('.png','.svg'):
+ if p.is_file() and p.suffix in ('.png','.svg','.webp'):
   name=hashlib.sha256(str(p.relative_to(build)).encode()).hexdigest()[:8]+'-'+p.name
   images['/'+str(p.relative_to(build))]=name
   shutil.copy2(p,out/name)
@@ -32,7 +32,7 @@ css=re.sub(r'url\([\"\']?([^\)\"\']+)[\"\']?\)',css_url,css)
 (out/'app.css').write_text(css)
 html=re.sub(r'src="[^"]+\.js"','src="/app.js"',html)
 html=re.sub(r'href="[^"]+\.css"','href="/app.css"',html)
-html=html.replace('</head>','<meta name="persona-world-release" content="2026-10-07-modest-cast-v2">\n</head>')
+html=html.replace('</head>','<meta name="persona-world-release" content="2026-10-17-v7-world">\n</head>')
 (out/'index.html').write_text(html)
 assert all(p.stat().st_size<25*1024*1024 for p in out.iterdir())
 print('Prepared',len(list(out.iterdir())),'files; largest',round(max(p.stat().st_size for p in out.iterdir())/1024/1024,1),'MiB')

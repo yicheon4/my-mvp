@@ -95,3 +95,11 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Before mini art exists, map movement/collision may be developed with a dev marker clearly labeled 임시 표시; it is never presented as the avatar.
 - Home keeps the current portrait and old wardrobe until v3 portrait art is ready. Option thumbnails may be cropped from reference sheets without labels or decorative text.
 - Map rendering uses plain Canvas 2D with the avatar runtime; no Phaser/game library for now.
+
+## v7 approved art & connected world (2026-10-17, supersedes v3 notes where they conflict)
+- Approved art lives in `public/art/v7/` (WebP converted from the v7 handoff; originals stay outside the repo): 3 complete player looks (lavender / pink-cargo / white-denim, not layered), 6 NPC portraits, 6 spaces × day/night maps, 1 fixed-appearance default walk sheet. Old anime-style art stays only for legacy sessions/old look key.
+- Home shows the selected complete look; the wardrobe offers only these 3 looks. Free per-part customization (94-option catalog) stays unimplemented until common-rig assets exist; never cut and stack catalog sheets.
+- `src/world/world-data.ts` holds walk polygons, furniture blocks, foreground occluders, portals, spawns, NPC spots and perspective scale, all in 1536×1024 image pixels; day and night share geometry. Verify coordinates with `?worlddebug` (draws zones). `src/world/world-engine.ts` holds pure collision/portal/save logic (`npm run test:world`).
+- World save: `persona-world:world:v1` {mapId, x, y, direction, timeOfDay, lookId}; invalid positions return to the map spawn. Keep `persona-world-v1` and `persona-world-look-v1` untouched.
+- `looks[].mini` stays null until a matching mini sheet exists; the map then shows the default white-tee mini with a visible notice. Never report the default mini as matching a look.
+- NPCs on the map are shown as portrait badges (no NPC minis yet). Talking from the map opens profile → scenes (place pre-selected if a free scene matches) → existing demo chat; leaving returns to the same map spot. Locked NPCs open the paywall preview only.
