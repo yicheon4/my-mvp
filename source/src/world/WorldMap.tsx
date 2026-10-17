@@ -5,6 +5,7 @@ import type { Direction, MapId, Npc, WorldMapDef } from './world-data';
 import { canOccupy, portalAt, arrival, nearestNpc, miniHeight } from './world-engine';
 import type { WorldState } from './world-engine';
 import { stepPosition, frameAt } from './avatar-runtime';
+import { withAnd } from '../story-data';
 
 type Person = { name: string; art: string; locked: boolean };
 type Props = {
@@ -177,7 +178,7 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
     <div className="world-stick" onPointerDown={e => { stick.current = { x: 0, y: 0, active: true, id: e.pointerId }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* capture is optional */ } stickMove(e); }} onPointerMove={stickMove} onPointerUp={stickEnd} onPointerCancel={stickEnd} onLostPointerCapture={stickEnd} data-scroll-drag="ignore" aria-label="이동 조이스틱">
       <span style={{ transform: `translate(${knob.x}px, ${knob.y}px)` }} />
     </div>
-    {person && <button className="world-talk" onClick={talk}><ChatCircleDots size={20} weight="fill" /><span><b>{person.name}</b>{person.locked ? '친밀도 쌓기 안내 보기' : '와 이야기하기'}</span><kbd>E</kbd></button>}
+    {person && <button className="world-talk" onClick={talk}><ChatCircleDots size={20} weight="fill" /><span><b>{person.name}</b>{person.locked ? '친밀도 쌓기 안내 보기' : `${withAnd(person.name).slice(person.name.length)} 이야기하기`}</span><kbd>E</kbd></button>}
     {debug && <p className="world-debug">{mapId} · {Math.round(stateRef.current.x)}, {Math.round(stateRef.current.y)}</p>}
   </section>;
 

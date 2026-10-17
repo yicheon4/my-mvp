@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Microphone, Stop, SpeakerHigh, Keyboard, ArrowLeft, ArrowRight, BookOpen, Sparkle, Check, X, PencilSimple, Trash, LockSimple, Chats, PaperPlaneTilt, House, TShirt, Scissors, Flower, BookmarkSimple, Heart, MapPin, Crown, CreditCard, Sun, MoonStars, Footprints } from '@phosphor-icons/react';
 import { BottomSheet, Carousel, KeyboardInput, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
-import { people, stories } from './story-data';
+import { people, stories, withAnd } from './story-data';
 import type { StoryScene } from './story-data';
 import WorldMap from './world/WorldMap';
 import { mapArt, worldMaps, MAP_IDS } from './world/world-data';
@@ -113,9 +113,9 @@ export default function Prototype(){
  function stopAudio(){recognition.current?.abort();setListening(false);window.speechSynthesis?.cancel();setSpeaking(false);}
  function go(next:Page){keyboard.hide();stopAudio();setSheet(null);setCloset(null);setError('');setPage(next);}
  function openPaywall(name:string,detail:string,art:string,back:Page){setPayTarget({name,detail,art,back});go('paywall');}
- function pickPerson(i:number){setCharacter(i);setScene(0);setSceneFilter('all');if(people[i].locked){openPaywall(people[i].name+'와 친밀도 쌓기',people[i].description,people[i].art,'prepare');}else go('profile');}
+ function pickPerson(i:number){setCharacter(i);setScene(0);setSceneFilter('all');if(people[i].locked){openPaywall(withAnd(people[i].name)+' 친밀도 쌓기',people[i].description,people[i].art,'prepare');}else go('profile');}
  // Met on the map: keep the place in mind (scene at this place if one exists) and come back to the same spot afterwards.
- function talkFromWorld(i:number,s:WorldState){setWorld(s);setOrigin('world');setCharacter(i);const here=stories[i].findIndex(sc=>!sc.locked&&sc.mapId===s.mapId);setScene(here>=0?here:0);setSceneFilter('all');if(people[i].locked){openPaywall(people[i].name+'와 친밀도 쌓기',people[i].description,people[i].art,'world');}else go('profile');}
+ function talkFromWorld(i:number,s:WorldState){setWorld(s);setOrigin('world');setCharacter(i);const here=stories[i].findIndex(sc=>!sc.locked&&sc.mapId===s.mapId);setScene(here>=0?here:0);setSceneFilter('all');if(people[i].locked){openPaywall(withAnd(people[i].name)+' 친밀도 쌓기',people[i].description,people[i].art,'world');}else go('profile');}
  function startFromHome(){setOrigin('home');go('prepare');}
  function start(){
   if(chosen.locked||chosenScene.locked){openPaywall(chosenScene.title,chosenScene.detail,chosenScene.art,'scenes');return;}
@@ -184,7 +184,7 @@ export default function Prototype(){
   <MobileScroll className="pw-scroll"><main className="pay-content">{page==='paywall'?<><div className={`pay-preview ${payTarget.back!=='scenes'?'is-person':''}`}><img src={payTarget.art} alt={payTarget.name}/><span><LockSimple size={20}/></span></div><p className="eyebrow">CLOSER STORIES</p><h2>{payTarget.name}</h2><p className="pay-description">{payTarget.detail}</p><div className="pass-card"><Crown size={24}/><h3>친밀도 패스</h3><p>새로운 인물 3명과의 대화<br/>캐릭터마다 특별한 순간 3개</p><small>요금과 이용 기간은 출시 시 안내할 예정이에요.</small></div></>:<><CreditCard size={34} className="checkout-icon"/><h2>새로운 이야기를<br/>열기 전에.</h2><div className="checkout-summary"><div><span>선택한 콘텐츠</span><strong>{payTarget.name}</strong></div><div><span>이용 상품</span><strong>친밀도 패스</strong></div><div><span>결제 금액</span><strong>미정</strong></div><div><span>결제 수단</span><strong>아직 연결되지 않았어요</strong></div></div><div className="checkout-notice"><LockSimple size={18}/><p>결제 기능을 준비하고 있어요.<br/>이 화면에서는 카드 정보를 받거나 요금을 청구하지 않아요. 잠긴 콘텐츠도 아직 열리지 않아요.</p></div></>}</main></MobileScroll><footer className="fixed-footer">{page==='paywall'?<button className="gold-button" onClick={()=>go('checkout')}>결제 화면 보기<ArrowRight size={18}/></button>:<button className="gold-button" onClick={()=>go(payTarget.back)}>무료 이야기로 돌아가기<ArrowRight size={18}/></button>}<button className="text-button" onClick={()=>go(payTarget.back)}>{page==='paywall'?'지금은 무료로 이야기할게':'다음에 다시 살펴보기'}</button></footer>
  </>}
  {page==='voice'&&session&&<section className="voice-screen" aria-label="보이스 대화">
-  {session.version===2&&session.sceneDetails?<><img className="scene-art" src={artOf(stories[session.character]?.[session.scene]?.mapId??'kitchen')} alt={session.sceneDetails.place}/><div className="conversation-shade"/><img className="conversation-character" src={person.art} alt={`${person.name}와 대화`}/></>:<img className="scene-art" src={person.art} alt="이전 대화의 상대"/>}
+  {session.version===2&&session.sceneDetails?<><img className="scene-art" src={artOf(stories[session.character]?.[session.scene]?.mapId??'kitchen')} alt={session.sceneDetails.place}/><div className="conversation-shade"/><img className="conversation-character" src={person.art} alt={`${withAnd(person.name)} 대화`}/></>:<img className="scene-art" src={person.art} alt="이전 대화의 상대"/>}
   <header className="voice-header"><div className="voice-brand"><Sparkle size={23} weight="thin"/><span>PERSONA WORLD</span><button className="icon-button" aria-label={origin==='world'?'맵으로 돌아가기':'나의 방으로 돌아가기'} onClick={()=>go(origin)}><X size={19}/></button></div><h1>{session.sceneDetails?.title??legacyScenes[session.scene]}</h1><p>{person.relation} · {person.name} <span className="mode">체험 모드</span></p>{session.sceneDetails&&<span className="conversation-location"><MapPin size={12}/>{session.sceneDetails.place}</span>}</header>
   <button className="history-toggle" onClick={()=>setSheet('history')}><Chats size={17}/> 대화 기록 {session.turns.filter(t=>t.role==='you').length>0&&session.turns.filter(t=>t.role==='you').length}</button>
   <div className="voice-bottom">

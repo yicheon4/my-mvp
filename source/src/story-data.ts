@@ -54,3 +54,6 @@ const extra:Row[][]=[
  [['한 권을 고르는 오후','서점 독서 라운지','요즘 마음과 닮은 이야기를 찾아봐.','campus'],['책 속의 문장 하나','서점 옆 카페','오래 기억한 문장이 왜 좋았는지 이야기해.','cafe'],['책을 덮고 걷는 길','동네 공원','이야기를 읽고 달라진 생각을 나눠.','park'],['바쁜 날의 잠깐 쉼','서점 창가','혼자 쉬는 시간이 필요한 이유를 말해.','sun'],['나의 어린 시절 이야기','조용한 독서 공간','어릴 때 좋아했던 것과 지금의 나를 이어 봐.','campus'],['책을 선물하고 싶은 사람','동네 카페','누군가에게 전하고 싶은 마음을 골라 봐.','cafe'],['하루를 닫는 대화','서점 앞 골목','오늘 기억하고 싶은 작은 장면을 나눠.','street'],['이별을 다룬 이야기','비 오는 창가','지나간 관계를 돌아보며 남은 감정을 말해.','room'],['다시 시작하는 용기','노을빛 테라스','실패 뒤 새로운 선택을 하는 마음을 나눠.','terrace'],['내 삶을 책으로 쓴다면','조용한 밤 라운지','지금 내 삶의 장에 제목을 붙여 봐.','campus']].map(r=>[...r,'What does that story bring up for you?','그 이야기는 너에게 어떤 마음을 떠올리게 해?'] as Row)
 ];
 extra.forEach(rows=>stories.push(make(rows)));
+
+// Korean particle 와/과 after a name: 과 when the last syllable has a final consonant (이든과, 줄리언과), else 와 (클로이와).
+export function withAnd(name:string){const c=name.charCodeAt(name.length-1);const hasFinal=c>=0xac00&&c<=0xd7a3&&(c-0xac00)%28!==0;return name+(hasFinal?'과':'와');}
