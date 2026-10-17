@@ -86,3 +86,20 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - User explicitly wants female character art to be welcoming to a broad audience and not sexualized. Apply to player avatar, every wardrobe combination, free/locked companions and legacy female assets.
 - Use opaque everyday outfits with high/closed necklines and relaxed fit. Avoid cleavage, tight or shiny fabric outlining breasts, exaggerated chest/waist/hip proportions, short slit skirts or thigh emphasis.
 - Preserve character identity, expressive face, cozy anime style and existing palettes. Visual focus should be on face, expression and personality. New art must follow this preference by default.
+
+## v3 character & world integration (2026-10-15)
+- Direction: cozy life game for meeting people in a foreign language; customization and exploration come before study-style screens. Social features later.
+- Option data lives in `src/world/options-v3.json` (94 options), `maps-v3.json` (W01–W06, day/night), `mini-assets.json` (all sprites `missing`). The full handoff package (reference sheets, spec, starter code) is kept outside the public repo in the workspace `아트_자료/PersonaWorld_v3/`.
+- v3 appearance saves only under `persona-world:appearance:v3` via `src/world/avatar-runtime.ts` (tests: `npm run test:avatar`). Never map `persona-world-look-v1` or v1/v2 package IDs into v3. Keep `persona-world-v1` and `persona-world-look-v1` untouched.
+- No production sprite or background art exists yet. Never substitute shapes or another look for a missing part. Options without art stay selectable with a visible "그림 준비 중" label while the map keeps the last fully drawn look.
+- Before mini art exists, map movement/collision may be developed with a dev marker clearly labeled 임시 표시; it is never presented as the avatar.
+- Home keeps the current portrait and old wardrobe until v3 portrait art is ready. Option thumbnails may be cropped from reference sheets without labels or decorative text.
+- Map rendering uses plain Canvas 2D with the avatar runtime; no Phaser/game library for now.
+
+## v7 approved art & connected world (2026-10-17, supersedes v3 notes where they conflict)
+- Approved art lives in `public/art/v7/` (WebP converted from the v7 handoff; originals stay outside the repo): 3 complete player looks (lavender / pink-cargo / white-denim, not layered), 6 NPC portraits, 6 spaces × day/night maps, 1 fixed-appearance default walk sheet. Old anime-style art stays only for legacy sessions/old look key.
+- Home shows the selected complete look; the wardrobe offers only these 3 looks. Free per-part customization (94-option catalog) stays unimplemented until common-rig assets exist; never cut and stack catalog sheets.
+- `src/world/world-data.ts` holds walk polygons, furniture blocks, foreground occluders, portals, spawns, NPC spots and perspective scale, all in 1536×1024 image pixels; day and night share geometry. Verify coordinates with `?worlddebug` (draws zones). `src/world/world-engine.ts` holds pure collision/portal/save logic (`npm run test:world`).
+- World save: `persona-world:world:v1` {mapId, x, y, direction, timeOfDay, lookId}; invalid positions return to the map spawn. Keep `persona-world-v1` and `persona-world-look-v1` untouched.
+- `looks[].mini` stays null until a matching mini sheet exists; the map then shows the default white-tee mini with a visible notice. Never report the default mini as matching a look.
+- NPCs on the map are shown as portrait badges (no NPC minis yet). Talking from the map opens profile → scenes (place pre-selected if a free scene matches) → existing demo chat; leaving returns to the same map spot. Locked NPCs open the paywall preview only.
