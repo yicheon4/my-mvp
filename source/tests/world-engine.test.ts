@@ -76,3 +76,26 @@ test('world save is versioned, separate, and repairs bad data', () => {
 test('no approved look claims a matching mini yet', () => {
   assert.ok(looks.every(l => l.mini === null));
 });
+
+test('every exit and every NPC is reachable on foot from every entrance (grid walk, no teleport)', () => {
+  const STEP = 8;
+  for (const map of Object.values(worldMaps)) {
+    const starts = [map.spawn, ...Object.values(worldMaps).flatMap(m => m.portals.filter(p => p.to === map.id).map(p => arrival(p)))];
+    for (const st of starts) {
+      const seen = new Set<string>(); const q: [number, number][] = [[st.x, st.y]]; seen.add(`${st.x},${st.y}`);
+      const reached: [number, number][] = [];
+      while (q.length) {
+        const [x, y] = q.pop()!; reached.push([x, y]);
+        for (const [dx, dy] of [[STEP, 0], [-STEP, 0], [0, STEP], [0, -STEP]]) {
+          const nx = x + dx, ny = y + dy, k = `${nx},${ny}`;
+          if (!seen.has(k) && canOccupy(map, nx, ny)) { seen.add(k); q.push([nx, ny]); }
+        }
+      }
+      for (const p of map.portals) {
+        const [rx, ry, rw, rh] = p.rect;
+        assert.ok(reached.some(([x, y]) => x >= rx && x <= rx + rw && y >= ry && y <= ry + rh), `${map.id}: ${p.id} reachable from (${st.x},${st.y})`);
+      }
+      for (const n of map.npcs) assert.ok(reached.some(([x, y]) => nearestNpc(map, x, y) === n), `${map.id}: npc ${n.person} reachable`);
+    }
+  }
+});

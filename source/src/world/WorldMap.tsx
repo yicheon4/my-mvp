@@ -187,6 +187,20 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
     const k = scale * view.dpr;
     ctx.setTransform(k, 0, 0, k, -camX * k, -camY * k);
     ctx.drawImage(bg, 0, 0, WORLD_W, WORLD_H);
+    // Exit markers stay visible so every connection can be found (arrow points off the nearest edge).
+    for (const p of map.portals) {
+      const [rx, ry, rw, rh] = p.rect, cx = rx + rw / 2, cy = ry + rh / 2;
+      const edges = [[cy, '↑'], [WORLD_H - cy, '↓'], [cx, '←'], [WORLD_W - cx, '→']] as const;
+      const arrow = [...edges].sort((a, b) => a[0] - b[0])[0][1];
+      ctx.fillStyle = '#fff6c855'; ctx.strokeStyle = '#fff6c8'; ctx.lineWidth = 3; ctx.setLineDash([10, 8]);
+      ctx.beginPath(); ctx.roundRect(rx, ry, rw, rh, 14); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+      const label = `${arrow} ${p.label}`;
+      ctx.font = '600 24px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
+      const tw = ctx.measureText(label).width + 28;
+      const lx = Math.min(Math.max(cx, tw / 2 + 8), WORLD_W - tw / 2 - 8), ly = Math.min(Math.max(cy, 30), WORLD_H - 30);
+      ctx.fillStyle = '#3b2d4be6'; ctx.beginPath(); ctx.roundRect(lx - tw / 2, ly - 20, tw, 40, 20); ctx.fill();
+      ctx.fillStyle = '#fff6c8'; ctx.fillText(label, lx, ly + 8);
+    }
     // NPC ground rings (behind characters)
     for (const n of map.npcs) {
       ctx.fillStyle = '#7a5aa333'; ctx.beginPath(); ctx.ellipse(n.x, n.y, 44, 15, 0, 0, Math.PI * 2); ctx.fill();
