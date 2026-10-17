@@ -95,6 +95,7 @@ export default function Prototype(){
  const [draft,setDraft]=useState('');
  const [edit,setEdit]=useState<Phrase|null>(null);
  const [toast,setToast]=useState('');
+ const [undo,setUndo]=useState<{note:Phrase;index:number}|null>(null);
  const [error,setError]=useState('');
  const [listening,setListening]=useState(false);
  const [busy,setBusy]=useState(false);
@@ -110,7 +111,7 @@ export default function Prototype(){
  const chosen=people[character];
  const chosenScene=stories[character][scene];
  useEffect(()=>{try{localStorage.setItem(STORE,JSON.stringify({notes,session}));}catch{setError('이 브라우저에서 기록을 저장할 수 없어요.');}},[notes,session]);
- useEffect(()=>{if(!toast)return;const t=setTimeout(()=>setToast(''),3000);return()=>clearTimeout(t);},[toast]);
+ useEffect(()=>{if(!toast)return;const t=setTimeout(()=>{setToast('');setUndo(null);},undo?5000:3000);return()=>clearTimeout(t);},[toast,undo]);
  useEffect(()=>()=>{recognition.current?.abort();if(timer.current)clearTimeout(timer.current);window.speechSynthesis?.cancel();},[]);
  function stopAudio(){recognition.current?.abort();setListening(false);window.speechSynthesis?.cancel();setSpeaking(false);}
  function go(next:Page){keyboard.hide();stopAudio();setSheet(null);setCloset(null);setError('');setPage(next);}
@@ -209,9 +210,9 @@ export default function Prototype(){
    <p className="local-note">기록은 지금 사용하는 브라우저에 저장돼요.</p>
   </main></MobileScroll><footer className="fixed-footer paper-footer">{session&&<button className="gold-button" onClick={()=>go('voice')}>대화 마저 이어하기 <ArrowRight size={18}/></button>}<button className={session?'text-button':'gold-button'} onClick={()=>go('prepare')}>새 대화하기</button></footer>
  </>}
- {toast&&<div className="toast" role="status"><Check size={16}/>{toast}</div>}
+ {toast&&<div className="toast" role="status"><Check size={16}/>{toast}{undo&&<button className="toast-undo" onClick={()=>{const u=undo;setNotes(n=>n.some(p=>p.id===u.note.id)?n:[...n.slice(0,u.index),u.note,...n.slice(u.index)]);setUndo(null);setToast('표현을 되돌렸어요');}}>되돌리기</button>}</div>}
  <BottomSheet open={sheet==='compose'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="네 이야기를 들려줘" description="영어로 입력하거나 아래 예시를 골라 보세요." snap={.72}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}>{error&&<p className="inline-error" role="alert">{error}</p>}<form onSubmit={e=>{e.preventDefault();send(draft);}}><KeyboardInput aria-label="영어로 내 이야기" placeholder="Today, I felt…" value={draft} maxLength={500} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" type="submit" disabled={!draft.trim()||busy}>이야기 전하기 <PaperPlaneTilt size={18}/></button></form><p className="muted">이렇게 시작해도 좋아요</p>{['I’m overwhelmed by my assignments.','I’m worried my friend misunderstood me.','I’m not sure about my future.','Thank you for listening to me.'].map(s=><button className="sample" key={s} onClick={()=>send(s)}>{s}<ArrowRight size={16}/></button>)}<p className="demo-note">준비된 답변으로 흐름을 경험하는 체험 모드예요.<br/>음성 입력은 브라우저의 인식 서비스를 사용해요.</p></div></BottomSheet>
  <BottomSheet open={sheet==='history'} onOpenChange={open=>{if(!open)setSheet(null);}} title="우리의 대화" description={session?.sceneDetails?.title??"함께 나눈 이야기"} snap={.8}><div className="history-list">{session?.turns.map((t,i)=><div key={i} className={`history-turn ${t.role}`}><small>{t.role==='you'?'나':person.name}</small><p>{t.text}</p>{t.ko&&<small>{t.ko}</small>}</div>)}</div></BottomSheet>
- <BottomSheet open={sheet==='edit'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="나만의 뜻으로 기록하기" description={edit?.en} snap={.6}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}><form onSubmit={e=>{e.preventDefault();if(!draft.trim()||!edit)return;setNotes(n=>n.map(p=>p.id===edit.id?{...p,ko:draft.trim()}:p));keyboard.hide();setSheet(null);setToast('나만의 뜻을 저장했어요');}}><KeyboardInput aria-label="나만의 한국어 뜻" value={draft} maxLength={200} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" disabled={!draft.trim()}>뜻 저장하기 <Check size={18}/></button></form><button className="delete-note" onClick={()=>{setNotes(n=>n.filter(p=>p.id!==edit?.id));keyboard.hide();setSheet(null);setToast('표현을 메모장에서 지웠어요');}}><Trash size={16}/> 이 표현 지우기</button></div></BottomSheet>
+ <BottomSheet open={sheet==='edit'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="나만의 뜻으로 기록하기" description={edit?.en} snap={.6}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}><form onSubmit={e=>{e.preventDefault();if(!draft.trim()||!edit)return;setNotes(n=>n.map(p=>p.id===edit.id?{...p,ko:draft.trim()}:p));keyboard.hide();setSheet(null);setToast('나만의 뜻을 저장했어요');}}><KeyboardInput aria-label="나만의 한국어 뜻" value={draft} maxLength={200} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" disabled={!draft.trim()}>뜻 저장하기 <Check size={18}/></button></form><button className="delete-note" onClick={()=>{const index=notes.findIndex(p=>p.id===edit?.id);if(index>=0)setUndo({note:notes[index],index});setNotes(n=>n.filter(p=>p.id!==edit?.id));keyboard.hide();setSheet(null);setToast('표현을 메모장에서 지웠어요');}}><Trash size={16}/> 이 표현 지우기</button></div></BottomSheet>
  </div>;
 }

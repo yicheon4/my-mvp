@@ -82,3 +82,4 @@
 .text-link{text-decoration:underline;color:#f6d49b!important;font-size:inherit!important}
 button.world-notice{text-align:left;border:0;width:auto}
 .world-notice-chip{position:absolute;top:112px;left:16px;display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:12px;background:#fff8efd9;color:#4b3a59!important;font-size:10px!important;z-index:2;box-shadow:0 2px 8px #2a1a3a22}
+.toast-undo{margin-left:10px;padding:3px 10px;border-radius:10px;background:#ffffff2e;color:inherit!important;font-size:12px!important;text-decoration:underline;pointer-events:auto}
