@@ -1,16 +1,18 @@
-export type StoryScene={title:string;place:string;detail:string;art:string;opening:string;translation:string;locked:boolean};
+import { portraits, mapArt } from './world/world-data';
+import type { MapId } from './world/world-data';
+export type StoryScene={title:string;place:string;detail:string;art:string;mapId:MapId;opening:string;translation:string;locked:boolean};
 export type Person={name:string;en:string;art:string;relation:string;trait:string;description:string;quote:string;tags:string[];locked:boolean};
 export const people:Person[]=[
- {name:'클로이',en:'CHLOE',art:'/art/chloe.png',relation:'대학교 룸메이트',trait:'다정한 현실주의자',description:'같은 기숙사 방을 쓰는 동갑내기 친구. 말없이 따뜻한 차를 건네고, 네가 준비될 때까지 기다려 줘. 함께 사는 만큼 작은 습관도 솔직하게 조율하는 사이야.',quote:'You don’t have to have it all together.',tags:['같은 방, 다른 하루','차분한 공감','함께 사는 친구'],locked:false},
- {name:'소피',en:'SOPHIE',art:'/art/sophie.png',relation:'고등학교 절친',trait:'내 마음을 먼저 알아채는',description:'고등학교 시절부터 네 흑역사와 꿈을 함께 나눈 친구. 장난스럽게 긴장을 풀어 주지만, 중요한 순간에는 누구보다 진지하게 네 편이 되어 줘.',quote:'You know you can be yourself with me.',tags:['오래된 우리','유쾌한 솔직함','설명하지 않아도'],locked:false},
- {name:'이든',en:'ETHAN',art:'/art/ethan.png',relation:'연애한 지 1년 된 남자친구',trait:'서두르지 않는 다정함',description:'네 취향과 표정을 조금씩 배워 온 1년의 연인. 작은 약속을 소중히 여기고, 서로 다른 마음도 대화로 알아가려 해. 서운함도 바람도 편하게 말해 봐.',quote:'I want to understand how you really feel.',tags:['함께한 1년','서로의 속도','다정한 연인'],locked:false},
- {name:'루나',en:'LUNA',art:'/art/luna.png',relation:'여행에서 만난 친구',trait:'낯선 곳에서도 나답게',description:'혼자 떠난 여행에서 우연히 가까워진 친구. 새로운 경험을 좋아하지만 너의 속도도 존중해. 익숙한 일상 밖에서 다른 나를 발견하게 해 줘.',quote:'Where would you go if you weren’t afraid?',tags:['새로운 시선','여행의 우연','자유로운 대화'],locked:true},
- {name:'줄리언',en:'JULIAN',art:'/art/julian.png',relation:'예술 동아리 선배',trait:'좋은 질문을 건네는',description:'작업 이야기를 하다 자연스럽게 고민을 나누게 된 선배. 답을 정해 주기보다 네가 원하는 것을 찾도록 차분히 질문해 줘.',quote:'What would you make, just for yourself?',tags:['취향을 나누는 사이','차분한 호기심','나만의 방향'],locked:true},
- {name:'올리버',en:'OLIVER',art:'/art/oliver.png',relation:'동네 서점에서 사귄 친구',trait:'이야기를 오래 기억하는',description:'자주 가는 서점에서 책을 추천받다 친해진 친구. 네가 지나가듯 한 말을 기억하고, 책 속 한 문장에서 대화를 시작해.',quote:'Some stories stay with us, don’t they?',tags:['책으로 이어진 사이','조용한 유머','느긋한 오후'],locked:true},
+ {name:'클로이',en:'CHLOE',art:portraits.chloe,relation:'대학교 룸메이트',trait:'다정한 현실주의자',description:'같은 기숙사 방을 쓰는 동갑내기 친구. 말없이 따뜻한 차를 건네고, 네가 준비될 때까지 기다려 줘. 함께 사는 만큼 작은 습관도 솔직하게 조율하는 사이야.',quote:'You don’t have to have it all together.',tags:['같은 방, 다른 하루','차분한 공감','함께 사는 친구'],locked:false},
+ {name:'소피',en:'SOPHIE',art:portraits.sophie,relation:'고등학교 절친',trait:'내 마음을 먼저 알아채는',description:'고등학교 시절부터 네 흑역사와 꿈을 함께 나눈 친구. 장난스럽게 긴장을 풀어 주지만, 중요한 순간에는 누구보다 진지하게 네 편이 되어 줘.',quote:'You know you can be yourself with me.',tags:['오래된 우리','유쾌한 솔직함','설명하지 않아도'],locked:false},
+ {name:'이든',en:'ETHAN',art:portraits.ethan,relation:'연애한 지 1년 된 남자친구',trait:'서두르지 않는 다정함',description:'네 취향과 표정을 조금씩 배워 온 1년의 연인. 작은 약속을 소중히 여기고, 서로 다른 마음도 대화로 알아가려 해. 서운함도 바람도 편하게 말해 봐.',quote:'I want to understand how you really feel.',tags:['함께한 1년','서로의 속도','다정한 연인'],locked:false},
+ {name:'루나',en:'LUNA',art:portraits.luna,relation:'여행에서 만난 친구',trait:'낯선 곳에서도 나답게',description:'혼자 떠난 여행에서 우연히 가까워진 친구. 새로운 경험을 좋아하지만 너의 속도도 존중해. 익숙한 일상 밖에서 다른 나를 발견하게 해 줘.',quote:'Where would you go if you weren’t afraid?',tags:['새로운 시선','여행의 우연','자유로운 대화'],locked:true},
+ {name:'줄리언',en:'JULIAN',art:portraits.julian,relation:'예술 동아리 선배',trait:'좋은 질문을 건네는',description:'작업 이야기를 하다 자연스럽게 고민을 나누게 된 선배. 답을 정해 주기보다 네가 원하는 것을 찾도록 차분히 질문해 줘.',quote:'What would you make, just for yourself?',tags:['취향을 나누는 사이','차분한 호기심','나만의 방향'],locked:true},
+ {name:'올리버',en:'OLIVER',art:portraits.oliver,relation:'동네 서점에서 사귄 친구',trait:'이야기를 오래 기억하는',description:'자주 가는 서점에서 책을 추천받다 친해진 친구. 네가 지나가듯 한 말을 기억하고, 책 속 한 문장에서 대화를 시작해.',quote:'Some stories stay with us, don’t they?',tags:['책으로 이어진 사이','조용한 유머','느긋한 오후'],locked:true},
 ];
-const art={cafe:'/art/scene-cafe.png',campus:'/art/scene-campus.png',park:'/art/scene-park.png',kitchen:'/art/scene-kitchen.png',seaside:'/art/scene-seaside.png',street:'/art/scene-street.png',terrace:'/art/scene-terrace.png',room:'/art/home-evening.png',sun:'/art/home-sunset.png'};
+const art={cafe:'bar',campus:'campus',park:'park',kitchen:'kitchen',seaside:'park',street:'campus',terrace:'living-room',room:'bedroom',sun:'living-room'} satisfies Record<string,MapId>;
 type Row=[string,string,string,keyof typeof art,string,string];
-function make(rows:Row[]):StoryScene[]{return rows.map((r,i)=>({title:r[0],place:r[1],detail:r[2],art:art[r[3]],opening:r[4],translation:r[5],locked:i>=7}));}
+function make(rows:Row[]):StoryScene[]{return rows.map((r,i)=>({title:r[0],place:r[1],detail:r[2],art:mapArt[art[r[3]]].day,mapId:art[r[3]],opening:r[4],translation:r[5],locked:i>=7}));}
 export const stories:StoryScene[][]=[make([
  ['함께 요리하는 저녁','기숙사 공용 주방','파스타를 만들며 오늘 유독 지쳤던 이유를 꺼내 봐.','kitchen','You’ve been quiet today. Want to tell me about it while we cook?','오늘 조용하네. 같이 요리하면서 무슨 일 있었는지 말해 줄래?'],
  ['불 끄기 전, 작은 고민','우리 기숙사 방','쉽게 잠들지 못하는 밤, 머릿속에서 맴도는 생각을 나눠.','room','Still awake? Is something keeping you up?','아직 안 자? 무슨 생각 때문에 잠이 안 와?'],

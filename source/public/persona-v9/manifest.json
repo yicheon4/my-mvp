@@ -1,0 +1,5051 @@
+{
+  "version": 9,
+  "renderMode": "single-complete-frame",
+  "characters": {
+    "H01_L01_none": {
+      "src": "assets/characters/H01_L01.png",
+      "sourceRect": [
+        95,
+        3,
+        325,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H01_L01_necklace": {
+      "src": "assets/characters/H01_L01.png",
+      "sourceRect": [
+        480,
+        3,
+        337,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H01_L01_bag": {
+      "src": "assets/characters/H01_L01.png",
+      "sourceRect": [
+        858,
+        3,
+        359,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H01_L02_none": {
+      "src": "assets/characters/H01_L02.png",
+      "sourceRect": [
+        121,
+        0,
+        343,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H01_L02_necklace": {
+      "src": "assets/characters/H01_L02.png",
+      "sourceRect": [
+        487,
+        0,
+        349,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H01_L02_bag": {
+      "src": "assets/characters/H01_L02.png",
+      "sourceRect": [
+        840,
+        0,
+        384,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H01_L03_none": {
+      "src": "assets/characters/H01_L03.png",
+      "sourceRect": [
+        81,
+        0,
+        366,
+        1253
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H01_L03_necklace": {
+      "src": "assets/characters/H01_L03.png",
+      "sourceRect": [
+        481,
+        0,
+        365,
+        1253
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H01_L03_bag": {
+      "src": "assets/characters/H01_L03.png",
+      "sourceRect": [
+        854,
+        0,
+        400,
+        1253
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H01_L04_none": {
+      "src": "assets/characters/H01_L04.png",
+      "sourceRect": [
+        90,
+        0,
+        350,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H01_L04_necklace": {
+      "src": "assets/characters/H01_L04.png",
+      "sourceRect": [
+        482,
+        0,
+        354,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H01_L04_bag": {
+      "src": "assets/characters/H01_L04.png",
+      "sourceRect": [
+        864,
+        0,
+        390,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H01_L05_none": {
+      "src": "assets/characters/H01_L05.png",
+      "sourceRect": [
+        99,
+        11,
+        341,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H01_L05_necklace": {
+      "src": "assets/characters/H01_L05.png",
+      "sourceRect": [
+        493,
+        11,
+        343,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H01_L05_bag": {
+      "src": "assets/characters/H01_L05.png",
+      "sourceRect": [
+        860,
+        11,
+        385,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H01_L06_none": {
+      "src": "assets/characters/H01_L06.png",
+      "sourceRect": [
+        89,
+        6,
+        329,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H01_L06_necklace": {
+      "src": "assets/characters/H01_L06.png",
+      "sourceRect": [
+        481,
+        6,
+        341,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H01_L06_bag": {
+      "src": "assets/characters/H01_L06.png",
+      "sourceRect": [
+        851,
+        6,
+        370,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H01_L07_none": {
+      "src": "assets/characters/H01_L07.png",
+      "sourceRect": [
+        95,
+        6,
+        328,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H01_L07_necklace": {
+      "src": "assets/characters/H01_L07.png",
+      "sourceRect": [
+        487,
+        6,
+        340,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H01_L07_bag": {
+      "src": "assets/characters/H01_L07.png",
+      "sourceRect": [
+        856,
+        6,
+        377,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H01_L08_none": {
+      "src": "assets/characters/H01_L08.png",
+      "sourceRect": [
+        115,
+        2,
+        305,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H01_L08_necklace": {
+      "src": "assets/characters/H01_L08.png",
+      "sourceRect": [
+        498,
+        2,
+        318,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H01_L08_bag": {
+      "src": "assets/characters/H01_L08.png",
+      "sourceRect": [
+        860,
+        2,
+        355,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H01_L09_none": {
+      "src": "assets/characters/H01_L09.png",
+      "sourceRect": [
+        90,
+        0,
+        328,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H01_L09_necklace": {
+      "src": "assets/characters/H01_L09.png",
+      "sourceRect": [
+        482,
+        0,
+        339,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H01_L09_bag": {
+      "src": "assets/characters/H01_L09.png",
+      "sourceRect": [
+        853,
+        0,
+        364,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H01_L10_none": {
+      "src": "assets/characters/H01_L10.png",
+      "sourceRect": [
+        90,
+        1,
+        328,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H01_L10_necklace": {
+      "src": "assets/characters/H01_L10.png",
+      "sourceRect": [
+        482,
+        1,
+        334,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H01_L10_bag": {
+      "src": "assets/characters/H01_L10.png",
+      "sourceRect": [
+        843,
+        1,
+        366,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H01_L11_none": {
+      "src": "assets/characters/H01_L11.png",
+      "sourceRect": [
+        97,
+        14,
+        321,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H01_L11_necklace": {
+      "src": "assets/characters/H01_L11.png",
+      "sourceRect": [
+        499,
+        14,
+        319,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H01_L11_bag": {
+      "src": "assets/characters/H01_L11.png",
+      "sourceRect": [
+        899,
+        14,
+        350,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H01_L12_none": {
+      "src": "assets/characters/H01_L12.png",
+      "sourceRect": [
+        69,
+        0,
+        343,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H01_L12_necklace": {
+      "src": "assets/characters/H01_L12.png",
+      "sourceRect": [
+        475,
+        0,
+        343,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H01_L12_bag": {
+      "src": "assets/characters/H01_L12.png",
+      "sourceRect": [
+        867,
+        0,
+        367,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H01_L13_none": {
+      "src": "assets/characters/H01_L13.png",
+      "sourceRect": [
+        91,
+        0,
+        334,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H01_L13_necklace": {
+      "src": "assets/characters/H01_L13.png",
+      "sourceRect": [
+        486,
+        0,
+        347,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H01_L13_bag": {
+      "src": "assets/characters/H01_L13.png",
+      "sourceRect": [
+        881,
+        0,
+        347,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H01_L14_none": {
+      "src": "assets/characters/H01_L14.png",
+      "sourceRect": [
+        100,
+        76,
+        347,
+        1120
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H01_L14_necklace": {
+      "src": "assets/characters/H01_L14.png",
+      "sourceRect": [
+        492,
+        76,
+        349,
+        1120
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H01_L14_bag": {
+      "src": "assets/characters/H01_L14.png",
+      "sourceRect": [
+        863,
+        76,
+        387,
+        1120
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H01_L15_none": {
+      "src": "assets/characters/H01_L15.png",
+      "sourceRect": [
+        94,
+        4,
+        325,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H01_L15_necklace": {
+      "src": "assets/characters/H01_L15.png",
+      "sourceRect": [
+        479,
+        4,
+        337,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H01_L15_bag": {
+      "src": "assets/characters/H01_L15.png",
+      "sourceRect": [
+        844,
+        4,
+        357,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H01",
+      "look": "L15",
+      "extra": "bag"
+    },
+    "H02_L01_none": {
+      "src": "assets/characters/H02_L01.png",
+      "sourceRect": [
+        97,
+        8,
+        321,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H02_L01_necklace": {
+      "src": "assets/characters/H02_L01.png",
+      "sourceRect": [
+        477,
+        8,
+        331,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H02_L01_bag": {
+      "src": "assets/characters/H02_L01.png",
+      "sourceRect": [
+        843,
+        8,
+        358,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H02_L02_none": {
+      "src": "assets/characters/H02_L02.png",
+      "sourceRect": [
+        90,
+        20,
+        346,
+        1210
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H02_L02_necklace": {
+      "src": "assets/characters/H02_L02.png",
+      "sourceRect": [
+        481,
+        20,
+        355,
+        1210
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H02_L02_bag": {
+      "src": "assets/characters/H02_L02.png",
+      "sourceRect": [
+        857,
+        20,
+        375,
+        1210
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H02_L03_none": {
+      "src": "assets/characters/H02_L03.png",
+      "sourceRect": [
+        95,
+        0,
+        352,
+        1228
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H02_L03_necklace": {
+      "src": "assets/characters/H02_L03.png",
+      "sourceRect": [
+        486,
+        0,
+        352,
+        1228
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H02_L03_bag": {
+      "src": "assets/characters/H02_L03.png",
+      "sourceRect": [
+        840,
+        0,
+        401,
+        1228
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H02_L04_none": {
+      "src": "assets/characters/H02_L04.png",
+      "sourceRect": [
+        82,
+        2,
+        346,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H02_L04_necklace": {
+      "src": "assets/characters/H02_L04.png",
+      "sourceRect": [
+        474,
+        2,
+        358,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H02_L04_bag": {
+      "src": "assets/characters/H02_L04.png",
+      "sourceRect": [
+        855,
+        2,
+        387,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H02_L05_none": {
+      "src": "assets/characters/H02_L05.png",
+      "sourceRect": [
+        78,
+        8,
+        340,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H02_L05_necklace": {
+      "src": "assets/characters/H02_L05.png",
+      "sourceRect": [
+        488,
+        8,
+        348,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H02_L05_bag": {
+      "src": "assets/characters/H02_L05.png",
+      "sourceRect": [
+        871,
+        8,
+        383,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H02_L06_none": {
+      "src": "assets/characters/H02_L06.png",
+      "sourceRect": [
+        98,
+        7,
+        327,
+        1230
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H02_L06_necklace": {
+      "src": "assets/characters/H02_L06.png",
+      "sourceRect": [
+        473,
+        7,
+        339,
+        1230
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H02_L06_bag": {
+      "src": "assets/characters/H02_L06.png",
+      "sourceRect": [
+        843,
+        7,
+        373,
+        1230
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H02_L07_none": {
+      "src": "assets/characters/H02_L07.png",
+      "sourceRect": [
+        84,
+        2,
+        334,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H02_L07_necklace": {
+      "src": "assets/characters/H02_L07.png",
+      "sourceRect": [
+        495,
+        2,
+        340,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H02_L07_bag": {
+      "src": "assets/characters/H02_L07.png",
+      "sourceRect": [
+        874,
+        2,
+        379,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H02_L08_none": {
+      "src": "assets/characters/H02_L08.png",
+      "sourceRect": [
+        78,
+        9,
+        311,
+        1232
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H02_L08_necklace": {
+      "src": "assets/characters/H02_L08.png",
+      "sourceRect": [
+        486,
+        9,
+        312,
+        1232
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H02_L08_bag": {
+      "src": "assets/characters/H02_L08.png",
+      "sourceRect": [
+        879,
+        9,
+        349,
+        1232
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H02_L09_none": {
+      "src": "assets/characters/H02_L09.png",
+      "sourceRect": [
+        94,
+        5,
+        320,
+        1247
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H02_L09_necklace": {
+      "src": "assets/characters/H02_L09.png",
+      "sourceRect": [
+        476,
+        5,
+        320,
+        1247
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H02_L09_bag": {
+      "src": "assets/characters/H02_L09.png",
+      "sourceRect": [
+        838,
+        5,
+        360,
+        1247
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H02_L10_none": {
+      "src": "assets/characters/H02_L10.png",
+      "sourceRect": [
+        94,
+        1,
+        324,
+        1253
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H02_L10_necklace": {
+      "src": "assets/characters/H02_L10.png",
+      "sourceRect": [
+        486,
+        1,
+        333,
+        1253
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H02_L10_bag": {
+      "src": "assets/characters/H02_L10.png",
+      "sourceRect": [
+        878,
+        1,
+        374,
+        1253
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H02_L11_none": {
+      "src": "assets/characters/H02_L11.png",
+      "sourceRect": [
+        108,
+        1,
+        313,
+        1247
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H02_L11_necklace": {
+      "src": "assets/characters/H02_L11.png",
+      "sourceRect": [
+        487,
+        1,
+        325,
+        1247
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H02_L11_bag": {
+      "src": "assets/characters/H02_L11.png",
+      "sourceRect": [
+        836,
+        1,
+        358,
+        1247
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H02_L12_none": {
+      "src": "assets/characters/H02_L12.png",
+      "sourceRect": [
+        71,
+        4,
+        344,
+        1237
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H02_L12_necklace": {
+      "src": "assets/characters/H02_L12.png",
+      "sourceRect": [
+        466,
+        4,
+        345,
+        1237
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H02_L12_bag": {
+      "src": "assets/characters/H02_L12.png",
+      "sourceRect": [
+        845,
+        4,
+        363,
+        1237
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H02_L13_none": {
+      "src": "assets/characters/H02_L13.png",
+      "sourceRect": [
+        83,
+        2,
+        335,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H02_L13_necklace": {
+      "src": "assets/characters/H02_L13.png",
+      "sourceRect": [
+        475,
+        2,
+        335,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H02_L13_bag": {
+      "src": "assets/characters/H02_L13.png",
+      "sourceRect": [
+        847,
+        2,
+        354,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H02_L14_none": {
+      "src": "assets/characters/H02_L14.png",
+      "sourceRect": [
+        70,
+        1,
+        359,
+        1232
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H02_L14_necklace": {
+      "src": "assets/characters/H02_L14.png",
+      "sourceRect": [
+        461,
+        1,
+        372,
+        1232
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H02_L14_bag": {
+      "src": "assets/characters/H02_L14.png",
+      "sourceRect": [
+        865,
+        1,
+        386,
+        1232
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H02_L15_none": {
+      "src": "assets/characters/H02_L15.png",
+      "sourceRect": [
+        79,
+        0,
+        339,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H02_L15_necklace": {
+      "src": "assets/characters/H02_L15.png",
+      "sourceRect": [
+        470,
+        0,
+        348,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H02_L15_bag": {
+      "src": "assets/characters/H02_L15.png",
+      "sourceRect": [
+        836,
+        0,
+        378,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H02",
+      "look": "L15",
+      "extra": "bag"
+    },
+    "H03_L01_none": {
+      "src": "assets/characters/H03_L01.png",
+      "sourceRect": [
+        96,
+        2,
+        324,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H03_L01_necklace": {
+      "src": "assets/characters/H03_L01.png",
+      "sourceRect": [
+        479,
+        2,
+        336,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H03_L01_bag": {
+      "src": "assets/characters/H03_L01.png",
+      "sourceRect": [
+        847,
+        2,
+        357,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H03_L02_none": {
+      "src": "assets/characters/H03_L02.png",
+      "sourceRect": [
+        76,
+        4,
+        358,
+        1235
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H03_L02_necklace": {
+      "src": "assets/characters/H03_L02.png",
+      "sourceRect": [
+        468,
+        4,
+        368,
+        1235
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H03_L02_bag": {
+      "src": "assets/characters/H03_L02.png",
+      "sourceRect": [
+        852,
+        4,
+        394,
+        1235
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H03_L03_none": {
+      "src": "assets/characters/H03_L03.png",
+      "sourceRect": [
+        53,
+        0,
+        365,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H03_L03_necklace": {
+      "src": "assets/characters/H03_L03.png",
+      "sourceRect": [
+        467,
+        0,
+        369,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H03_L03_bag": {
+      "src": "assets/characters/H03_L03.png",
+      "sourceRect": [
+        861,
+        0,
+        393,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H03_L04_none": {
+      "src": "assets/characters/H03_L04.png",
+      "sourceRect": [
+        111,
+        2,
+        371,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H03_L04_necklace": {
+      "src": "assets/characters/H03_L04.png",
+      "sourceRect": [
+        485,
+        2,
+        373,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H03_L04_bag": {
+      "src": "assets/characters/H03_L04.png",
+      "sourceRect": [
+        868,
+        2,
+        386,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H03_L05_none": {
+      "src": "assets/characters/H03_L05.png",
+      "sourceRect": [
+        93,
+        0,
+        347,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H03_L05_necklace": {
+      "src": "assets/characters/H03_L05.png",
+      "sourceRect": [
+        482,
+        0,
+        354,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H03_L05_bag": {
+      "src": "assets/characters/H03_L05.png",
+      "sourceRect": [
+        859,
+        0,
+        388,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H03_L06_none": {
+      "src": "assets/characters/H03_L06.png",
+      "sourceRect": [
+        93,
+        0,
+        333,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H03_L06_necklace": {
+      "src": "assets/characters/H03_L06.png",
+      "sourceRect": [
+        485,
+        0,
+        345,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H03_L06_bag": {
+      "src": "assets/characters/H03_L06.png",
+      "sourceRect": [
+        855,
+        0,
+        366,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H03_L07_none": {
+      "src": "assets/characters/H03_L07.png",
+      "sourceRect": [
+        76,
+        1,
+        342,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H03_L07_necklace": {
+      "src": "assets/characters/H03_L07.png",
+      "sourceRect": [
+        485,
+        1,
+        350,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H03_L07_bag": {
+      "src": "assets/characters/H03_L07.png",
+      "sourceRect": [
+        867,
+        1,
+        378,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H03_L08_none": {
+      "src": "assets/characters/H03_L08.png",
+      "sourceRect": [
+        87,
+        2,
+        339,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H03_L08_necklace": {
+      "src": "assets/characters/H03_L08.png",
+      "sourceRect": [
+        472,
+        2,
+        355,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H03_L08_bag": {
+      "src": "assets/characters/H03_L08.png",
+      "sourceRect": [
+        853,
+        2,
+        370,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H03_L09_none": {
+      "src": "assets/characters/H03_L09.png",
+      "sourceRect": [
+        79,
+        0,
+        338,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H03_L09_necklace": {
+      "src": "assets/characters/H03_L09.png",
+      "sourceRect": [
+        477,
+        0,
+        339,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H03_L09_bag": {
+      "src": "assets/characters/H03_L09.png",
+      "sourceRect": [
+        838,
+        0,
+        369,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H03_L10_none": {
+      "src": "assets/characters/H03_L10.png",
+      "sourceRect": [
+        56,
+        5,
+        349,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H03_L10_necklace": {
+      "src": "assets/characters/H03_L10.png",
+      "sourceRect": [
+        472,
+        5,
+        349,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H03_L10_bag": {
+      "src": "assets/characters/H03_L10.png",
+      "sourceRect": [
+        874,
+        5,
+        367,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H03_L11_none": {
+      "src": "assets/characters/H03_L11.png",
+      "sourceRect": [
+        67,
+        0,
+        333,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H03_L11_necklace": {
+      "src": "assets/characters/H03_L11.png",
+      "sourceRect": [
+        479,
+        0,
+        333,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H03_L11_bag": {
+      "src": "assets/characters/H03_L11.png",
+      "sourceRect": [
+        861,
+        0,
+        353,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H03_L12_none": {
+      "src": "assets/characters/H03_L12.png",
+      "sourceRect": [
+        106,
+        3,
+        332,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H03_L12_necklace": {
+      "src": "assets/characters/H03_L12.png",
+      "sourceRect": [
+        474,
+        3,
+        342,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H03_L12_bag": {
+      "src": "assets/characters/H03_L12.png",
+      "sourceRect": [
+        842,
+        3,
+        357,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H03_L13_none": {
+      "src": "assets/characters/H03_L13.png",
+      "sourceRect": [
+        71,
+        0,
+        354,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H03_L13_necklace": {
+      "src": "assets/characters/H03_L13.png",
+      "sourceRect": [
+        464,
+        0,
+        365,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H03_L13_bag": {
+      "src": "assets/characters/H03_L13.png",
+      "sourceRect": [
+        868,
+        0,
+        372,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H03_L14_none": {
+      "src": "assets/characters/H03_L14.png",
+      "sourceRect": [
+        84,
+        6,
+        380,
+        1221
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H03_L14_necklace": {
+      "src": "assets/characters/H03_L14.png",
+      "sourceRect": [
+        475,
+        6,
+        381,
+        1221
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H03_L14_bag": {
+      "src": "assets/characters/H03_L14.png",
+      "sourceRect": [
+        862,
+        6,
+        392,
+        1221
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H03_L15_none": {
+      "src": "assets/characters/H03_L15.png",
+      "sourceRect": [
+        65,
+        0,
+        349,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H03_L15_necklace": {
+      "src": "assets/characters/H03_L15.png",
+      "sourceRect": [
+        462,
+        0,
+        349,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H03_L15_bag": {
+      "src": "assets/characters/H03_L15.png",
+      "sourceRect": [
+        855,
+        0,
+        365,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H03",
+      "look": "L15",
+      "extra": "bag"
+    },
+    "H04_L01_none": {
+      "src": "assets/characters/H04_L01.png",
+      "sourceRect": [
+        82,
+        8,
+        336,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H04_L01_necklace": {
+      "src": "assets/characters/H04_L01.png",
+      "sourceRect": [
+        482,
+        8,
+        336,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H04_L01_bag": {
+      "src": "assets/characters/H04_L01.png",
+      "sourceRect": [
+        864,
+        8,
+        357,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H04_L02_none": {
+      "src": "assets/characters/H04_L02.png",
+      "sourceRect": [
+        87,
+        3,
+        355,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H04_L02_necklace": {
+      "src": "assets/characters/H04_L02.png",
+      "sourceRect": [
+        468,
+        3,
+        367,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H04_L02_bag": {
+      "src": "assets/characters/H04_L02.png",
+      "sourceRect": [
+        845,
+        3,
+        393,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H04_L03_none": {
+      "src": "assets/characters/H04_L03.png",
+      "sourceRect": [
+        92,
+        15,
+        357,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H04_L03_necklace": {
+      "src": "assets/characters/H04_L03.png",
+      "sourceRect": [
+        488,
+        15,
+        357,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H04_L03_bag": {
+      "src": "assets/characters/H04_L03.png",
+      "sourceRect": [
+        878,
+        15,
+        376,
+        1225
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H04_L04_none": {
+      "src": "assets/characters/H04_L04.png",
+      "sourceRect": [
+        95,
+        6,
+        343,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H04_L04_necklace": {
+      "src": "assets/characters/H04_L04.png",
+      "sourceRect": [
+        488,
+        6,
+        348,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H04_L04_bag": {
+      "src": "assets/characters/H04_L04.png",
+      "sourceRect": [
+        877,
+        6,
+        377,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H04_L05_none": {
+      "src": "assets/characters/H04_L05.png",
+      "sourceRect": [
+        78,
+        0,
+        340,
+        1250
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H04_L05_necklace": {
+      "src": "assets/characters/H04_L05.png",
+      "sourceRect": [
+        485,
+        0,
+        350,
+        1250
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H04_L05_bag": {
+      "src": "assets/characters/H04_L05.png",
+      "sourceRect": [
+        863,
+        0,
+        381,
+        1250
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H04_L06_none": {
+      "src": "assets/characters/H04_L06.png",
+      "sourceRect": [
+        83,
+        10,
+        340,
+        1216
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H04_L06_necklace": {
+      "src": "assets/characters/H04_L06.png",
+      "sourceRect": [
+        473,
+        10,
+        353,
+        1216
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H04_L06_bag": {
+      "src": "assets/characters/H04_L06.png",
+      "sourceRect": [
+        851,
+        10,
+        368,
+        1216
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H04_L07_none": {
+      "src": "assets/characters/H04_L07.png",
+      "sourceRect": [
+        71,
+        0,
+        347,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H04_L07_necklace": {
+      "src": "assets/characters/H04_L07.png",
+      "sourceRect": [
+        475,
+        0,
+        355,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H04_L07_bag": {
+      "src": "assets/characters/H04_L07.png",
+      "sourceRect": [
+        874,
+        0,
+        380,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H04_L08_none": {
+      "src": "assets/characters/H04_L08.png",
+      "sourceRect": [
+        85,
+        4,
+        311,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H04_L08_necklace": {
+      "src": "assets/characters/H04_L08.png",
+      "sourceRect": [
+        492,
+        4,
+        310,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H04_L08_bag": {
+      "src": "assets/characters/H04_L08.png",
+      "sourceRect": [
+        871,
+        4,
+        342,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H04_L09_none": {
+      "src": "assets/characters/H04_L09.png",
+      "sourceRect": [
+        107,
+        0,
+        316,
+        1252
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H04_L09_necklace": {
+      "src": "assets/characters/H04_L09.png",
+      "sourceRect": [
+        475,
+        0,
+        328,
+        1252
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H04_L09_bag": {
+      "src": "assets/characters/H04_L09.png",
+      "sourceRect": [
+        836,
+        0,
+        359,
+        1252
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H04_L10_none": {
+      "src": "assets/characters/H04_L10.png",
+      "sourceRect": [
+        92,
+        3,
+        326,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H04_L10_necklace": {
+      "src": "assets/characters/H04_L10.png",
+      "sourceRect": [
+        484,
+        3,
+        335,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H04_L10_bag": {
+      "src": "assets/characters/H04_L10.png",
+      "sourceRect": [
+        853,
+        3,
+        358,
+        1244
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H04_L11_none": {
+      "src": "assets/characters/H04_L11.png",
+      "sourceRect": [
+        98,
+        0,
+        315,
+        1242
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H04_L11_necklace": {
+      "src": "assets/characters/H04_L11.png",
+      "sourceRect": [
+        494,
+        0,
+        314,
+        1242
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H04_L11_bag": {
+      "src": "assets/characters/H04_L11.png",
+      "sourceRect": [
+        849,
+        0,
+        353,
+        1242
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H04_L12_none": {
+      "src": "assets/characters/H04_L12.png",
+      "sourceRect": [
+        88,
+        11,
+        330,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H04_L12_necklace": {
+      "src": "assets/characters/H04_L12.png",
+      "sourceRect": [
+        480,
+        11,
+        332,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H04_L12_bag": {
+      "src": "assets/characters/H04_L12.png",
+      "sourceRect": [
+        852,
+        11,
+        352,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H04_L13_none": {
+      "src": "assets/characters/H04_L13.png",
+      "sourceRect": [
+        70,
+        19,
+        348,
+        1204
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H04_L13_necklace": {
+      "src": "assets/characters/H04_L13.png",
+      "sourceRect": [
+        462,
+        19,
+        357,
+        1204
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H04_L13_bag": {
+      "src": "assets/characters/H04_L13.png",
+      "sourceRect": [
+        856,
+        19,
+        373,
+        1204
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H04_L14_none": {
+      "src": "assets/characters/H04_L14.png",
+      "sourceRect": [
+        61,
+        18,
+        357,
+        1219
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H04_L14_necklace": {
+      "src": "assets/characters/H04_L14.png",
+      "sourceRect": [
+        466,
+        18,
+        368,
+        1219
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H04_L14_bag": {
+      "src": "assets/characters/H04_L14.png",
+      "sourceRect": [
+        855,
+        18,
+        391,
+        1219
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H04_L15_none": {
+      "src": "assets/characters/H04_L15.png",
+      "sourceRect": [
+        81,
+        3,
+        337,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H04_L15_necklace": {
+      "src": "assets/characters/H04_L15.png",
+      "sourceRect": [
+        473,
+        3,
+        337,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H04_L15_bag": {
+      "src": "assets/characters/H04_L15.png",
+      "sourceRect": [
+        853,
+        3,
+        362,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H04",
+      "look": "L15",
+      "extra": "bag"
+    },
+    "H05_L01_none": {
+      "src": "assets/characters/H05_L01.png",
+      "sourceRect": [
+        98,
+        0,
+        329,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H05_L01_necklace": {
+      "src": "assets/characters/H05_L01.png",
+      "sourceRect": [
+        488,
+        0,
+        341,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H05_L01_bag": {
+      "src": "assets/characters/H05_L01.png",
+      "sourceRect": [
+        863,
+        0,
+        377,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H05_L02_none": {
+      "src": "assets/characters/H05_L02.png",
+      "sourceRect": [
+        94,
+        0,
+        342,
+        1242
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H05_L02_necklace": {
+      "src": "assets/characters/H05_L02.png",
+      "sourceRect": [
+        487,
+        0,
+        349,
+        1242
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H05_L02_bag": {
+      "src": "assets/characters/H05_L02.png",
+      "sourceRect": [
+        871,
+        0,
+        359,
+        1242
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H05_L03_none": {
+      "src": "assets/characters/H05_L03.png",
+      "sourceRect": [
+        102,
+        0,
+        348,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H05_L03_necklace": {
+      "src": "assets/characters/H05_L03.png",
+      "sourceRect": [
+        494,
+        0,
+        348,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H05_L03_bag": {
+      "src": "assets/characters/H05_L03.png",
+      "sourceRect": [
+        858,
+        0,
+        396,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H05_L04_none": {
+      "src": "assets/characters/H05_L04.png",
+      "sourceRect": [
+        86,
+        77,
+        352,
+        1143
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H05_L04_necklace": {
+      "src": "assets/characters/H05_L04.png",
+      "sourceRect": [
+        488,
+        77,
+        352,
+        1143
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H05_L04_bag": {
+      "src": "assets/characters/H05_L04.png",
+      "sourceRect": [
+        862,
+        77,
+        390,
+        1143
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H05_L05_none": {
+      "src": "assets/characters/H05_L05.png",
+      "sourceRect": [
+        111,
+        0,
+        314,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H05_L05_necklace": {
+      "src": "assets/characters/H05_L05.png",
+      "sourceRect": [
+        492,
+        0,
+        326,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H05_L05_bag": {
+      "src": "assets/characters/H05_L05.png",
+      "sourceRect": [
+        849,
+        0,
+        356,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H05_L06_none": {
+      "src": "assets/characters/H05_L06.png",
+      "sourceRect": [
+        107,
+        0,
+        322,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H05_L06_necklace": {
+      "src": "assets/characters/H05_L06.png",
+      "sourceRect": [
+        488,
+        0,
+        335,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H05_L06_bag": {
+      "src": "assets/characters/H05_L06.png",
+      "sourceRect": [
+        850,
+        0,
+        366,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H05_L07_none": {
+      "src": "assets/characters/H05_L07.png",
+      "sourceRect": [
+        94,
+        0,
+        339,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H05_L07_necklace": {
+      "src": "assets/characters/H05_L07.png",
+      "sourceRect": [
+        485,
+        0,
+        351,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H05_L07_bag": {
+      "src": "assets/characters/H05_L07.png",
+      "sourceRect": [
+        874,
+        0,
+        380,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H05_L08_none": {
+      "src": "assets/characters/H05_L08.png",
+      "sourceRect": [
+        131,
+        0,
+        312,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H05_L08_necklace": {
+      "src": "assets/characters/H05_L08.png",
+      "sourceRect": [
+        495,
+        0,
+        326,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H05_L08_bag": {
+      "src": "assets/characters/H05_L08.png",
+      "sourceRect": [
+        868,
+        0,
+        342,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H05_L09_none": {
+      "src": "assets/characters/H05_L09.png",
+      "sourceRect": [
+        61,
+        3,
+        349,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H05_L09_necklace": {
+      "src": "assets/characters/H05_L09.png",
+      "sourceRect": [
+        457,
+        3,
+        347,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H05_L09_bag": {
+      "src": "assets/characters/H05_L09.png",
+      "sourceRect": [
+        864,
+        3,
+        390,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H05_L10_none": {
+      "src": "assets/characters/H05_L10.png",
+      "sourceRect": [
+        113,
+        0,
+        328,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H05_L10_necklace": {
+      "src": "assets/characters/H05_L10.png",
+      "sourceRect": [
+        483,
+        0,
+        341,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H05_L10_bag": {
+      "src": "assets/characters/H05_L10.png",
+      "sourceRect": [
+        866,
+        0,
+        370,
+        1254
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H05_L11_none": {
+      "src": "assets/characters/H05_L11.png",
+      "sourceRect": [
+        116,
+        2,
+        313,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H05_L11_necklace": {
+      "src": "assets/characters/H05_L11.png",
+      "sourceRect": [
+        506,
+        2,
+        325,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H05_L11_bag": {
+      "src": "assets/characters/H05_L11.png",
+      "sourceRect": [
+        881,
+        2,
+        361,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H05_L12_none": {
+      "src": "assets/characters/H05_L12.png",
+      "sourceRect": [
+        76,
+        7,
+        342,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H05_L12_necklace": {
+      "src": "assets/characters/H05_L12.png",
+      "sourceRect": [
+        467,
+        7,
+        347,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H05_L12_bag": {
+      "src": "assets/characters/H05_L12.png",
+      "sourceRect": [
+        856,
+        7,
+        352,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H05_L13_none": {
+      "src": "assets/characters/H05_L13.png",
+      "sourceRect": [
+        73,
+        0,
+        344,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H05_L13_necklace": {
+      "src": "assets/characters/H05_L13.png",
+      "sourceRect": [
+        465,
+        0,
+        344,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H05_L13_bag": {
+      "src": "assets/characters/H05_L13.png",
+      "sourceRect": [
+        857,
+        0,
+        364,
+        1231
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H05_L14_none": {
+      "src": "assets/characters/H05_L14.png",
+      "sourceRect": [
+        77,
+        0,
+        364,
+        1235
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H05_L14_necklace": {
+      "src": "assets/characters/H05_L14.png",
+      "sourceRect": [
+        476,
+        0,
+        361,
+        1235
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H05_L14_bag": {
+      "src": "assets/characters/H05_L14.png",
+      "sourceRect": [
+        859,
+        0,
+        391,
+        1235
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H05_L15_none": {
+      "src": "assets/characters/H05_L15.png",
+      "sourceRect": [
+        91,
+        0,
+        331,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H05_L15_necklace": {
+      "src": "assets/characters/H05_L15.png",
+      "sourceRect": [
+        490,
+        0,
+        346,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H05_L15_bag": {
+      "src": "assets/characters/H05_L15.png",
+      "sourceRect": [
+        898,
+        0,
+        356,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H05",
+      "look": "L15",
+      "extra": "bag"
+    },
+    "H06_L01_none": {
+      "src": "assets/characters/H06_L01.png",
+      "sourceRect": [
+        70,
+        3,
+        346,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H06_L01_necklace": {
+      "src": "assets/characters/H06_L01.png",
+      "sourceRect": [
+        463,
+        3,
+        345,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H06_L01_bag": {
+      "src": "assets/characters/H06_L01.png",
+      "sourceRect": [
+        859,
+        3,
+        372,
+        1251
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H06_L02_none": {
+      "src": "assets/characters/H06_L02.png",
+      "sourceRect": [
+        84,
+        8,
+        367,
+        1230
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H06_L02_necklace": {
+      "src": "assets/characters/H06_L02.png",
+      "sourceRect": [
+        469,
+        8,
+        372,
+        1230
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H06_L02_bag": {
+      "src": "assets/characters/H06_L02.png",
+      "sourceRect": [
+        860,
+        8,
+        394,
+        1230
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H06_L03_none": {
+      "src": "assets/characters/H06_L03.png",
+      "sourceRect": [
+        94,
+        89,
+        336,
+        1116
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H06_L03_necklace": {
+      "src": "assets/characters/H06_L03.png",
+      "sourceRect": [
+        485,
+        89,
+        349,
+        1116
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H06_L03_bag": {
+      "src": "assets/characters/H06_L03.png",
+      "sourceRect": [
+        857,
+        89,
+        382,
+        1116
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H06_L04_none": {
+      "src": "assets/characters/H06_L04.png",
+      "sourceRect": [
+        71,
+        4,
+        362,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H06_L04_necklace": {
+      "src": "assets/characters/H06_L04.png",
+      "sourceRect": [
+        464,
+        4,
+        372,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H06_L04_bag": {
+      "src": "assets/characters/H06_L04.png",
+      "sourceRect": [
+        870,
+        4,
+        384,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H06_L05_none": {
+      "src": "assets/characters/H06_L05.png",
+      "sourceRect": [
+        76,
+        0,
+        342,
+        1237
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H06_L05_necklace": {
+      "src": "assets/characters/H06_L05.png",
+      "sourceRect": [
+        468,
+        0,
+        349,
+        1237
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H06_L05_bag": {
+      "src": "assets/characters/H06_L05.png",
+      "sourceRect": [
+        839,
+        0,
+        391,
+        1237
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H06_L06_none": {
+      "src": "assets/characters/H06_L06.png",
+      "sourceRect": [
+        70,
+        0,
+        349,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H06_L06_necklace": {
+      "src": "assets/characters/H06_L06.png",
+      "sourceRect": [
+        470,
+        0,
+        360,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H06_L06_bag": {
+      "src": "assets/characters/H06_L06.png",
+      "sourceRect": [
+        851,
+        0,
+        387,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H06_L07_none": {
+      "src": "assets/characters/H06_L07.png",
+      "sourceRect": [
+        75,
+        0,
+        359,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H06_L07_necklace": {
+      "src": "assets/characters/H06_L07.png",
+      "sourceRect": [
+        469,
+        0,
+        367,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H06_L07_bag": {
+      "src": "assets/characters/H06_L07.png",
+      "sourceRect": [
+        864,
+        0,
+        390,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H06_L08_none": {
+      "src": "assets/characters/H06_L08.png",
+      "sourceRect": [
+        85,
+        2,
+        335,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H06_L08_necklace": {
+      "src": "assets/characters/H06_L08.png",
+      "sourceRect": [
+        473,
+        2,
+        349,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H06_L08_bag": {
+      "src": "assets/characters/H06_L08.png",
+      "sourceRect": [
+        845,
+        2,
+        384,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H06_L09_none": {
+      "src": "assets/characters/H06_L09.png",
+      "sourceRect": [
+        80,
+        3,
+        338,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H06_L09_necklace": {
+      "src": "assets/characters/H06_L09.png",
+      "sourceRect": [
+        482,
+        3,
+        340,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H06_L09_bag": {
+      "src": "assets/characters/H06_L09.png",
+      "sourceRect": [
+        860,
+        3,
+        371,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H06_L10_none": {
+      "src": "assets/characters/H06_L10.png",
+      "sourceRect": [
+        49,
+        0,
+        369,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H06_L10_necklace": {
+      "src": "assets/characters/H06_L10.png",
+      "sourceRect": [
+        441,
+        0,
+        373,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H06_L10_bag": {
+      "src": "assets/characters/H06_L10.png",
+      "sourceRect": [
+        836,
+        0,
+        418,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H06_L11_none": {
+      "src": "assets/characters/H06_L11.png",
+      "sourceRect": [
+        70,
+        4,
+        340,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H06_L11_necklace": {
+      "src": "assets/characters/H06_L11.png",
+      "sourceRect": [
+        463,
+        4,
+        339,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H06_L11_bag": {
+      "src": "assets/characters/H06_L11.png",
+      "sourceRect": [
+        851,
+        4,
+        365,
+        1245
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H06_L12_none": {
+      "src": "assets/characters/H06_L12.png",
+      "sourceRect": [
+        79,
+        0,
+        339,
+        1249
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H06_L12_necklace": {
+      "src": "assets/characters/H06_L12.png",
+      "sourceRect": [
+        471,
+        0,
+        347,
+        1249
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H06_L12_bag": {
+      "src": "assets/characters/H06_L12.png",
+      "sourceRect": [
+        837,
+        0,
+        376,
+        1249
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H06_L13_none": {
+      "src": "assets/characters/H06_L13.png",
+      "sourceRect": [
+        54,
+        5,
+        364,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H06_L13_necklace": {
+      "src": "assets/characters/H06_L13.png",
+      "sourceRect": [
+        444,
+        5,
+        374,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H06_L13_bag": {
+      "src": "assets/characters/H06_L13.png",
+      "sourceRect": [
+        849,
+        5,
+        381,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H06_L14_none": {
+      "src": "assets/characters/H06_L14.png",
+      "sourceRect": [
+        76,
+        0,
+        376,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H06_L14_necklace": {
+      "src": "assets/characters/H06_L14.png",
+      "sourceRect": [
+        469,
+        0,
+        376,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H06_L14_bag": {
+      "src": "assets/characters/H06_L14.png",
+      "sourceRect": [
+        862,
+        0,
+        392,
+        1248
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H06_L15_none": {
+      "src": "assets/characters/H06_L15.png",
+      "sourceRect": [
+        81,
+        4,
+        337,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H06_L15_necklace": {
+      "src": "assets/characters/H06_L15.png",
+      "sourceRect": [
+        472,
+        4,
+        349,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H06_L15_bag": {
+      "src": "assets/characters/H06_L15.png",
+      "sourceRect": [
+        860,
+        4,
+        372,
+        1239
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H06",
+      "look": "L15",
+      "extra": "bag"
+    },
+    "H07_L01_none": {
+      "src": "assets/characters/H07_L01.png",
+      "sourceRect": [
+        92,
+        2,
+        326,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L01",
+      "extra": "none"
+    },
+    "H07_L01_necklace": {
+      "src": "assets/characters/H07_L01.png",
+      "sourceRect": [
+        478,
+        2,
+        327,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L01",
+      "extra": "necklace"
+    },
+    "H07_L01_bag": {
+      "src": "assets/characters/H07_L01.png",
+      "sourceRect": [
+        849,
+        2,
+        380,
+        1238
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L01",
+      "extra": "bag"
+    },
+    "H07_L02_none": {
+      "src": "assets/characters/H07_L02.png",
+      "sourceRect": [
+        63,
+        0,
+        355,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L02",
+      "extra": "none"
+    },
+    "H07_L02_necklace": {
+      "src": "assets/characters/H07_L02.png",
+      "sourceRect": [
+        473,
+        0,
+        359,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L02",
+      "extra": "necklace"
+    },
+    "H07_L02_bag": {
+      "src": "assets/characters/H07_L02.png",
+      "sourceRect": [
+        856,
+        0,
+        390,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L02",
+      "extra": "bag"
+    },
+    "H07_L03_none": {
+      "src": "assets/characters/H07_L03.png",
+      "sourceRect": [
+        74,
+        14,
+        352,
+        1222
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L03",
+      "extra": "none"
+    },
+    "H07_L03_necklace": {
+      "src": "assets/characters/H07_L03.png",
+      "sourceRect": [
+        467,
+        14,
+        364,
+        1222
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L03",
+      "extra": "necklace"
+    },
+    "H07_L03_bag": {
+      "src": "assets/characters/H07_L03.png",
+      "sourceRect": [
+        841,
+        14,
+        403,
+        1222
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L03",
+      "extra": "bag"
+    },
+    "H07_L04_none": {
+      "src": "assets/characters/H07_L04.png",
+      "sourceRect": [
+        67,
+        8,
+        370,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L04",
+      "extra": "none"
+    },
+    "H07_L04_necklace": {
+      "src": "assets/characters/H07_L04.png",
+      "sourceRect": [
+        465,
+        8,
+        371,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L04",
+      "extra": "necklace"
+    },
+    "H07_L04_bag": {
+      "src": "assets/characters/H07_L04.png",
+      "sourceRect": [
+        859,
+        8,
+        391,
+        1236
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L04",
+      "extra": "bag"
+    },
+    "H07_L05_none": {
+      "src": "assets/characters/H07_L05.png",
+      "sourceRect": [
+        93,
+        0,
+        354,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L05",
+      "extra": "none"
+    },
+    "H07_L05_necklace": {
+      "src": "assets/characters/H07_L05.png",
+      "sourceRect": [
+        471,
+        0,
+        365,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L05",
+      "extra": "necklace"
+    },
+    "H07_L05_bag": {
+      "src": "assets/characters/H07_L05.png",
+      "sourceRect": [
+        843,
+        0,
+        403,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L05",
+      "extra": "bag"
+    },
+    "H07_L06_none": {
+      "src": "assets/characters/H07_L06.png",
+      "sourceRect": [
+        101,
+        13,
+        344,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L06",
+      "extra": "none"
+    },
+    "H07_L06_necklace": {
+      "src": "assets/characters/H07_L06.png",
+      "sourceRect": [
+        472,
+        13,
+        356,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L06",
+      "extra": "necklace"
+    },
+    "H07_L06_bag": {
+      "src": "assets/characters/H07_L06.png",
+      "sourceRect": [
+        836,
+        13,
+        382,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L06",
+      "extra": "bag"
+    },
+    "H07_L07_none": {
+      "src": "assets/characters/H07_L07.png",
+      "sourceRect": [
+        81,
+        3,
+        337,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L07",
+      "extra": "none"
+    },
+    "H07_L07_necklace": {
+      "src": "assets/characters/H07_L07.png",
+      "sourceRect": [
+        478,
+        3,
+        350,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L07",
+      "extra": "necklace"
+    },
+    "H07_L07_bag": {
+      "src": "assets/characters/H07_L07.png",
+      "sourceRect": [
+        866,
+        3,
+        372,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L07",
+      "extra": "bag"
+    },
+    "H07_L08_none": {
+      "src": "assets/characters/H07_L08.png",
+      "sourceRect": [
+        81,
+        3,
+        336,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L08",
+      "extra": "none"
+    },
+    "H07_L08_necklace": {
+      "src": "assets/characters/H07_L08.png",
+      "sourceRect": [
+        468,
+        3,
+        340,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L08",
+      "extra": "necklace"
+    },
+    "H07_L08_bag": {
+      "src": "assets/characters/H07_L08.png",
+      "sourceRect": [
+        877,
+        3,
+        343,
+        1241
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L08",
+      "extra": "bag"
+    },
+    "H07_L09_none": {
+      "src": "assets/characters/H07_L09.png",
+      "sourceRect": [
+        75,
+        11,
+        335,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L09",
+      "extra": "none"
+    },
+    "H07_L09_necklace": {
+      "src": "assets/characters/H07_L09.png",
+      "sourceRect": [
+        483,
+        11,
+        332,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L09",
+      "extra": "necklace"
+    },
+    "H07_L09_bag": {
+      "src": "assets/characters/H07_L09.png",
+      "sourceRect": [
+        865,
+        11,
+        369,
+        1234
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L09",
+      "extra": "bag"
+    },
+    "H07_L10_none": {
+      "src": "assets/characters/H07_L10.png",
+      "sourceRect": [
+        70,
+        11,
+        337,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L10",
+      "extra": "none"
+    },
+    "H07_L10_necklace": {
+      "src": "assets/characters/H07_L10.png",
+      "sourceRect": [
+        462,
+        11,
+        339,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L10",
+      "extra": "necklace"
+    },
+    "H07_L10_bag": {
+      "src": "assets/characters/H07_L10.png",
+      "sourceRect": [
+        839,
+        11,
+        365,
+        1240
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L10",
+      "extra": "bag"
+    },
+    "H07_L11_none": {
+      "src": "assets/characters/H07_L11.png",
+      "sourceRect": [
+        108,
+        7,
+        321,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L11",
+      "extra": "none"
+    },
+    "H07_L11_necklace": {
+      "src": "assets/characters/H07_L11.png",
+      "sourceRect": [
+        483,
+        7,
+        333,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L11",
+      "extra": "necklace"
+    },
+    "H07_L11_bag": {
+      "src": "assets/characters/H07_L11.png",
+      "sourceRect": [
+        836,
+        7,
+        384,
+        1243
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L11",
+      "extra": "bag"
+    },
+    "H07_L12_none": {
+      "src": "assets/characters/H07_L12.png",
+      "sourceRect": [
+        95,
+        1,
+        328,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L12",
+      "extra": "none"
+    },
+    "H07_L12_necklace": {
+      "src": "assets/characters/H07_L12.png",
+      "sourceRect": [
+        472,
+        1,
+        345,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L12",
+      "extra": "necklace"
+    },
+    "H07_L12_bag": {
+      "src": "assets/characters/H07_L12.png",
+      "sourceRect": [
+        840,
+        1,
+        389,
+        1246
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L12",
+      "extra": "bag"
+    },
+    "H07_L13_none": {
+      "src": "assets/characters/H07_L13.png",
+      "sourceRect": [
+        58,
+        12,
+        357,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L13",
+      "extra": "none"
+    },
+    "H07_L13_necklace": {
+      "src": "assets/characters/H07_L13.png",
+      "sourceRect": [
+        450,
+        12,
+        357,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L13",
+      "extra": "necklace"
+    },
+    "H07_L13_bag": {
+      "src": "assets/characters/H07_L13.png",
+      "sourceRect": [
+        857,
+        12,
+        397,
+        1226
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L13",
+      "extra": "bag"
+    },
+    "H07_L14_none": {
+      "src": "assets/characters/H07_L14.png",
+      "sourceRect": [
+        52,
+        0,
+        372,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L14",
+      "extra": "none"
+    },
+    "H07_L14_necklace": {
+      "src": "assets/characters/H07_L14.png",
+      "sourceRect": [
+        458,
+        0,
+        378,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L14",
+      "extra": "necklace"
+    },
+    "H07_L14_bag": {
+      "src": "assets/characters/H07_L14.png",
+      "sourceRect": [
+        864,
+        0,
+        390,
+        1233
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L14",
+      "extra": "bag"
+    },
+    "H07_L15_none": {
+      "src": "assets/characters/H07_L15.png",
+      "sourceRect": [
+        68,
+        11,
+        344,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L15",
+      "extra": "none"
+    },
+    "H07_L15_necklace": {
+      "src": "assets/characters/H07_L15.png",
+      "sourceRect": [
+        464,
+        11,
+        343,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L15",
+      "extra": "necklace"
+    },
+    "H07_L15_bag": {
+      "src": "assets/characters/H07_L15.png",
+      "sourceRect": [
+        855,
+        11,
+        372,
+        1223
+      ],
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "head": "H07",
+      "look": "L15",
+      "extra": "bag"
+    }
+  },
+  "extras": [
+    "none",
+    "necklace",
+    "bag"
+  ]
+}

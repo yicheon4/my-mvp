@@ -1,0 +1,138 @@
+{
+  "version": "concept-v3",
+  "status": "concept_art_only",
+  "spaces": [
+    {
+      "id": "W01",
+      "name": "쉐어하우스 개인 방",
+      "features": "침대, 책상, 옷장, 라벤더 러그",
+      "productionAsset": null,
+      "collisionData": null,
+      "referencePanel": {
+        "row": 0,
+        "column": 0
+      },
+      "variants": {
+        "day": {
+          "referenceSheet": "references/06_maps_day.png",
+          "productionAsset": null
+        },
+        "night": {
+          "referenceSheet": "references/07_maps_night.png",
+          "productionAsset": null
+        }
+      }
+    },
+    {
+      "id": "W02",
+      "name": "쉐어하우스 주방",
+      "features": "크림 캐비닛, 우드 아일랜드, 공용 냉장고",
+      "productionAsset": null,
+      "collisionData": null,
+      "referencePanel": {
+        "row": 0,
+        "column": 1
+      },
+      "variants": {
+        "day": {
+          "referenceSheet": "references/06_maps_day.png",
+          "productionAsset": null
+        },
+        "night": {
+          "referenceSheet": "references/07_maps_night.png",
+          "productionAsset": null
+        }
+      }
+    },
+    {
+      "id": "W03",
+      "name": "쉐어하우스 거실",
+      "features": "소파, 책장, 보드게임, 공동 테이블",
+      "productionAsset": null,
+      "collisionData": null,
+      "referencePanel": {
+        "row": 0,
+        "column": 2
+      },
+      "variants": {
+        "day": {
+          "referenceSheet": "references/06_maps_day.png",
+          "productionAsset": null
+        },
+        "night": {
+          "referenceSheet": "references/07_maps_night.png",
+          "productionAsset": null
+        }
+      }
+    },
+    {
+      "id": "W04",
+      "name": "학교",
+      "features": "캠퍼스 광장, 게시판, 벤치, 카페 입구",
+      "productionAsset": null,
+      "collisionData": null,
+      "referencePanel": {
+        "row": 1,
+        "column": 0
+      },
+      "variants": {
+        "day": {
+          "referenceSheet": "references/06_maps_day.png",
+          "productionAsset": null
+        },
+        "night": {
+          "referenceSheet": "references/07_maps_night.png",
+          "productionAsset": null
+        }
+      }
+    },
+    {
+      "id": "W05",
+      "name": "공원 산책길",
+      "features": "굽은 보행로, 연못, 꽃, 벤치",
+      "productionAsset": null,
+      "collisionData": null,
+      "referencePanel": {
+        "row": 1,
+        "column": 1
+      },
+      "variants": {
+        "day": {
+          "referenceSheet": "references/06_maps_day.png",
+          "productionAsset": null
+        },
+        "night": {
+          "referenceSheet": "references/07_maps_night.png",
+          "productionAsset": null
+        }
+      }
+    },
+    {
+      "id": "W06",
+      "name": "바",
+      "features": "앰버 조명, 우드 카운터, 플럼색 부스",
+      "productionAsset": null,
+      "collisionData": null,
+      "referencePanel": {
+        "row": 1,
+        "column": 2
+      },
+      "variants": {
+        "day": {
+          "referenceSheet": "references/06_maps_day.png",
+          "productionAsset": null
+        },
+        "night": {
+          "referenceSheet": "references/07_maps_night.png",
+          "productionAsset": null
+        }
+      }
+    }
+  ],
+  "timeOfDay": [
+    "day",
+    "night"
+  ],
+  "defaultTimeOfDay": "day",
+  "switchPolicy": "manual; persist selection; preserve avatar position and shared collision geometry"
+}
