@@ -40,6 +40,9 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
   const [door, setDoor] = useState<string | null>(null);
   const [fading, setFading] = useState(false);
   const [loading, setLoading] = useState(true);
+  // The mini mismatch notice starts open, then folds into a small chip so it does not cover exits at the top.
+  const [noticeOpen, setNoticeOpen] = useState(true);
+  useEffect(() => { const t = setTimeout(() => setNoticeOpen(false), 5000); return () => clearTimeout(t); }, []);
   const keys = useRef(new Set<string>());
   const stick = useRef({ x: 0, y: 0, active: false, id: -1 });
   const [knob, setKnob] = useState({ x: 0, y: 0 });
@@ -166,7 +169,9 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
       <div className="world-place"><span className="eyebrow">PERSONA WORLD</span><strong>{map.name}</strong></div>
       <button className="world-time" onClick={toggleTime} aria-label={time === 'day' ? '밤으로 바꾸기' : '낮으로 바꾸기'}>{time === 'day' ? <Sun size={17} /> : <MoonStars size={17} />}<span>{time === 'day' ? '낮' : '밤'}</span></button>
     </header>
-    <p className="world-notice"><Info size={12} />맵의 미니 캐릭터는 아직 기본 모습(흰 티·청바지) 하나뿐이라 「{lookLabel}」 모습과 다르게 보여요. 맞춤 미니는 준비 중이에요.</p>
+    {noticeOpen
+      ? <button className="world-notice" onClick={() => setNoticeOpen(false)} aria-label="안내 접기"><Info size={12} /><span>맵의 미니 캐릭터는 아직 기본 모습(흰 티·청바지) 하나뿐이라 「{lookLabel}」 모습과 다르게 보여요. 맞춤 미니는 준비 중이에요.</span></button>
+      : <button className="world-notice-chip" onClick={() => setNoticeOpen(true)} aria-label="미니 캐릭터 안내 펼치기"><Info size={12} />미니는 기본 모습</button>}
     {loading && <p className="world-loading">맵을 불러오는 중…</p>}
     {door && !person && <p className="world-door"><DoorOpen size={14} />{door}(으)로 이어지는 길</p>}
     <div className="world-stick" onPointerDown={e => { stick.current = { x: 0, y: 0, active: true, id: e.pointerId }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* capture is optional */ } stickMove(e); }} onPointerMove={stickMove} onPointerUp={stickEnd} onPointerCancel={stickEnd} onLostPointerCapture={stickEnd} data-scroll-drag="ignore" aria-label="이동 조이스틱">
@@ -239,6 +244,24 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
       ctx.beginPath(); ctx.roundRect(cx - tw / 2, cy - r - 44, tw, 34, 17); ctx.fill();
       ctx.fillStyle = '#fff'; ctx.fillText(label, cx, cy - r - 19);
     }
+    // Off-screen exits: pin a small direction tag to the screen edge so every connection stays findable.
+    ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+    ctx.font = '600 11px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
+    for (const p of map.portals) {
+      const [rx, ry, rw, rh] = p.rect;
+      // Same anchor as the in-world label (clamped near map edges), so a partly visible label is not doubled.
+      const wy = Math.min(Math.max(ry + rh / 2, 30), WORLD_H - 30);
+      const px = (rx + rw / 2 - camX) * scale, py = (wy - camY) * scale;
+      const top = 138, bottom = view.h - 26, left = 8, right = view.w - 8;
+      if (px >= 0 && px <= view.w && py >= top - 30 && py <= view.h) continue; // in-world label is visible
+      const dx = rx + rw / 2 - s.x, dy = ry + rh / 2 - s.y;
+      const arrow = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? '→' : '←') : (dy > 0 ? '↓' : '↑');
+      const label = `${arrow} ${p.label}`, tw = ctx.measureText(label).width + 16;
+      const x = Math.min(Math.max(px, left + tw / 2), right - tw / 2), y = Math.min(Math.max(py, top + 11), bottom - 11);
+      ctx.fillStyle = '#3b2d4bd9'; ctx.beginPath(); ctx.roundRect(x - tw / 2, y - 11, tw, 22, 11); ctx.fill();
+      ctx.fillStyle = '#fff6c8'; ctx.fillText(label, x, y + 4);
+    }
+    ctx.setTransform(k, 0, 0, k, -camX * k, -camY * k);
     if (debug) {
       const poly = (pts: [number, number][], c: string) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.strokeStyle = c; ctx.lineWidth = 3; ctx.stroke(); };
       map.walk.forEach(p => poly(p, '#00e676')); map.blocks.forEach(p => poly(p, '#ff1744')); map.occluders.forEach(o => poly(o.poly, '#2979ff'));

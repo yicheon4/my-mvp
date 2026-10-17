@@ -80,3 +80,5 @@
 .locked-rail{margin-top:6px}
 .locked-chip{flex:none;display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:14px;background:#2f2538;border:1px dashed #6d5a72!important;color:#a996ab!important;font-size:10.5px!important;white-space:nowrap;cursor:not-allowed}
 .text-link{text-decoration:underline;color:#f6d49b!important;font-size:inherit!important}
+button.world-notice{text-align:left;border:0;width:auto}
+.world-notice-chip{position:absolute;top:112px;left:16px;display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:12px;background:#fff8efd9;color:#4b3a59!important;font-size:10px!important;z-index:2;box-shadow:0 2px 8px #2a1a3a22}
