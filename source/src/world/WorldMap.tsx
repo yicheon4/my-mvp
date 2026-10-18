@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Sun, MoonStars, ChatCircleDots, DoorOpen, Info } from '@phosphor-icons/react';
-import { worldMaps, mapArt, defaultMini, WORLD_W, WORLD_H } from './world-data';
+import { worldMaps, mapArt, WORLD_W, WORLD_H } from './world-data';
 import type { Direction, MapId, Npc, WorldMapDef } from './world-data';
 import { canOccupy, portalAt, arrival, nearestNpc, miniHeight } from './world-engine';
 import type { WorldState } from './world-engine';
-import { stepPosition, frameAt } from './avatar-runtime';
+import { stepPosition } from './avatar-runtime';
+import { loadMiniManifest, loadMiniSheet, frameFor, miniPlacement, neighborLooks } from './mini-v10';
+import type { MiniManifest, MiniDirection } from './mini-v10';
 import { withAnd } from '../story-data';
 
 type Person = { name: string; art: string; locked: boolean };
 type Props = {
   initial: WorldState;
-  lookLabel: string;
+  look: string; // v9 selection.look (L01–L15); the map mini shows this outfit only
+  lookName: string;
   people: Person[];
   onSave: (state: WorldState) => void;
   onTalk: (person: number, state: WorldState) => void;
@@ -31,7 +34,7 @@ function image(src: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 const typing = () => { const el = document.activeElement as HTMLElement | null; return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); };
 
-export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, onHome }: Props) {
+export default function WorldMap({ initial, look, lookName, people, onSave, onTalk, onHome }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<WorldState>(initial);
@@ -41,7 +44,23 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
   const [door, setDoor] = useState<string | null>(null);
   const [fading, setFading] = useState(false);
   const [loading, setLoading] = useState(true);
-  // The mini mismatch notice starts open, then folds into a small chip so it does not cover exits at the top.
+  // v10 mini: load the selected outfit sheet first, then warm its neighbors. Never fall back to another outfit.
+  const miniManifest = useRef<MiniManifest | null>(null);
+  const miniSheet = useRef<HTMLImageElement | null>(null);
+  const lookRef = useRef(look);
+  const [miniStatus, setMiniStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [miniRetry, setMiniRetry] = useState(0);
+  useEffect(() => {
+    lookRef.current = look; miniSheet.current = null; setMiniStatus('loading');
+    let alive = true, warm: ReturnType<typeof setTimeout> | undefined;
+    loadMiniManifest().then(m => { miniManifest.current = m; return loadMiniSheet(m, look).then(img => {
+      if (!alive) return;
+      miniSheet.current = img; setMiniStatus('ready');
+      warm = setTimeout(() => neighborLooks(look, m).forEach(id => loadMiniSheet(m, id).catch(() => {})), 1500);
+    }); }).catch(() => { if (alive) setMiniStatus('error'); });
+    return () => { alive = false; if (warm) clearTimeout(warm); };
+  }, [look, miniRetry]);
+  // The map-mini notice starts open, then folds into a small chip so it does not cover exits at the top.
   const [noticeOpen, setNoticeOpen] = useState(true);
   useEffect(() => { const t = setTimeout(() => setNoticeOpen(false), 5000); return () => clearTimeout(t); }, []);
   const keys = useRef(new Set<string>());
@@ -76,7 +95,6 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
     const ctx = canvas.getContext('2d')!;
     let raf = 0, last = performance.now(), walkClock = 0, lastSave = 0;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mini = image(defaultMini.art);
     let view = { w: 1, h: 1, dpr: 1 };
     const resize = () => {
       const r = { width: wrap.clientWidth, height: wrap.clientHeight }; // layout px; the phone frame is CSS-scaled
@@ -109,7 +127,7 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
       const npc = nearestNpc(map, cur.x, cur.y);
       if (npc !== nearRef.current) { nearRef.current = npc; setNear(npc); }
       if (now - lastSave > 1500) { lastSave = now; cb.current.onSave(cur); }
-      draw(ctx, view, map, bg, mini, cur, frameAt(walkClock, moving.current, reduced));
+      draw(ctx, view, map, bg, cur, walkClock, reduced);
       setLoading(!ready(bg));
       raf = requestAnimationFrame(frame);
     };
@@ -171,8 +189,10 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
       <button className="world-time" onClick={toggleTime} aria-label={time === 'day' ? '밤으로 바꾸기' : '낮으로 바꾸기'}>{time === 'day' ? <Sun size={17} /> : <MoonStars size={17} />}<span>{time === 'day' ? '낮' : '밤'}</span></button>
     </header>
     {noticeOpen
-      ? <button className="world-notice" onClick={() => setNoticeOpen(false)} aria-label="안내 접기"><Info size={12} /><span>맵의 미니 캐릭터는 아직 기본 모습(흰 티·청바지) 하나뿐이라 「{lookLabel}」 모습과 다르게 보여요. 맞춤 미니는 준비 중이에요.</span></button>
-      : <button className="world-notice-chip" onClick={() => setNoticeOpen(true)} aria-label="미니 캐릭터 안내 펼치기"><Info size={12} />미니는 기본 모습</button>}
+      ? <button className="world-notice" onClick={() => setNoticeOpen(false)} aria-label="안내 접기"><Info size={12} /><span>맵에서는 모두 같은 얼굴·헤어의 미니로 보여요. 착장 「{lookName}」만 반영되고, 가방·목걸이는 맵에서 생략돼요.</span></button>
+      : <button className="world-notice-chip" onClick={() => setNoticeOpen(true)} aria-label="맵 미니 안내 펼치기"><Info size={12} />맵 미니 안내</button>}
+    {miniStatus === 'loading' && !loading && <p className="world-loading">미니 캐릭터를 불러오는 중…</p>}
+    {miniStatus === 'error' && <div className="world-mini-error" role="alert"><p>미니 캐릭터 이미지를 불러오지 못했어요.</p><button onClick={() => setMiniRetry(r => r + 1)}>다시 시도</button></div>}
     {loading && <p className="world-loading">맵을 불러오는 중…</p>}
     {door && !person && <p className="world-door"><DoorOpen size={14} />{door}(으)로 이어지는 길</p>}
     <div className="world-stick" onPointerDown={e => { stick.current = { x: 0, y: 0, active: true, id: e.pointerId }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* capture is optional */ } stickMove(e); }} onPointerMove={stickMove} onPointerUp={stickEnd} onPointerCancel={stickEnd} onLostPointerCapture={stickEnd} data-scroll-drag="ignore" aria-label="이동 조이스틱">
@@ -182,7 +202,7 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
     {debug && <p className="world-debug">{mapId} · {Math.round(stateRef.current.x)}, {Math.round(stateRef.current.y)}</p>}
   </section>;
 
-  function draw(ctx: CanvasRenderingContext2D, view: { w: number; h: number; dpr: number }, map: WorldMapDef, bg: HTMLImageElement, mini: HTMLImageElement, s: WorldState, f: number) {
+  function draw(ctx: CanvasRenderingContext2D, view: { w: number; h: number; dpr: number }, map: WorldMapDef, bg: HTMLImageElement, s: WorldState, walkMs: number, reduced: boolean) {
     const scale = Math.max(view.h / WORLD_H, view.w / WORLD_W);
     const vw = view.w / scale, vh = view.h / scale;
     const camX = Math.min(Math.max(s.x - vw / 2, 0), WORLD_W - vw);
@@ -215,11 +235,12 @@ export default function WorldMap({ initial, lookLabel, people, onSave, onTalk, o
     // player
     const h = miniHeight(map, s.y);
     ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(s.x, s.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill();
-    if (ready(mini)) {
-      const row = defaultMini.directions.indexOf(s.direction as Direction);
-      const [sx, sy, sw, sh] = defaultMini.frames[row * 4 + f];
-      const w = h * sw / sh;
-      ctx.drawImage(mini, sx, sy, sw, sh, s.x - w / 2, s.y - h, w, h);
+    const m = miniManifest.current, sheet = miniSheet.current;
+    if (m && sheet) {
+      // One complete frame at its manifest rect, feet on (x, y), uniform scale; idleFrame when not actually moving.
+      const { entry, rect } = frameFor(m, lookRef.current, s.direction as MiniDirection, moving.current, walkMs, reduced);
+      const { dx, dy, dw, dh } = miniPlacement(entry, rect, s.x, s.y, h);
+      ctx.drawImage(sheet, rect[0], rect[1], rect[2], rect[3], dx, dy, dw, dh);
     }
     // foreground parts of the art that stand in front of the player
     for (const o of map.occluders) {

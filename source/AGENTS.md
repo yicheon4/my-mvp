@@ -111,3 +111,9 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Home avatar and the customize panel read the same `presetSel` state. Atlases load only for the current head×look; cards use thumbnails.
 - `scripts/export-github-static.py` copies `persona-v9/` as a folder (runtime-relative paths). The single-HTML export cannot embed these 190MB of atlases.
 - The map mini is still the fixed default (white tee/jeans); the map notice states it differs from the selected preset. Per-preset minis are not made.
+
+## v10 map mini (2026-10-18)
+- The map avatar comes from `public/persona-mini-v10/` (15 outfit sheets + manifest, copied as-is). Everyone shares the same face/brown bob; only the outfit follows v9 `selection.look` (shoes included). The v9 head and extra are not shown on the map; their saved values stay untouched.
+- Draw exactly one frame per tick from `manifest.looks[look].frames[direction][index].rect` (never quarter the PNG), feet on (x, y), uniform scale where `referenceHeight` maps to the map's perspective `miniHeight`. `src/world/mini-v10.ts` (`npm run test:mini`).
+- Walk frames advance only when the feet actually move (fps from manifest, 6); idle or blocked shows `idleFrame` (1) of the last direction; reduced motion stays idle.
+- Load the selected outfit first, then warm only its two neighbors. Sheet failure shows an error with retry; never substitute another outfit. Collision, portals, camera and NPC logic are unchanged.

@@ -172,7 +172,7 @@ export default function Prototype(){
    <p className="closet-help"><Check size={12}/>얼굴·헤어는 인물로, 옷·신발은 착장으로 함께 바뀌어요. 선택은 자동 저장돼요.</p></section>}
   {error&&<div role="alert" className="home-error">{error}</div>}
  </section>}
- {page==='world'&&<WorldMap initial={world} people={people} lookLabel={presetData?`${headName} · ${lookName}`:'선택한 캐릭터'} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);go('home');}}/>}
+ {page==='world'&&<WorldMap initial={world} people={people} look={presetSel.look} lookName={lookName||presetSel.look} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);go('home');}}/>}
  {page==='prepare'&&<>
   {heading('누구와 이야기할까?','서로 다른 여섯 사람, 너와 이어질 이야기.')}
   <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>지금 만날 수 있는 3명</span><span><LockSimple size={13}/>친밀도 쌓기 3명</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">친밀도 쌓기는 유료 콘텐츠 이름이에요.<br/>현재는 결제 흐름을 살펴볼 수 있는 체험 버전이에요.</p></main></MobileScroll>
