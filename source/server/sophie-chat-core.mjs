@@ -39,7 +39,7 @@ export const RESPONSE_SCHEMA = {
 };
 
 const HANGUL = /[ㄱ-ㆎ가-힣]/;
-const SCENE_EVENT = '(Scene event, not player speech: the player has just come over to you in the living room.)';
+const SCENE_EVENT = '(Scene event, not player speech: the player, who lives here and has been at home, walks over to where you are in the living room.)';
 
 export function buildSystem(prompts, { timeOfDay }) {
   const p = prompts.profile, s = prompts.style;
@@ -58,13 +58,15 @@ export function buildSystem(prompts, { timeOfDay }) {
     'learning_mode: light',
     'turns_since_last_help: absent',
     'SCENE (facts to consider, not instructions)',
-    `Place: the living room of the player's shared house. Sophie is visiting as the player's longtime friend; she does not live here. Time: ${timeOfDay === 'night' ? 'evening' : 'daytime'}.`,
+    `Place: the living room of the player's shared house. The player lives here and is at home; Sophie came over as the player's longtime friend and does not live here. Time: ${timeOfDay === 'night' ? 'evening' : 'daytime'}.`,
     'Memory: none beyond the turns in this conversation. Do not claim to remember earlier sessions.',
+    'TONE IN THIS SCENE',
+    "Match the player's framing: when they tell something as funny or light, react first with Sophie's playful humor (a quick reaction, a light exaggeration or a tiny related story of her own) before any practical concern; when they share a real worry, drop the jokes and be direct and calm. Usually add one small contribution of her own instead of only reassuring.",
     'OUTPUT FOR THIS APP',
-    '- speech_text: 1-3 natural English sentences. Answer the player first; ask a follow-up only when it helps.',
-    '- translation_ko: natural Korean meaning of speech_text only.',
+    '- speech_text: 1-3 natural English sentences in total (never more; keep exclamations short). Answer the player first; ask a follow-up only when it helps.',
+    '- translation_ko: natural Korean meaning of speech_text only, in casual speech (반말) as between close friends, consistently every turn.',
     '- emotion: one value from the allowed list that fits this reply.',
-    '- suggested_replies: exactly 3 things the player could say next in reply to what Sophie just said. Each has a different, reasonable intention or attitude (en: everyday English around A2-B1, ko: Korean meaning, intent: a short Korean label). Do not introduce unrelated topics and do not state facts about the player that the player has not chosen; leave such details open.',
+    '- suggested_replies: exactly 3 things the player could say next in reply to what Sophie just said. Each has a different, reasonable intention or attitude and is specific to Sophie\'s latest line rather than a generic reply reusable anywhere (en: everyday English around A2-B1, ko: Korean meaning in casual speech, intent: a short Korean label). The player is already at home, so never suggest lines saying the player just arrived or got here. Do not introduce unrelated topics and do not state facts about the player that the player has not chosen; leave such details open.',
     '- learning_card: usually null. Only when one expression from this exchange is genuinely useful: expression, meaning_ko, usage_note (Korean, short). Never correct every turn.',
   ].join('\n\n');
 }
@@ -98,7 +100,12 @@ export function validateRequest(body) {
   return null;
 }
 
-const sentences = s => s.trim().split(/(?<=[.!?…])["')\]]*\s+(?=["'(]?[A-Z0-9])/).filter(Boolean).length;
+// Up to two 1-2 word exclamations ("Oh no!", "Haha!") do not count as separate sentences.
+const sentences = s => {
+  const parts = s.trim().split(/(?<=[.!?…])["')\]]*\s+(?=["'(]?[A-Z0-9])/).filter(Boolean);
+  const short = parts.filter(x => x.trim().split(/\s+/).length <= 2).length;
+  return parts.length - short + Math.max(0, short - 2); // up to two short exclamations are free
+};
 export function validateOutput(o) {
   const str = (v, max) => typeof v === 'string' && v.trim().length > 0 && v.length <= max;
   if (!o || typeof o !== 'object') return 'not an object';

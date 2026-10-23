@@ -101,7 +101,9 @@ test('history is trimmed to budget and starts on a player turn', () => {
 
 test('output validation: 1-3 sentences, Korean only in Korean fields, exactly 3 distinct suggestions', () => {
   assert.equal(validateOutput(good), null);
-  assert.ok(validateOutput({ ...good, speech_text: 'One. Two. Three. Four.' }));
+  assert.ok(validateOutput({ ...good, speech_text: 'That is wild. I would laugh. Then I would cry. Then I would go home.' }), 'four full sentences');
+  assert.equal(validateOutput({ ...good, speech_text: 'Oh no! Haha! That is a classic work moment. Did you at least get a free coffee?' }), null, 'short exclamations are free');
+  assert.ok(validateOutput({ ...good, speech_text: 'Oh! No! Wow! Haha! Okay. Sure.' }), 'too many exclamations');
   assert.ok(validateOutput({ ...good, suggested_replies: [good.suggested_replies[0], good.suggested_replies[0], good.suggested_replies[1]] }));
   assert.ok(validateOutput({ ...good, learning_card: { expression: 'x' } }));
   assert.equal(validateOutput({ ...good, learning_card: { expression: 'drop by', meaning_ko: '잠깐 들르다', usage_note: '친구 사이에 자연스러워요.' } }), null);
