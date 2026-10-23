@@ -11,6 +11,13 @@ import { withAnd } from '../story-data';
 import { ROOM_CONFIG, roomSpots, catPath, catSpot, stepRoom, initialRoom, stepCat, initialCat, loadRoom, saveRoom, needsWater } from './room-actions';
 import type { RoomState, Spot, Cat, RoomConfig, RoomSave } from './room-actions';
 import type { Pt } from './world-data';
+import { V11_BASE, placeFrame, waterIndex, playIndex, reverseIndex, BED_HIP_ESTIMATE, v11Enabled } from './room-art-v11';
+import type { V11Manifest, V11Frame } from './room-art-v11';
+
+// DEV-ONLY draft art preview (?roomart=v11). Production builds never enable it.
+const ROOM_ART = typeof location !== 'undefined' && v11Enabled(!!import.meta.env.DEV, location.search);
+let v11Promise: Promise<V11Manifest> | null = null;
+const loadV11 = () => (v11Promise ??= fetch(V11_BASE + 'manifest.json').then(r => { if (!r.ok) throw new Error('v11 ' + r.status); return r.json(); }).catch(e => { v11Promise = null; throw e; }));
 
 type Person = { name: string; art: string; locked: boolean };
 type Props = {
@@ -97,6 +104,12 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   const catEligible = useRef(false);
   const [roomUi, setRoomUi] = useState<{ phase: string; action: string; chip: string }>({ phase: 'free', action: '', chip: '' });
   const uiKey = useRef('');
+  // v11 draft art (dev preview only)
+  const v11 = useRef<V11Manifest | null>(null);
+  const [v11State, setV11State] = useState<'off' | 'loading' | 'ready' | 'error'>(ROOM_ART ? 'loading' : 'off');
+  useEffect(() => { if (!ROOM_ART) return; loadV11().then(m => { v11.current = m; setV11State('ready'); }, () => setV11State('error')); }, []);
+  const actT0 = useRef(0), endT0 = useRef(0), lastPhase = useRef('free');
+  const catPrev = useRef<Pt | null>(null), catVel = useRef<Pt>([0, 0]);
   if (debug) (window as any).__pwRoom = { room, cat, roomSave, cfg };
   const save = (patch: Partial<WorldState> = {}) => { stateRef.current = { ...stateRef.current, ...patch }; cb.current.onSave(stateRef.current); };
 
@@ -132,7 +145,8 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     const frame = (now: number) => {
       const dt = Math.min((now - last) / 1000, .05); last = now;
       const s = stateRef.current, map = worldMaps[s.mapId];
-      const bg = image(mapArt[s.mapId][s.timeOfDay]);
+      const clean = v11.current && s.mapId === 'bedroom' ? image(V11_BASE + v11.current.room.background[s.timeOfDay]) : null;
+      const bg = clean && ready(clean) ? clean : image(mapArt[s.mapId][s.timeOfDay]); // chair-free background only with the chair layer
       // input
       let ix = 0, iy = 0;
       keys.current.forEach(k => { ix += KEYS[k][0]; iy += KEYS[k][1]; });
@@ -181,6 +195,9 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     if (catEligible.current || playing) spots.push(catSpot([cat.current.x, cat.current.y], me, c));
     const out = stepRoom(room.current, { x: s.x, y: s.y, dir: s.direction, dt: dtMs, input, paused: isPaused, spots, canStand: (x, y) => canOccupy(map, x, y), cfg: c });
     room.current = out.state; lockMove.current = out.lockMove;
+    if (out.started) actT0.current = now;
+    if (out.state.phase === 'ending' && lastPhase.current !== 'ending') endT0.current = now;
+    lastPhase.current = out.state.phase;
     if (out.pos || out.face) stateRef.current = { ...stateRef.current, ...(out.pos ? { x: out.pos[0], y: out.pos[1] } : {}), ...(out.face ? { direction: out.face } : {}) };
     if (out.lockMove) moving.current = false; // no walking frames while sitting / lying / acting
     if (out.started) {
@@ -198,10 +215,16 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       if (out.ended.id === 'plant' && !out.cancelled && !watered) { roomSave.current = { ...roomSave.current, lastWateredAt: Date.now() }; saveRoom(localStorage, roomSave.current); } // only a finished watering counts
     }
     const playingNow = room.current.spot?.id === 'cat' && (room.current.phase === 'starting' || room.current.phase === 'active');
+    const before: Pt = [cat.current.x, cat.current.y];
     cat.current = stepCat(cat.current, path, dtMs, Math.random, [stateRef.current.x, stateRef.current.y], playingNow, (x, y) => canOccupy(map, x, y));
+    const mv: Pt = [cat.current.x - before[0], cat.current.y - before[1]]; if (Math.hypot(mv[0], mv[1]) > .01) catVel.current = mv;
     const sp = room.current.spot, ph = room.current.phase;
     const active = ph === 'starting' || ph === 'active' || ph === 'ending';
-    const chip = active && sp && sp.pose && sp.pose !== 'touch' ? `${POSE_LABEL[sp.id]} · 동작 그림 준비 전` : '';
+    const draft = !!(v11.current && v11.current.looks[lookRef.current] && ready(image(V11_BASE + v11.current.looks[lookRef.current].src)));
+    const chip = !active || !sp ? '' : draft && (sp.id !== 'plant' || fx.current?.kind === 'water') && sp.id !== 'cat'
+      ? `${POSE_LABEL[sp.id] ?? (sp.id === 'wardrobe' ? '옷장에 손 뻗기' : '창문에 손 뻗기')} · v11 초안 그림${sp.id === 'chair' ? ' (앉는 과정 원화 미완성)' : sp.id === 'bed' ? ' (눕는 과정·침대 위치 추정)' : ''}`
+      : draft && sp.id === 'cat' ? '고양이와 놀기 · v11 초안 그림'
+      : sp.pose && sp.pose !== 'touch' ? `${POSE_LABEL[sp.id]} · 동작 그림 준비 전` : '';
     const key = `${ph}|${active ? sp?.id : ''}|${chip}`;
     if (key !== uiKey.current) { uiKey.current = key; setRoomUi({ phase: ph, action: active ? sp?.id ?? '' : ph === 'waiting' ? `near:${sp?.id}` : '', chip }); }
   }
@@ -271,8 +294,35 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     </div>
     {person && <button className="world-talk" onClick={talk}><ChatCircleDots size={20} weight="fill" /><span><b>{person.name}</b>{person.locked ? '친밀도 쌓기 안내 보기' : `${withAnd(person.name).slice(person.name.length)} 이야기하기`}</span><kbd>E</kbd></button>}
     {roomUi.chip && <p className="room-chip" role="status">{roomUi.chip}</p>}
+    {v11State !== 'off' && mapId === 'bedroom' && <p className="room-art-badge">{v11State === 'ready' ? '아트 미리보기 v11 · 검토용 초안 (개발용)' : v11State === 'error' ? 'v11 초안을 불러오지 못해 기존 그림으로 표시 중' : 'v11 초안 불러오는 중…'}</p>}
     {debug && <p className="world-debug">{mapId} · {Math.round(stateRef.current.x)}, {Math.round(stateRef.current.y)}</p>}
   </section>;
+
+  /** v11 draft pose for the running action, or null (→ normal v10 drawing). */
+  function v11Pose(map: WorldMapDef, s: WorldState, t: number): { img: HTMLImageElement; frame: V11Frame; world: Pt; scale: number; seated: boolean } | null {
+    const m = v11.current, r = room.current, sp = r.spot;
+    if (!m || !sp || !(r.phase === 'starting' || r.phase === 'active' || r.phase === 'ending')) return null;
+    const lk = m.looks[lookRef.current]; if (!lk) return null; // unsupported outfit → keep the normal image
+    const img = image(V11_BASE + lk.src); if (!ready(img)) return null;
+    const el = t - actT0.current, A = lk.actions;
+    let key = '', idx = 0, world: Pt = [s.x, s.y], seated = false;
+    if (sp.id === 'chair' || sp.id === 'bed') {
+      const down = A[sp.id === 'chair' ? 'sit_down' : 'lie_down'], idle = A[sp.id === 'chair' ? 'sit_idle' : 'lie_idle'];
+      const downMs = down.frames.length * 1000 / down.fps;
+      if (r.phase === 'ending') { key = sp.id === 'chair' ? 'sit_down' : 'lie_down'; idx = reverseIndex(down, t - endT0.current); }
+      else if (el < downMs) { key = sp.id === 'chair' ? 'sit_down' : 'lie_down'; idx = playIndex(down, el); }
+      else { key = sp.id === 'chair' ? 'sit_idle' : 'lie_idle'; idx = playIndex(idle, el - downMs); }
+      world = sp.id === 'chair' ? m.room.chair_out[s.timeOfDay].seat : BED_HIP_ESTIMATE; seated = true;
+    } else if (sp.id === 'plant') {
+      if (fx.current?.kind !== 'water') return null; // already watered: leaf reaction only, no can
+      key = 'water'; idx = waterIndex(A.water, el, sp.durationMs);
+    } else if (sp.id === 'cat') {
+      const c = cat.current; if (!c || c.mode !== 'play' || r.phase !== 'active') return null;
+      key = c.x >= s.x ? 'play_right' : 'play_left'; idx = playIndex(A[key], el);
+    } else if (sp.id === 'wardrobe' || sp.id === 'window') { key = 'reach_up'; idx = playIndex(A.reach_up, el); }
+    const a = A[key]; if (!a || !a.frames[idx]) return null;
+    return { img, frame: a.frames[idx], world, scale: miniHeight(map, world[1]) / lk.referenceHeight, seated };
+  }
 
   // Soft highlight on the object the player is about to use, and the open-window light/breeze.
   function drawRoomBack(ctx: CanvasRenderingContext2D, t: number, playerBox: [number, number, number, number] | null) {
@@ -336,6 +386,25 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   }
   // TEMPORARY cat (simple drawing, labelled 임시) until real cat sprites exist.
   function drawCat(ctx: CanvasRenderingContext2D, map: WorldMapDef, c: Cat, t: number) {
+    const m = v11.current;
+    if (m && map.id === 'bedroom') {
+      const img = image(V11_BASE + m.cat.src);
+      if (ready(img)) {
+        const [vx, vy] = catVel.current;
+        const key = c.mode === 'walk' || c.mode === 'approach' ? (Math.abs(vx) > Math.abs(vy) ? (vx > 0 ? 'walk_right' : 'walk_left') : (vy > 0 ? 'walk_down' : 'walk_up'))
+          : c.mode === 'play' ? 'paw' : c.mode === 'rest' ? 'loaf' : c.mode === 'cooldown' ? 'look_up' : 'sit';
+        const a = m.cat.frames[key];
+        if (a?.frames.length) {
+          const f = a.frames[Math.floor(t * a.fps / 1000) % a.frames.length];
+          const { dx, dy, dw, dh } = placeFrame(f, [c.x, c.y], m.cat.displayScale);
+          ctx.fillStyle = 'rgba(58,42,74,.2)'; ctx.beginPath(); ctx.ellipse(c.x, c.y, 26, 7, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.drawImage(img, f.rect[0], f.rect[1], f.rect[2], f.rect[3], dx, dy, dw, dh);
+          ctx.font = '600 13px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
+          ctx.fillStyle = '#3b2d4bcc'; ctx.beginPath(); ctx.roundRect(c.x - 18, dy - 24, 36, 18, 9); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillText('초안', c.x, dy - 11);
+          return;
+        }
+      }
+    }
     const sc = miniHeight(map, c.y) / 215, x = c.x, y = c.y, d = c.dir;
     ctx.save(); ctx.translate(x, y); ctx.scale(sc * d, sc);
     ctx.fillStyle = 'rgba(58,42,74,.22)'; ctx.beginPath(); ctx.ellipse(0, 0, 34, 9, 0, 0, Math.PI * 2); ctx.fill();
@@ -387,13 +456,28 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     }
     const roomT = performance.now();
     let playerBox: [number, number, number, number] | null = null;
+    // v11 draft room layers (dev preview): chair layer only on top of the chair-free background (no double chair)
+    const v11m = v11.current, v11Room = !!v11m && map.id === 'bedroom' && bg.src.includes('/dev-art/');
+    const sitting = room.current.spot?.id === 'chair' && room.current.phase !== 'free' && room.current.phase !== 'waiting';
+    const chairLayer = v11Room ? image(V11_BASE + v11m!.room[sitting ? 'chair_out' : 'chair_in'][s.timeOfDay].src) : null;
+    if (v11Room) {
+      if (roomSave.current.windowOpen) { const w = v11m!.room.window_open[s.timeOfDay]; const fr = image(V11_BASE + w.frames[Math.floor(roomT * w.fps / 1000) % w.frames.length].src); if (ready(fr)) ctx.drawImage(fr, 0, 0, WORLD_W, WORLD_H); }
+      if (chairLayer && ready(chairLayer)) ctx.drawImage(chairLayer, 0, 0, WORLD_W, WORLD_H);
+    }
     // player
     const h = miniHeight(map, s.y);
     const catObj = roomSpots[map.id] ? cat.current : null;
     if (catObj && catObj.y < s.y) drawCat(ctx, map, catObj, roomT);
-    ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(s.x, s.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill();
+    const pose = v11Room ? v11Pose(map, s, roomT) : null;
+    if (!pose?.seated) { ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(s.x, s.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill(); }
     const m = miniManifest.current, sheet = miniSheet.current;
-    if (m && sheet) {
+    if (pose) {
+      // draft pose frame: manifest rect, sheet-absolute anchor on the world point, one common scale
+      const { dx, dy, dw, dh } = placeFrame(pose.frame, pose.world, pose.scale);
+      ctx.drawImage(pose.img, pose.frame.rect[0], pose.frame.rect[1], pose.frame.rect[2], pose.frame.rect[3], dx, dy, dw, dh);
+      playerBox = [dx, dy, dw, dh];
+      if (debug) { ctx.fillStyle = '#00e5ff'; ctx.beginPath(); ctx.arc(pose.world[0], pose.world[1], 5, 0, Math.PI * 2); ctx.fill(); }
+    } else if (m && sheet) {
       // One complete frame at its manifest rect, feet on (x, y), uniform scale; idleFrame when not actually moving.
       const { entry, rect } = frameFor(m, lookRef.current, s.direction as MiniDirection, moving.current, walkMs, reduced);
       const nudge = fx.current?.kind === 'touch' ? Math.sin(Math.min(1, (roomT - fx.current.start) / (fx.current.until - fx.current.start)) * Math.PI) * 6 : 0; // reaches toward the wardrobe
@@ -446,7 +530,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       ctx.fillStyle = '#fff6c8'; ctx.fillText(label, x, y + 4);
     }
     ctx.setTransform(k, 0, 0, k, -camX * k, -camY * k);
-    if (debug) {
+    if (debug && !(window as any).__pwNoOutline) {
       const poly = (pts: [number, number][], c: string) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.strokeStyle = c; ctx.lineWidth = 3; ctx.stroke(); };
       map.walk.forEach(p => poly(p, '#00e676')); map.blocks.forEach(p => poly(p, '#ff1744')); map.occluders.forEach(o => poly(o.poly, '#2979ff'));
       map.portals.forEach(p => { ctx.fillStyle = '#ffea0066'; ctx.fillRect(...p.rect); });

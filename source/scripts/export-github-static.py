@@ -8,7 +8,7 @@ release=root.parent  # my-mvp 저장소 최상단 = Vercel이 그대로 배포�
 out.mkdir(parents=True,exist_ok=True)
 images={}
 for p in build.rglob('*'):
- if p.is_file() and p.suffix in ('.png','.svg','.webp') and not {'persona-v9','persona-mini-v10'} & set(p.relative_to(build).parts):
+ if p.is_file() and p.suffix in ('.png','.svg','.webp') and not {'persona-v9','persona-mini-v10','dev-art'} & set(p.relative_to(build).parts):
   name=hashlib.sha256(str(p.relative_to(build)).encode()).hexdigest()[:8]+'-'+p.name
   images['/'+str(p.relative_to(build))]=name
   shutil.copy2(p,out/name)

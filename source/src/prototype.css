@@ -131,3 +131,4 @@ button.world-notice{text-align:left;border:0;width:auto}
 .room-chip{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);z-index:3;padding:5px 12px;border-radius:14px;background:#3b2d4bd9;color:#fff6c8!important;font-size:11px!important;white-space:nowrap;pointer-events:none}
 .world-screen~.closet-panel{z-index:5}
 .closet-actions{display:flex;gap:10px;align-items:center;margin-top:6px}.closet-actions .text-button{width:auto;flex:1;margin:0}.closet-actions .gold-button{flex:1;min-height:42px}
+.room-art-badge{position:absolute;top:112px;right:12px;z-index:3;padding:4px 9px;border-radius:10px;background:#ffe7a8;color:#4a3a20!important;font-size:10px!important;pointer-events:none}

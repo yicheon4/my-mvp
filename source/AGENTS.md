@@ -136,3 +136,8 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Wardrobe → the existing customize panel (`closetPanel` in Prototype, same selection state) opened over the map on the 착장 tab with 되돌리고 닫기 / 적용. Home panel unchanged. Map actions pause while it is open.
 - Window toggles (persisted `persona-world:room:v1`), light + breeze particles only. Plant: water stream/droplets/leaf sparkles; finished watering saves `lastWateredAt`, 5 min interval; watered → short leaf reaction. Cat: TEMPORARY canvas drawing labelled 임시, wanders on `catPath`, plays only if the player walked up to it.
 - Pose art does not exist (sit/lie/water/play/touch, chair pulled out, open window, curtains, watering can, cat, toy). The mini keeps its standing idle frame (never rotated/squashed); a chip says "· 동작 그림 준비 전".
+
+## Room action art v11 review (2026-10-24, DEV PREVIEW ONLY)
+- PersonaWorld_RoomActions_v11 is a review draft (productionReady=false). Files are copied to git-ignored `public/dev-art/room-v11/` and excluded from export. Enabled only with `import.meta.env.DEV` + `?roomart=v11` (`src/world/room-art-v11.ts`, `npm run test:roomart`).
+- Uses manifest rects + sheet-absolute anchors (frame-local = anchor − rect origin) at the v10 perspective scale; chair-free background + chair_in/out layer; window_open frames; v11 cat. Missing/failed art → normal v10 drawing.
+- Bed hip point is not in the package; preview uses an estimate (705, 405). Review + art-fix list: workspace `아트_자료/RoomActions_v11_검토결과.md`. Do not ship v11 art until revised.
