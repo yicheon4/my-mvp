@@ -117,3 +117,9 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Draw exactly one frame per tick from `manifest.looks[look].frames[direction][index].rect` (never quarter the PNG), feet on (x, y), uniform scale where `referenceHeight` maps to the map's perspective `miniHeight`. `src/world/mini-v10.ts` (`npm run test:mini`).
 - Walk frames advance only when the feet actually move (fps from manifest, 6); idle or blocked shows `idleFrame` (1) of the last direction; reduced motion stays idle.
 - Load the selected outfit first, then warm only its two neighbors. Sheet failure shows an error with retry; never substitute another outfit. Collision, portals, camera and NPC logic are unchanged.
+
+## Chat expressions (2026-10-23, Chloe only)
+- `src/expressions/`: six states (neutral, smile, laugh, thinking, concerned, disappointed). Each state = one complete upper-body image on the base portrait's canvas (`/art/expressions/<id>/<state>.webp`, listed in `expressionArt`). Never composite face parts. A missing file or a different canvas size shows the base portrait.
+- **No Chloe expression art exists yet**: `expressionArt.chloe` is empty, so every state shows the existing portrait. `?exprtest` points at the standard paths for verification with stand-in files only.
+- `ExpressivePortrait`: preloads the next image and fades it in over the current one (300 ms, two layers, no blank frame); late results are dropped; same image → no transition. Motions `nod` / `tilt` are tiny whole-image effects (Web Animations), once per reply cue, cleared on new chat/navigation, off with reduced motion.
+- Pre-API demo: Chloe's suggested replies follow branches in `chloeDemo`, each reply stating its expression/motion. Free typing never infers emotion (neutral). Demo lines are not Chloe's fixed dialogue or prompt data. Other characters keep the static portrait and old demo replies.

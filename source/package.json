@@ -13,6 +13,7 @@
     "test:presets": "node --test tests/presets.test.ts",
     "test:mini": "node --test tests/mini.test.ts",
     "test:characters": "node --test tests/characters.test.ts",
+    "test:expressions": "node --test tests/expressions.test.ts",
     "predev": "npm run check:runtime",
     "dev": "vite",
     "prebuild": "npm run check:runtime",

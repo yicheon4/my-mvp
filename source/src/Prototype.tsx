@@ -6,6 +6,9 @@ import type { StoryScene } from './story-data';
 import WorldMap from './world/WorldMap';
 import { mapArt, worldMaps, MAP_IDS } from './world/world-data';
 import CharacterFrame from './presets/CharacterFrame';
+import ExpressivePortrait from './expressions/ExpressivePortrait';
+import { chloeDemo, chloeHubChoices, chloeOpening, expressionArt, normalizeExpression, normalizeMotion } from './expressions/expressions';
+import type { Choice, Motion } from './expressions/expressions';
 import { DEFAULT_SELECTION, loadPresetData, readSelection, saveSelection, lookThumb, headThumb } from './presets/presets';
 import type { Catalog as PresetCatalog, Manifest as PresetManifest, Selection as PresetSelection, Extra } from './presets/presets';
 import type { MapId } from './world/world-data';
@@ -18,8 +21,8 @@ import '@fontsource/noto-serif-kr/500.css';
 
 type Page = 'world' | 'home' | 'prepare' | 'profile' | 'scenes' | 'paywall' | 'checkout' | 'voice' | 'feedback' | 'notebook';
 type Phrase = { id:string; en:string; ko:string; context:string };
-type Turn = { role:'you'|'friend'; text:string; ko?:string };
-type Session = { version?:2; sceneDetails?:StoryScene; character:number; scene:number; avatar:string; turns:Turn[]; phrases:Phrase[]; reply:string; translation:string; tip?:Phrase };
+type Turn = { role:'you'|'friend'; text:string; ko?:string; expression?:string };
+type Session = { version?:2; sceneDetails?:StoryScene; character:number; scene:number; avatar:string; turns:Turn[]; phrases:Phrase[]; reply:string; translation:string; tip?:Phrase; expression?:string; node?:string };
 const legacyPeople = [
   {name:'엘리', en:'ELI', art:'/art/roommate.png', trait:'차분하게 귀 기울이는', greeting:'Tell me what’s on your mind.'},
   {name:'미라', en:'MIRA', art:'/art/mira.png', trait:'다정하고 솔직한', greeting:'You can tell me anything.'},
@@ -91,6 +94,7 @@ export default function Prototype(){
  const [sceneFilter,setSceneFilter]=useState<'all'|'free'|'premium'>('all');
  const [payTarget,setPayTarget]=useState({name:'',detail:'',art:'',back:'prepare' as Page});
  const [session,setSession]=useState<Session|null>(initial.session);
+ const [cue,setCue]=useState<{motion:Motion;id:number}|null>(null); // one-shot whole-image motion for the current reply
  const [notes,setNotes]=useState<Phrase[]>(initial.notes);
  const [selected,setSelected]=useState<string[]>([]);
  const [sheet,setSheet]=useState<'compose'|'history'|'edit'|null>(null);
@@ -116,7 +120,7 @@ export default function Prototype(){
  useEffect(()=>{if(!toast)return;const t=setTimeout(()=>{setToast('');setUndo(null);},undo?5000:3000);return()=>clearTimeout(t);},[toast,undo]);
  useEffect(()=>()=>{recognition.current?.abort();if(timer.current)clearTimeout(timer.current);window.speechSynthesis?.cancel();},[]);
  function stopAudio(){recognition.current?.abort();setListening(false);window.speechSynthesis?.cancel();setSpeaking(false);}
- function go(next:Page){keyboard.hide();stopAudio();setSheet(null);setCloset(null);setError('');setPage(next);}
+ function go(next:Page){keyboard.hide();stopAudio();setCue(null);setSheet(null);setCloset(null);setError('');setPage(next);}
  function openPaywall(name:string,detail:string,art:string,back:Page){setPayTarget({name,detail,art,back});go('paywall');}
  function pickPerson(i:number){setCharacter(i);setScene(0);setSceneFilter('all');if(people[i].locked){openPaywall(withAnd(people[i].name)+' 친밀도 쌓기',people[i].description,people[i].art,'prepare');}else go('profile');}
  // Met on the map: keep the place in mind (scene at this place if one exists) and come back to the same spot afterwards.
@@ -126,7 +130,8 @@ export default function Prototype(){
   if(chosen.locked||chosenScene.locked){openPaywall(chosenScene.title,chosenScene.detail,chosenScene.art,'scenes');return;}
   if(timer.current)clearTimeout(timer.current);setBusy(false);
   const reply=chosenScene.opening;
-  setSession({version:2,sceneDetails:chosenScene,character,scene,avatar,reply,translation:chosenScene.translation,turns:[{role:'friend',text:reply,ko:chosenScene.translation}],phrases:[phrases[0]],tip:phrases[0]});go('voice');
+  const expressive=people[character]?.id==='chloe';
+  setSession({version:2,sceneDetails:chosenScene,character,scene,avatar,reply,translation:chosenScene.translation,turns:[{role:'friend',text:reply,ko:chosenScene.translation,...(expressive?{expression:chloeOpening.expression}:{})}],phrases:[phrases[0]],tip:phrases[0],...(expressive?{expression:chloeOpening.expression,node:'hub'}:{})});go('voice');
  }
  // Temporary browser read-aloud for testing only; not the characters' final voice. voice_direction is not applied here.
  function speak(text:string){
@@ -136,13 +141,19 @@ export default function Prototype(){
   const voice=window.speechSynthesis.getVoices().find(v=>v.lang==='en-US');if(voice)utterance.voice=voice;
   utterance.onend=()=>setSpeaking(false);utterance.onerror=()=>{setSpeaking(false);setError('음성을 재생하지 못했어요. 다시 눌러 주세요.');};setSpeaking(true);window.speechSynthesis.speak(utterance);
  }
- function send(text:string){
+ // Chloe (pre-API demo): a suggested reply follows its branch, whose reply states its own expression and motion.
+ // Free typing never infers emotion from keywords (and never reacts to grammar): Chloe stays neutral and the topics reopen.
+ function send(text:string,choice?:Choice){
   if(!text.trim()||!session||busy)return;
   keyboard.hide();stopAudio();setSheet(null);setDraft('');setError('');setBusy(true);
-  const result=demoReply(text,session.turns.filter(t=>t.role==='you').length,session.version===2?session.character:0);
+  const expressive=session.version===2&&people[session.character]?.id==='chloe';
+  const node=expressive&&choice?chloeDemo[choice.next]:undefined;
+  const base=node?{text:node.text,ko:node.ko,phrase:node.tip}:demoReply(text,session.turns.filter(t=>t.role==='you').length,session.version===2?session.character:0);
+  const result={...base,expression:expressive?normalizeExpression(node?.expression):undefined,motion:expressive?normalizeMotion(node?.motion):null,node:expressive?(node?choice!.next:'hub'):undefined};
   setSession(s=>s?{...s,turns:[...s.turns,{role:'you',text:text.trim()}]}:s);
   timer.current=setTimeout(()=>{
-   setSession(s=>s?{...s,reply:result.text,translation:result.ko,tip:result.phrase,turns:[...s.turns,{role:'friend',text:result.text,ko:result.ko}],phrases:[...s.phrases.filter(p=>p.id!==result.phrase.id),{...result.phrase,context:`내 이야기: “${text.trim()}” · ${result.phrase.context}`}]}:s);
+   setSession(s=>s?{...s,reply:result.text,translation:result.ko,tip:result.phrase,...(result.expression?{expression:result.expression,node:result.node}:{}),turns:[...s.turns,{role:'friend',text:result.text,ko:result.ko,...(result.expression?{expression:result.expression}:{})}],phrases:[...s.phrases.filter(p=>p.id!==result.phrase.id),{...result.phrase,context:`내 이야기: “${text.trim()}” · ${result.phrase.context}`}]}:s);
+   setCue(result.motion?{motion:result.motion,id:Date.now()}:null);
    setBusy(false);
   },700);
  }
@@ -190,7 +201,7 @@ export default function Prototype(){
   <MobileScroll className="pw-scroll"><main className="pay-content">{page==='paywall'?<><div className={`pay-preview ${payTarget.back!=='scenes'?'is-person':''}`}><img src={payTarget.art} alt={payTarget.name}/><span><LockSimple size={20}/></span></div><p className="eyebrow">CLOSER STORIES</p><h2>{payTarget.name}</h2><p className="pay-description">{payTarget.detail}</p><div className="pass-card"><Crown size={24}/><h3>친밀도 패스</h3><p>새로운 인물 3명과의 대화<br/>캐릭터마다 특별한 순간 3개</p><small>요금과 이용 기간은 출시 시 안내할 예정이에요.</small></div></>:<><CreditCard size={34} className="checkout-icon"/><h2>새로운 이야기를<br/>열기 전에.</h2><div className="checkout-summary"><div><span>선택한 콘텐츠</span><strong>{payTarget.name}</strong></div><div><span>이용 상품</span><strong>친밀도 패스</strong></div><div><span>결제 금액</span><strong>미정</strong></div><div><span>결제 수단</span><strong>아직 연결되지 않았어요</strong></div></div><div className="checkout-notice"><LockSimple size={18}/><p>결제 기능을 준비하고 있어요.<br/>이 화면에서는 카드 정보를 받거나 요금을 청구하지 않아요. 잠긴 콘텐츠도 아직 열리지 않아요.</p></div></>}</main></MobileScroll><footer className="fixed-footer">{page==='paywall'?<button className="gold-button" onClick={()=>go('checkout')}>결제 화면 보기<ArrowRight size={18}/></button>:<button className="gold-button" onClick={()=>go(payTarget.back)}>무료 이야기로 돌아가기<ArrowRight size={18}/></button>}<button className="text-button" onClick={()=>go(payTarget.back)}>{page==='paywall'?'지금은 무료로 이야기할게':'다음에 다시 살펴보기'}</button></footer>
  </>}
  {page==='voice'&&session&&<section className="voice-screen" aria-label="보이스 대화">
-  {session.version===2&&session.sceneDetails?<><img className="scene-art" src={artOf(stories[session.character]?.[session.scene]?.mapId??'kitchen')} alt={session.sceneDetails.place}/><div className="conversation-shade"/><img className="conversation-character" src={person.art} alt={`${withAnd(person.name)} 대화`}/></>:<img className="scene-art" src={person.art} alt="이전 대화의 상대"/>}
+  {session.version===2&&session.sceneDetails?<><img className="scene-art" src={artOf(stories[session.character]?.[session.scene]?.mapId??'kitchen')} alt={session.sceneDetails.place}/><div className="conversation-shade"/>{people[session.character]?.id==='chloe'?<ExpressivePortrait base={person.art} art={expressionArt.chloe} expression={normalizeExpression(session.expression)} cue={cue} alt={`${withAnd(person.name)} 대화`}/>:<img className="conversation-character" src={person.art} alt={`${withAnd(person.name)} 대화`}/>}</>:<img className="scene-art" src={person.art} alt="이전 대화의 상대"/>}
   <header className="voice-header"><div className="voice-brand"><Sparkle size={23} weight="thin"/><span>PERSONA WORLD</span><button className="icon-button" aria-label={origin==='world'?'맵으로 돌아가기':'나의 방으로 돌아가기'} onClick={()=>go(origin)}><X size={19}/></button></div><h1>{session.sceneDetails?.title??legacyScenes[session.scene]}</h1><p>{person.relation} · {person.name} <span className="mode">체험 모드</span></p>{session.sceneDetails&&<span className="conversation-location"><MapPin size={12}/>{session.sceneDetails.place}</span>}</header>
   <button className="history-toggle" onClick={()=>setSheet('history')}><Chats size={17}/> 대화 기록 {session.turns.filter(t=>t.role==='you').length>0&&session.turns.filter(t=>t.role==='you').length}</button>
   <div className="voice-bottom">
@@ -214,7 +225,7 @@ export default function Prototype(){
   </main></MobileScroll><footer className="fixed-footer paper-footer">{session&&<button className="gold-button" onClick={()=>go('voice')}>대화 마저 이어하기 <ArrowRight size={18}/></button>}<button className={session?'text-button':'gold-button'} onClick={()=>go('prepare')}>새 대화하기</button></footer>
  </>}
  {toast&&<div className="toast" role="status"><Check size={16}/>{toast}{undo&&<button className="toast-undo" onClick={()=>{const u=undo;setNotes(n=>n.some(p=>p.id===u.note.id)?n:[...n.slice(0,u.index),u.note,...n.slice(u.index)]);setUndo(null);setToast('표현을 되돌렸어요');}}>되돌리기</button>}</div>}
- <BottomSheet open={sheet==='compose'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="네 이야기를 들려줘" description="영어로 입력하거나 아래 예시를 골라 보세요." snap={.72}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}>{error&&<p className="inline-error" role="alert">{error}</p>}<form onSubmit={e=>{e.preventDefault();send(draft);}}><KeyboardInput aria-label="영어로 내 이야기" placeholder="Today, I felt…" value={draft} maxLength={500} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" type="submit" disabled={!draft.trim()||busy}>이야기 전하기 <PaperPlaneTilt size={18}/></button></form><p className="muted">이렇게 시작해도 좋아요</p>{['I’m overwhelmed by my assignments.','I’m worried my friend misunderstood me.','I’m not sure about my future.','Thank you for listening to me.'].map(s=><button className="sample" key={s} onClick={()=>send(s)}>{s}<ArrowRight size={16}/></button>)}<p className="demo-note">준비된 답변으로 흐름을 경험하는 체험 모드예요.<br/>음성 입력은 브라우저의 인식 서비스를 사용해요.</p></div></BottomSheet>
+ <BottomSheet open={sheet==='compose'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="네 이야기를 들려줘" description="영어로 입력하거나 아래 예시를 골라 보세요." snap={.72}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}>{error&&<p className="inline-error" role="alert">{error}</p>}<form onSubmit={e=>{e.preventDefault();send(draft);}}><KeyboardInput aria-label="영어로 내 이야기" placeholder="Today, I felt…" value={draft} maxLength={500} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" type="submit" disabled={!draft.trim()||busy}>이야기 전하기 <PaperPlaneTilt size={18}/></button></form><p className="muted">이렇게 시작해도 좋아요</p>{(session?.version===2&&people[session.character]?.id==='chloe'?(chloeDemo[session.node??'']?.choices??chloeHubChoices):['I’m overwhelmed by my assignments.','I’m worried my friend misunderstood me.','I’m not sure about my future.','Thank you for listening to me.'].map(t=>({text:t,next:''}))).map(c=><button className="sample" key={c.text} onClick={()=>send(c.text,c.next?c:undefined)}>{c.text}<ArrowRight size={16}/></button>)}<p className="demo-note">준비된 답변으로 흐름을 경험하는 체험 모드예요.<br/>음성 입력은 브라우저의 인식 서비스를 사용해요.</p></div></BottomSheet>
  <BottomSheet open={sheet==='history'} onOpenChange={open=>{if(!open)setSheet(null);}} title="우리의 대화" description={session?.sceneDetails?.title??"함께 나눈 이야기"} snap={.8}><div className="history-list">{session?.turns.map((t,i)=><div key={i} className={`history-turn ${t.role}`}><small>{t.role==='you'?'나':person.name}</small><p>{t.text}</p>{t.ko&&<small>{t.ko}</small>}</div>)}</div></BottomSheet>
  <BottomSheet open={sheet==='edit'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="나만의 뜻으로 기록하기" description={edit?.en} snap={.6}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}><form onSubmit={e=>{e.preventDefault();if(!draft.trim()||!edit)return;setNotes(n=>n.map(p=>p.id===edit.id?{...p,ko:draft.trim()}:p));keyboard.hide();setSheet(null);setToast('나만의 뜻을 저장했어요');}}><KeyboardInput aria-label="나만의 한국어 뜻" value={draft} maxLength={200} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" disabled={!draft.trim()}>뜻 저장하기 <Check size={18}/></button></form><button className="delete-note" onClick={()=>{const index=notes.findIndex(p=>p.id===edit?.id);if(index>=0)setUndo({note:notes[index],index});setNotes(n=>n.filter(p=>p.id!==edit?.id));keyboard.hide();setSheet(null);setToast('표현을 메모장에서 지웠어요');}}><Trash size={16}/> 이 표현 지우기</button></div></BottomSheet>
  </div>;

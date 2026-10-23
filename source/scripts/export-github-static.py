@@ -14,6 +14,7 @@ for p in build.rglob('*'):
   shutil.copy2(p,out/name)
 def rewrite_image(m):
  quote,url=m.group(1),m.group(2)
+ if '${' in url: return m.group(0)  # built at runtime (e.g. test-only expression paths); real files still must exist
  return quote+'/'+images[url]+quote
 html=(build/'index.html').read_text()
 js_path=build/re.search(r'src="([^"]+\.js)"',html)[1].lstrip('/')
