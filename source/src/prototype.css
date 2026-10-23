@@ -127,3 +127,7 @@ button.world-notice{text-align:left;border:0;width:auto}
 .freechat-screen .ko-toggle{background:transparent!important;border:0!important;padding:0!important}
 .freechat-screen .freechat-card b{color:#f3dfba}.freechat-screen .freechat-error p{color:#fff0de!important}
 .freechat-screen .freechat-portrait{top:96px;height:44%;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+/* room actions: shown only while a pose that has no art yet is running */
+.room-chip{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);z-index:3;padding:5px 12px;border-radius:14px;background:#3b2d4bd9;color:#fff6c8!important;font-size:11px!important;white-space:nowrap;pointer-events:none}
+.world-screen~.closet-panel{z-index:5}
+.closet-actions{display:flex;gap:10px;align-items:center;margin-top:6px}.closet-actions .text-button{width:auto;flex:1;margin:0}.closet-actions .gold-button{flex:1;min-height:42px}

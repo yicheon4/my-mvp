@@ -15,6 +15,7 @@
     "test:characters": "node --test tests/characters.test.ts",
     "test:expressions": "node --test tests/expressions.test.ts",
     "test:sophie": "node --test tests/sophie-chat.test.ts",
+    "test:room": "node --test tests/room-actions.test.ts",
     "predev": "npm run check:runtime",
     "dev": "vite",
     "dev:ai": "npm run check:runtime && vite --config vite.ai.config.ts --port 5185 --strictPort",

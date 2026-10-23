@@ -8,6 +8,9 @@ import { stepPosition } from './avatar-runtime';
 import { loadMiniManifest, loadMiniSheet, frameFor, miniPlacement, neighborLooks } from './mini-v10';
 import type { MiniManifest, MiniDirection } from './mini-v10';
 import { withAnd } from '../story-data';
+import { ROOM_CONFIG, roomSpots, catPath, catSpot, stepRoom, initialRoom, stepCat, initialCat, loadRoom, saveRoom, needsWater } from './room-actions';
+import type { RoomState, Spot, Cat, RoomConfig, RoomSave } from './room-actions';
+import type { Pt } from './world-data';
 
 type Person = { name: string; art: string; locked: boolean };
 type Props = {
@@ -18,6 +21,8 @@ type Props = {
   onSave: (state: WorldState) => void;
   onTalk: (person: number, state: WorldState) => void;
   onHome: (state: WorldState) => void;
+  paused?: boolean;          // another panel is open over the map (e.g. the customize panel)
+  onWardrobe?: () => void;   // wardrobe action → existing customize panel
 };
 
 const SPEED = 270;
@@ -34,7 +39,12 @@ function image(src: string) {
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
 const typing = () => { const el = document.activeElement as HTMLElement | null; return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); };
 
-export default function WorldMap({ initial, look, lookName, people, onSave, onTalk, onHome }: Props) {
+// Room-action effects drawn on the map (no extra art: light, particles and temporary cat/toy drawings only).
+type Fx = { kind: 'window' | 'water' | 'leaf' | 'touch'; start: number; until: number };
+const roomConfig = (): RoomConfig => { try { return { ...ROOM_CONFIG, ...JSON.parse(localStorage.getItem('persona-world:room-config') ?? '{}') }; } catch { return ROOM_CONFIG; } };
+const POSE_LABEL: Record<string, string> = { chair: '의자에 앉음', bed: '침대에 누움', plant: '물주기', cat: '고양이와 놀기' };
+
+export default function WorldMap({ initial, look, lookName, people, onSave, onTalk, onHome, paused = false, onWardrobe }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<WorldState>(initial);
@@ -72,8 +82,22 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   const nearRef = useRef<Npc | null>(null);
   const debug = typeof location !== 'undefined' && location.search.includes('worlddebug');
   if (debug) (window as any).__pwWorld = stateRef;
-  const cb = useRef({ onSave, onTalk });
-  cb.current = { onSave, onTalk };
+  const cb = useRef({ onSave, onTalk, onWardrobe });
+  cb.current = { onSave, onTalk, onWardrobe };
+  const pausedRef = useRef(paused); pausedRef.current = paused;
+  // room actions
+  const cfg = useRef(roomConfig());
+  // Starting (reload / arrival) inside a spot never auto-triggers it: leave the spot once first.
+  const startRoom = (st: WorldState): RoomState => { const r = initialRoom(); for (const sp of roomSpots[st.mapId] ?? []) if (Math.hypot(st.x - sp.at[0], st.y - sp.at[1]) <= sp.r * ROOM_CONFIG.zoneScale * ROOM_CONFIG.exitScale) r.rearm.add(sp.id); return r; };
+  const room = useRef<RoomState>(startRoom(initial));
+  const roomSave = useRef<RoomSave>(loadRoom(localStorage));
+  const lockMove = useRef(false);
+  const fx = useRef<Fx | null>(null);
+  const cat = useRef<Cat | null>(null);
+  const catEligible = useRef(false);
+  const [roomUi, setRoomUi] = useState<{ phase: string; action: string; chip: string }>({ phase: 'free', action: '', chip: '' });
+  const uiKey = useRef('');
+  if (debug) (window as any).__pwRoom = { room, cat, roomSave, cfg };
   const save = (patch: Partial<WorldState> = {}) => { stateRef.current = { ...stateRef.current, ...patch }; cb.current.onSave(stateRef.current); };
 
   useEffect(() => {
@@ -113,11 +137,15 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       let ix = 0, iy = 0;
       keys.current.forEach(k => { ix += KEYS[k][0]; iy += KEYS[k][1]; });
       if (stick.current.active) { ix += stick.current.x; iy += stick.current.y; }
-      if (busy.current || typing()) { ix = 0; iy = 0; }
+      const isPaused = busy.current || typing() || pausedRef.current;
+      if (isPaused) { ix = 0; iy = 0; }
+      const input = Math.hypot(ix, iy) > .2;
+      if (lockMove.current) { ix = 0; iy = 0; } // an action is starting/running/ending; movement input only ends it
       const next = stepPosition({ x: s.x, y: s.y, direction: s.direction }, { x: ix, y: iy }, dt, SPEED, (x, y) => canOccupy(map, x, y));
       moving.current = !!next.moving;
       if (next.moving) walkClock += dt * 1000; else walkClock = 0;
       stateRef.current = { ...s, x: next.x, y: next.y, direction: (Math.hypot(ix, iy) > .2 && next.direction) || s.direction };
+      roomStep(map, dt * 1000, input, isPaused, !!next.moving, now);
       const cur = stateRef.current;
       // portals
       const portal = portalAt(map, cur.x, cur.y);
@@ -132,8 +160,51 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); cb.current.onSave(stateRef.current); };
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); room.current = initialRoom(); fx.current = null; lockMove.current = false; cb.current.onSave(stateRef.current); };
   }, []);
+
+  /** One frame of automatic room actions (bedroom only). Movement input is never overridden: it only ends an action. */
+  function roomStep(map: WorldMapDef, dtMs: number, input: boolean, isPaused: boolean, playerMoved: boolean, now: number) {
+    const base = roomSpots[map.id];
+    if (!base) { if (room.current.phase !== 'free' || cat.current) { room.current = initialRoom(); lockMove.current = false; fx.current = null; cat.current = null; } return; }
+    if (!cat.current) room.current = startRoom(stateRef.current); // just arrived in the room
+    const s = stateRef.current, me: Pt = [s.x, s.y], c = cfg.current;
+    const path = catPath[map.id]!;
+    cat.current ??= initialCat(path);
+    // the cat plays only if the player walked up to it (the cat wandering next to a still player never starts play)
+    const dCat = Math.hypot(cat.current.x - s.x, cat.current.y - s.y);
+    if (dCat > c.catPlayRadius * c.exitScale) catEligible.current = false;
+    else if (playerMoved && dCat <= c.catPlayRadius) catEligible.current = true;
+    const watered = !needsWater(roomSave.current, Date.now(), c);
+    const spots: Spot[] = base.map(sp => sp.id === 'plant' && watered ? { ...sp, durationMs: 900 } : sp);
+    const playing = room.current.spot?.id === 'cat' && room.current.phase !== 'free' && room.current.phase !== 'waiting';
+    if (catEligible.current || playing) spots.push(catSpot([cat.current.x, cat.current.y], me, c));
+    const out = stepRoom(room.current, { x: s.x, y: s.y, dir: s.direction, dt: dtMs, input, paused: isPaused, spots, canStand: (x, y) => canOccupy(map, x, y), cfg: c });
+    room.current = out.state; lockMove.current = out.lockMove;
+    if (out.pos || out.face) stateRef.current = { ...stateRef.current, ...(out.pos ? { x: out.pos[0], y: out.pos[1] } : {}), ...(out.face ? { direction: out.face } : {}) };
+    if (out.lockMove) moving.current = false; // no walking frames while sitting / lying / acting
+    if (out.started) {
+      const id = out.started.id, t = now;
+      if (id === 'window') { roomSave.current = { ...roomSave.current, windowOpen: !roomSave.current.windowOpen }; saveRoom(localStorage, roomSave.current); fx.current = { kind: 'window', start: t, until: t + 900 }; }
+      if (id === 'plant') {
+        if (watered) fx.current = { kind: 'leaf', start: t, until: t + 900 };
+        else fx.current = { kind: 'water', start: t, until: t + out.started.durationMs };
+      }
+      if (id === 'wardrobe') fx.current = { kind: 'touch', start: t, until: t + out.started.durationMs };
+    }
+    if (out.ended) {
+      if (fx.current && fx.current.kind !== 'window') fx.current = null; // nothing (can, toy, water) stays on screen
+      if (out.ended.id === 'wardrobe' && !out.cancelled && !isPaused) cb.current.onWardrobe?.();
+      if (out.ended.id === 'plant' && !out.cancelled && !watered) { roomSave.current = { ...roomSave.current, lastWateredAt: Date.now() }; saveRoom(localStorage, roomSave.current); } // only a finished watering counts
+    }
+    const playingNow = room.current.spot?.id === 'cat' && (room.current.phase === 'starting' || room.current.phase === 'active');
+    cat.current = stepCat(cat.current, path, dtMs, Math.random, [stateRef.current.x, stateRef.current.y], playingNow, (x, y) => canOccupy(map, x, y));
+    const sp = room.current.spot, ph = room.current.phase;
+    const active = ph === 'starting' || ph === 'active' || ph === 'ending';
+    const chip = active && sp && sp.pose && sp.pose !== 'touch' ? `${POSE_LABEL[sp.id]} · 동작 그림 준비 전` : '';
+    const key = `${ph}|${active ? sp?.id : ''}|${chip}`;
+    if (key !== uiKey.current) { uiKey.current = key; setRoomUi({ phase: ph, action: active ? sp?.id ?? '' : ph === 'waiting' ? `near:${sp?.id}` : '', chip }); }
+  }
 
   function portalLabel(map: WorldMapDef, x: number, y: number) {
     const p = map.portals.find(p => Math.abs(x - (p.rect[0] + p.rect[2] / 2)) < p.rect[2] / 2 + 110 && Math.abs(y - (p.rect[1] + p.rect[3] / 2)) < p.rect[3] / 2 + 90);
@@ -180,7 +251,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
 
   const map = worldMaps[mapId];
   const person = near ? people[near.person] : null;
-  return <section className={`world-screen ${time}`} aria-label={`${map.name} 맵`}>
+  return <section className={`world-screen ${time}`} aria-label={`${map.name} 맵`} data-room-phase={roomUi.phase} data-room-action={roomUi.action}>
     <div className="world-canvas" ref={wrapRef}><canvas ref={canvasRef} aria-hidden="true" /></div>
     <div className={`world-fade ${fading ? 'on' : ''}`} />
     <header className="world-top">
@@ -199,8 +270,90 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       <span style={{ transform: `translate(${knob.x}px, ${knob.y}px)` }} />
     </div>
     {person && <button className="world-talk" onClick={talk}><ChatCircleDots size={20} weight="fill" /><span><b>{person.name}</b>{person.locked ? '친밀도 쌓기 안내 보기' : `${withAnd(person.name).slice(person.name.length)} 이야기하기`}</span><kbd>E</kbd></button>}
+    {roomUi.chip && <p className="room-chip" role="status">{roomUi.chip}</p>}
     {debug && <p className="world-debug">{mapId} · {Math.round(stateRef.current.x)}, {Math.round(stateRef.current.y)}</p>}
   </section>;
+
+  // Soft highlight on the object the player is about to use, and the open-window light/breeze.
+  function drawRoomBack(ctx: CanvasRenderingContext2D, t: number, playerBox: [number, number, number, number] | null) {
+    const r = room.current;
+    if (roomSave.current.windowOpen || fx.current?.kind === 'window') {
+      const k = fx.current?.kind === 'window' ? Math.min(1, (t - fx.current.start) / 600) : 1;
+      const a = roomSave.current.windowOpen ? k : 1 - k;
+      if (a > 0.01) {
+        const g = ctx.createRadialGradient(490, 150, 10, 490, 150, 190);
+        g.addColorStop(0, `rgba(255,255,235,${.55 * a})`); g.addColorStop(1, 'rgba(255,255,235,0)');
+        ctx.fillStyle = g; ctx.fillRect(300, 0, 380, 380);
+        // breeze: light streaks drifting in from the window
+        ctx.strokeStyle = `rgba(150,195,235,${.85 * a})`; ctx.lineWidth = 6; ctx.lineCap = 'round';
+        for (let i = 0; i < 6; i++) {
+          const p = ((t / 2600 + i / 6) % 1), x = 430 + i * 22 + p * 160, y = 90 + i * 28 + Math.sin(p * 6 + i) * 10 + p * 120;
+          ctx.globalAlpha = Math.sin(p * Math.PI); ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + 18, y - 8, x + 40, y + 2); ctx.stroke();
+        }
+        // a few petals carried in by the breeze
+        for (let i = 0; i < 5; i++) { const p = ((t / 3400 + i / 5) % 1); ctx.globalAlpha = a * Math.sin(p * Math.PI); ctx.fillStyle = i % 2 ? '#f7c9da' : '#ffffff'; ctx.beginPath(); ctx.ellipse(470 + i * 30 + p * 210, 120 + i * 24 + p * 260 + Math.sin(p * 9 + i) * 14, 7, 4, p * 6, 0, Math.PI * 2); ctx.fill(); }
+        ctx.globalAlpha = 1;
+      }
+    }
+    const sp = r.spot;
+    if (sp && (r.phase === 'waiting' || r.phase === 'starting')) {
+      const k = r.phase === 'waiting' ? Math.min(1, r.dwell / cfg.current.dwellMs) : 1;
+      const pulse = .5 + .5 * Math.sin(t / 260);
+      ctx.save();
+      if (playerBox) { ctx.beginPath(); ctx.rect(0, 0, WORLD_W, WORLD_H); ctx.rect(...playerBox); ctx.clip('evenodd'); } // keep the glow off the player
+      ctx.globalAlpha = .18 + .22 * k + .08 * pulse;
+      const g = ctx.createRadialGradient(sp.hint.at[0], sp.hint.at[1], 4, sp.hint.at[0], sp.hint.at[1], Math.max(sp.hint.rx, sp.hint.ry));
+      g.addColorStop(0, '#fff8dc'); g.addColorStop(1, 'rgba(255,248,220,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(sp.hint.at[0], sp.hint.at[1], sp.hint.rx, sp.hint.ry, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    }
+  }
+  // Water stream, droplets and leaf sparkles; cat toy (temporary drawing) while playing.
+  function drawRoomFront(ctx: CanvasRenderingContext2D, s: WorldState, h: number, t: number) {
+    const f = fx.current;
+    if (f && (f.kind === 'water' || f.kind === 'leaf')) {
+      const k = (t - f.start) / (f.until - f.start);
+      const plant = roomSpots.bedroom!.find(p => p.id === 'plant')!.target;
+      if (f.kind === 'water' && k < .8) {
+        const hx = s.x + h * .14, hy = s.y - h * .5;
+        ctx.strokeStyle = 'rgba(90,160,235,.85)'; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.setLineDash([14, 12]); ctx.lineDashOffset = -t / 10;
+        ctx.beginPath(); ctx.moveTo(hx, hy); ctx.quadraticCurveTo((hx + plant[0]) / 2, hy - 60, plant[0] - 10, plant[1] - 20); ctx.stroke(); ctx.setLineDash([]);
+        for (let i = 0; i < 9; i++) { const p = (t / 500 + i / 9) % 1; ctx.fillStyle = `rgba(110,175,240,${.95 * (1 - p)})`; ctx.beginPath(); ctx.arc(plant[0] - 40 + i * 10, plant[1] - 22 + p * 46, 6.5, 0, Math.PI * 2); ctx.fill(); }
+      }
+      // leaves react: small green sparkles rising
+      for (let i = 0; i < (f.kind === 'water' ? 8 : 4); i++) {
+        const p = (k * 1.4 + i / 8) % 1; ctx.fillStyle = `rgba(120,200,110,${Math.sin(p * Math.PI)})`;
+        ctx.beginPath(); ctx.ellipse(plant[0] - 40 + (i * 23) % 90, plant[1] - 30 - p * 55, 7, 4, -.6, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    const r = room.current;
+    if (r.spot?.id === 'cat' && r.phase === 'active' && cat.current?.mode === 'play') {
+      // TEMPORARY toy drawing (stick + feather) swinging from the player's hand toward the cat
+      const c = cat.current, side = c.x >= s.x ? 1 : -1, hx = s.x + side * h * .12, hy = s.y - h * .45;
+      const sw = Math.sin(t / 180) * 18, tx = hx + side * 70, ty = hy + 30 + sw;
+      ctx.strokeStyle = '#8a6a4a'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tx, ty); ctx.stroke();
+      ctx.fillStyle = '#c9a7e8'; ctx.beginPath(); ctx.ellipse(tx, ty + 10, 7, 14, sw / 40, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  // TEMPORARY cat (simple drawing, labelled 임시) until real cat sprites exist.
+  function drawCat(ctx: CanvasRenderingContext2D, map: WorldMapDef, c: Cat, t: number) {
+    const sc = miniHeight(map, c.y) / 215, x = c.x, y = c.y, d = c.dir;
+    ctx.save(); ctx.translate(x, y); ctx.scale(sc * d, sc);
+    ctx.fillStyle = 'rgba(58,42,74,.22)'; ctx.beginPath(); ctx.ellipse(0, 0, 34, 9, 0, 0, Math.PI * 2); ctx.fill();
+    const sitting = c.mode !== 'walk' && c.mode !== 'approach', bob = c.mode === 'walk' || c.mode === 'approach' ? Math.sin(t / 110) * 2 : 0;
+    ctx.fillStyle = '#f2c79a'; ctx.strokeStyle = '#a8764e'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.ellipse(-4, sitting ? -24 : -20 + bob, sitting ? 20 : 30, sitting ? 22 : 15, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); // body
+    const tail = Math.sin(t / (c.mode === 'play' ? 120 : 400)) * 10;
+    ctx.beginPath(); ctx.moveTo(-26, -18); ctx.quadraticCurveTo(-46, -30 + tail, -40, -50 + tail); ctx.stroke(); // tail
+    const hy = sitting ? -50 : -34 + bob;
+    ctx.beginPath(); ctx.arc(18, hy, 14, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); // head
+    ctx.beginPath(); ctx.moveTo(8, hy - 9); ctx.lineTo(10, hy - 22); ctx.lineTo(17, hy - 12); ctx.moveTo(22, hy - 12); ctx.lineTo(29, hy - 22); ctx.lineTo(29, hy - 8); ctx.fill(); ctx.stroke(); // ears
+    ctx.fillStyle = '#4a3a3a'; ctx.beginPath(); ctx.arc(14, hy - 1, 1.8, 0, Math.PI * 2); ctx.arc(23, hy - 1, 1.8, 0, Math.PI * 2); ctx.fill();
+    if (c.mode === 'play') { const up = Math.max(0, Math.sin(t / 160)) * 14; ctx.fillStyle = '#f2c79a'; ctx.beginPath(); ctx.ellipse(26, -18 - up, 5, 8, -.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); } // paw swipe
+    ctx.restore();
+    ctx.font = '600 14px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#3b2d4bcc'; ctx.beginPath(); ctx.roundRect(x - 20, y - 92 * sc - 10, 40, 20, 10); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText('임시', x, y - 92 * sc + 5);
+  }
 
   function draw(ctx: CanvasRenderingContext2D, view: { w: number; h: number; dpr: number }, map: WorldMapDef, bg: HTMLImageElement, s: WorldState, walkMs: number, reduced: boolean) {
     const scale = Math.max(view.h / WORLD_H, view.w / WORLD_W);
@@ -232,22 +385,31 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       ctx.fillStyle = '#7a5aa333'; ctx.beginPath(); ctx.ellipse(n.x, n.y, 44, 15, 0, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#f5ecff'; ctx.lineWidth = 3; ctx.setLineDash([8, 7]); ctx.stroke(); ctx.setLineDash([]);
     }
+    const roomT = performance.now();
+    let playerBox: [number, number, number, number] | null = null;
     // player
     const h = miniHeight(map, s.y);
+    const catObj = roomSpots[map.id] ? cat.current : null;
+    if (catObj && catObj.y < s.y) drawCat(ctx, map, catObj, roomT);
     ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(s.x, s.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill();
     const m = miniManifest.current, sheet = miniSheet.current;
     if (m && sheet) {
       // One complete frame at its manifest rect, feet on (x, y), uniform scale; idleFrame when not actually moving.
       const { entry, rect } = frameFor(m, lookRef.current, s.direction as MiniDirection, moving.current, walkMs, reduced);
-      const { dx, dy, dw, dh } = miniPlacement(entry, rect, s.x, s.y, h);
+      const nudge = fx.current?.kind === 'touch' ? Math.sin(Math.min(1, (roomT - fx.current.start) / (fx.current.until - fx.current.start)) * Math.PI) * 6 : 0; // reaches toward the wardrobe
+      const { dx, dy, dw, dh } = miniPlacement(entry, rect, s.x, s.y - nudge, h);
       ctx.drawImage(sheet, rect[0], rect[1], rect[2], rect[3], dx, dy, dw, dh);
+      playerBox = [dx, dy, dw, dh];
     }
+    if (catObj && catObj.y >= s.y) drawCat(ctx, map, catObj, roomT);
     // foreground parts of the art that stand in front of the player
     for (const o of map.occluders) {
       if (s.y >= o.baseY) continue;
       ctx.save(); ctx.beginPath(); o.poly.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.clip();
       ctx.drawImage(bg, 0, 0, WORLD_W, WORLD_H); ctx.restore();
     }
+    // room effects go above furniture fronts (water on the shelf plants, window light), never over the player herself
+    if (roomSpots[map.id]) { drawRoomBack(ctx, roomT, playerBox); drawRoomFront(ctx, s, h, roomT); }
     // NPC badges (portrait circle + name). NPC minis are not made yet.
     for (const n of map.npcs) {
       const p = people[n.person], img = image(p.art);
