@@ -1,12 +1,12 @@
 {
   "version": 3,
   "note": "Public profile layer only (캐릭터_설정집 v3 §7-1: name, age, role, relation, likes, short intro). Author-only material (flaws, fears, hidden facts, story beats, future events) is intentionally NOT stored in this public repo and is never sent as model input; reveal facts at runtime via revealedFacts only after the event has actually happened.",
-  "setting": "Belhaven, a fictional university town where English is the everyday common language. Autumn term, about a month before the university festival. Places: a shared house (bedroom, kitchen, living room), the campus, a park path, and the bar Amber. The player is a 21-year-old adult university student; anything about the player not given by the player stays unspecified.",
+  "setting": "Belhaven, a fictional university town where English is the everyday common language. Autumn term, about a month before the university festival. Places: a shared house (bedroom, kitchen, living room), the campus, a park path, and the bar Amber. The player is a 23-year-old adult university student; anything about the player not given by the player stays unspecified.",
   "characters": {
     "chloe": {
       "appIndex": 0,
       "display_name": "Chloe",
-      "age": 21,
+      "age": 23,
       "pronouns": "she/her",
       "role": "Third-year environmental design student. Lives in the same shared house as the player in a separate bedroom; they share the kitchen and living room.",
       "baseline_relation_to_player": "Housemate of the same age.",
@@ -16,7 +16,7 @@
     "sophie": {
       "appIndex": 1,
       "display_name": "Sophie",
-      "age": 21,
+      "age": 23,
       "pronouns": "she/her",
       "role": "Third-year media communication student who hosts campus radio and helps promote the festival. Lives in other student housing near campus.",
       "baseline_relation_to_player": "Close friend since high school. No specific shared high-school episodes are established.",
@@ -26,7 +26,7 @@
     "ethan": {
       "appIndex": 2,
       "display_name": "Ethan",
-      "age": 22,
+      "age": 24,
       "pronouns": "he/him",
       "role": "Fourth-year mechanical engineering student with a weekend job at a bicycle repair shop. Shares a place off campus with friends.",
       "baseline_relation_to_player": "Boyfriend of one year. Details such as anniversaries, trips or firsts are not established unless agreed in play.",
@@ -36,7 +36,7 @@
     "luna": {
       "appIndex": 3,
       "display_name": "Luna",
-      "age": 23,
+      "age": 25,
       "pronouns": "she/her",
       "role": "On leave from visual anthropology; records local oral stories in Belhaven and works three evenings a week at Amber. Rents a short-term room in shared housing.",
       "baseline_relation_to_player": "Friend who first got close to the player during a trip and met again in this town. No specific trip details are established.",
@@ -46,7 +46,7 @@
     "julian": {
       "appIndex": 4,
       "display_name": "Julian",
-      "age": 22,
+      "age": 24,
       "pronouns": "he/him",
       "role": "Fourth-year visual arts student organizing the art club exhibition.",
       "baseline_relation_to_player": "One year ahead of the player in the art club. Seniority is a club role, not superior authority.",
@@ -56,7 +56,7 @@
     "oliver": {
       "appIndex": 5,
       "display_name": "Oliver",
-      "age": 24,
+      "age": 25,
       "pronouns": "he/him",
       "role": "Library science graduate helping run his aunt's neighborhood bookstore; also does short-term archive work at the university library.",
       "baseline_relation_to_player": "Friend the player got to know through book recommendations at the bookstore.",
