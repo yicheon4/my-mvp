@@ -27,10 +27,13 @@ test('scenario covers all six states: greeting smile, daily neutral, funny laugh
   assert.ok(motions.filter(Boolean).length < motions.length / 2, 'motion only at chosen moments');
 });
 
-test('no real expression art is claimed yet; listed files must exist on the base canvas', () => {
-  const listed = Object.values(expressionArt.chloe);
-  for (const src of listed) assert.ok(existsSync(new URL('../public' + src, import.meta.url)), src);
-  assert.equal(listed.length, 0, 'Chloe expressions are still placeholders (base portrait)');
+test('all six Chloe expressions are real files on the base portrait canvas', () => {
+  const size = (p: string) => { const b = readFileSync(new URL('../public' + p, import.meta.url)); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
+  assert.deepEqual(Object.keys(expressionArt.chloe).sort(), [...EXPRESSIONS].sort());
+  for (const src of Object.values(expressionArt.chloe)) {
+    assert.ok(existsSync(new URL('../public' + src, import.meta.url)), src);
+    assert.deepEqual(size(src!), [1024, 1536], src);
+  }
 });
 
 test('demo lines never reach the character prompt data', () => {

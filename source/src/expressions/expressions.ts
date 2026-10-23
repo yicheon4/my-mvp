@@ -11,13 +11,17 @@ export type Motion = typeof MOTIONS[number];
 export const normalizeExpression = (x: unknown): Expression => (EXPRESSIONS as readonly unknown[]).includes(x) ? x as Expression : 'neutral';
 export const normalizeMotion = (x: unknown): Motion | null => (MOTIONS as readonly unknown[]).includes(x) ? x as Motion : null;
 
-/** Real expression art per character. Empty = not made yet → every state shows the base portrait.
- * Add files as /art/expressions/<id>/<state>.webp on the base portrait's canvas, then list them here. */
-// `?exprtest` (verification only) points every state at the standard paths so tests can serve stand-in files;
-// those files are not part of the app.
-const exprTest = typeof location !== 'undefined' && new URLSearchParams(location.search).has('exprtest');
+/** Real expression art per character (each a complete 1024×1536 transparent PNG on the base portrait canvas).
+ * Chloe: PersonaWorld_Chloe_Expressions_v1, derived from the v7 portrait. A state left out shows the base portrait. */
 export const expressionArt: Record<string, Partial<Record<Expression, string>>> = {
-  chloe: exprTest ? Object.fromEntries(EXPRESSIONS.map(e => [e, `/art/expressions/chloe/${e}.webp`])) : {},
+  chloe: {
+    neutral: '/art/expressions/chloe/neutral.png',
+    smile: '/art/expressions/chloe/smile.png',
+    laugh: '/art/expressions/chloe/laugh.png',
+    thinking: '/art/expressions/chloe/thinking.png',
+    concerned: '/art/expressions/chloe/concerned.png',
+    disappointed: '/art/expressions/chloe/disappointed.png',
+  },
 };
 
 export type Choice = { text: string; next: string };
