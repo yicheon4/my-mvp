@@ -84,10 +84,10 @@ test('response checks keep speech and study card apart', () => {
   assert.deepEqual(responseErrors(data.schema, { ...ok, learning_card: { ...card, kind: 'requested_help' } }, { helpRequested: true }), []);
 });
 
-test('no secret keys or model API calls in the client code', () => {
+test('no secret keys or direct model API calls in the client code (only the same-origin server endpoint)', () => {
   const files = readdirSync(new URL('../src/', import.meta.url), { recursive: true }).filter(f => /\.(ts|tsx)$/.test(String(f)));
   for (const f of files) {
     const src = readFileSync(new URL('../src/' + f, import.meta.url), 'utf8');
-    assert.ok(!/sk-ant-|api[_-]?key|anthropic|openai|x-api-key|from ['"][^'"]*characters\/prompt/i.test(src), String(f));
+    assert.ok(!/sk-ant-|AIza[0-9A-Za-z_-]{20}|generativelanguage|x-goog-api-key|x-api-key|anthropic|openai|from ['"][^'"]*characters\/prompt/i.test(src), String(f));
   }
 });
