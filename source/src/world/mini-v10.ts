@@ -9,7 +9,9 @@ export type MiniDirection = 'down' | 'left' | 'right' | 'up';
 export type MiniLook = { name: string; src: string; imageSize: [number, number]; referenceHeight: number; frames: Record<MiniDirection, { rect: [number, number, number, number] }[]> };
 export type MiniManifest = { version: number; directions: MiniDirection[]; fps: number; idleFrame: number; looks: Record<string, MiniLook> };
 
-export const resolveLook = (look: string | undefined, manifest: MiniManifest) => (look && manifest.looks[look] ? look : 'L01');
+// Removed outfits (same list as presets.ts RETIRED_LOOKS) are never drawn or pre-warmed on the map.
+export const RETIRED_MINI: readonly string[] = ['L03', 'L11', 'L12', 'L13'];
+export const resolveLook = (look: string | undefined, manifest: MiniManifest) => (look && manifest.looks[look] && !RETIRED_MINI.includes(look) ? look : 'L01');
 
 // Walk frames play only while the feet really move; standing still (or blocked by a wall) shows idleFrame of the last direction.
 export function frameFor(manifest: MiniManifest, look: string, direction: MiniDirection, moving: boolean, walkMs: number, reducedMotion = false) {
@@ -28,7 +30,7 @@ export function miniPlacement(entry: MiniLook, rect: [number, number, number, nu
 
 // Neighbors to warm up after the selected look is ready (never the whole set up front).
 export function neighborLooks(look: string, manifest: MiniManifest) {
-  const ids = Object.keys(manifest.looks).sort();
+  const ids = Object.keys(manifest.looks).filter(id => !RETIRED_MINI.includes(id)).sort();
   const i = ids.indexOf(resolveLook(look, manifest));
   return [ids[(i + 1) % ids.length], ids[(i - 1 + ids.length) % ids.length]].filter(id => id !== look);
 }

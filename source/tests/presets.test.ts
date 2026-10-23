@@ -68,3 +68,15 @@ test('default is H01/L01/none; saves only the v9 key and keeps old data', () => 
   store.setItem(STORAGE_KEY, JSON.stringify({ head: 'H99', look: 'L03', extra: 'premium-G01' }));
   assert.deepEqual(readSelection(catalog, store), { head: 'H01', look: 'L03', extra: 'none' });
 });
+
+test('removed outfits (L03, L11, L12, L13) are not offered; a saved removed outfit becomes L01', async () => {
+  const { activeCatalog, RETIRED_LOOKS, validateSelection, readSelection } = await import('../src/presets/presets.ts');
+  const { readFileSync } = await import('node:fs');
+  const raw = JSON.parse(readFileSync(new URL('../public/persona-v9/catalog.json', import.meta.url), 'utf8'));
+  const c = activeCatalog(raw);
+  assert.deepEqual(c.looks.map((l: any) => l.id), ['L01', 'L02', 'L04', 'L05', 'L06', 'L07', 'L08', 'L09', 'L10', 'L14', 'L15']);
+  assert.deepEqual([...RETIRED_LOOKS].sort(), ['L03', 'L11', 'L12', 'L13']);
+  for (const id of RETIRED_LOOKS) assert.equal(validateSelection({ head: 'H04', look: id, extra: 'bag' }, c).look, 'L01');
+  const mem = new Map([['persona-world-presets-v9', JSON.stringify({ head: 'H05', look: 'L12', extra: 'necklace' })]]);
+  assert.deepEqual(readSelection(c, { getItem: k => mem.get(k) ?? null, setItem: () => {} }), { head: 'H05', look: 'L01', extra: 'necklace' }, 'head and extra kept');
+});

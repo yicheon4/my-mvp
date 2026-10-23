@@ -8,6 +8,10 @@ export const STORAGE_KEY = 'persona-world-presets-v9';
 export const EXTRAS = ['none', 'necklace', 'bag'] as const;
 export type Extra = typeof EXTRAS[number];
 export type Selection = { head: string; look: string; extra: Extra };
+// Outfits removed from the game (2026-10-24): #3 스트라이프 레이어드, 핑크 가디건, 데님 셋업, 핑크 카고.
+// Their files stay in the copied handoff folders; they are never offered, saved or drawn. A saved removed outfit becomes L01.
+export const RETIRED_LOOKS: readonly string[] = ['L03', 'L11', 'L12', 'L13'];
+export const activeCatalog = (c: Catalog): Catalog => ({ ...c, looks: c.looks.filter(l => !RETIRED_LOOKS.includes(l.id)) });
 export const DEFAULT_SELECTION: Selection = Object.freeze({ head: 'H01', look: 'L01', extra: 'none' }) as Selection;
 
 export type Catalog = {
@@ -59,6 +63,6 @@ export function loadPresetData(fetcher: typeof fetch = fetch) {
   dataPromise ??= Promise.all([
     fetcher(BASE + 'catalog.json').then(r => { if (!r.ok) throw new Error('catalog ' + r.status); return r.json(); }),
     fetcher(BASE + 'manifest.json').then(r => { if (!r.ok) throw new Error('manifest ' + r.status); return r.json(); }),
-  ]).then(([catalog, manifest]) => ({ catalog, manifest })).catch(e => { dataPromise = null; throw e; });
+  ]).then(([catalog, manifest]) => ({ catalog: activeCatalog(catalog), manifest })).catch(e => { dataPromise = null; throw e; });
   return dataPromise;
 }

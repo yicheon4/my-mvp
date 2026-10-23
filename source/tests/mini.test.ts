@@ -52,3 +52,9 @@ test('only neighbors are pre-warmed, not all 15', () => {
   const n = neighborLooks('L01', manifest);
   assert.deepEqual(n.sort(), ['L02', 'L15']);
 });
+
+test('removed outfits are never drawn or pre-warmed on the map', async () => {
+  const { RETIRED_MINI } = await import('../src/world/mini-v10.ts');
+  for (const id of RETIRED_MINI) assert.equal(resolveLook(id, manifest), 'L01');
+  for (const id of Object.keys(manifest.looks)) for (const n of neighborLooks(id, manifest)) assert.ok(!RETIRED_MINI.includes(n), `${id} → ${n}`);
+});
