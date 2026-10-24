@@ -184,7 +184,7 @@ export default function Prototype(){
   <img className="home-background" src={artOf('bedroom')} alt={world.timeOfDay==='day'?'햇살이 드는 나의 방':'불빛이 켜진 밤의 나의 방'}/>
   <div className="home-shade"/>
   <header className="home-header"><div className="wordmark"><Sparkle size={23} weight="thin"/><span>PERSONA WORLD</span></div></header>
-  <div className="home-welcome"><span className="eyebrow">여기는, 나의 작은 세계</span><h1>오늘도 나답게.</h1></div>
+  
   <CharacterFrame className="player-avatar" selection={presetSel} manifest={presetData?.manifest??null} label={characterLabel} dataError={presetError} onRetryData={loadPresets}/>
   <nav className="home-left" aria-label="나의 기록"><button className="home-menu diary-shortcut" onClick={()=>go('notebook')}><BookOpen size={25} weight="thin"/><span>나의 메모장</span>{notes.length>0&&<small>{notes.length}</small>}</button></nav>
   <nav className="home-right" aria-label="나의 캐릭터 꾸미기"><span className="rail-label">MY STYLE</span><button className={`home-menu ${closet?'active':''}`} aria-label="꾸미기 열기" aria-expanded={!!closet} onClick={()=>{keyboard.hide();setClosetFrom('home');setCloset(closet?null:'head');}}><TShirt size={24} weight="thin"/><span>꾸미기</span></button><button className="home-menu" aria-label={world.timeOfDay==='day'?'밤으로 바꾸기':'낮으로 바꾸기'} onClick={()=>setWorld(w=>({...w,timeOfDay:w.timeOfDay==='day'?'night':'day'}))}>{world.timeOfDay==='day'?<Sun size={24} weight="thin"/>:<MoonStars size={24} weight="thin"/>}<span>{world.timeOfDay==='day'?'낮':'밤'}</span></button></nav>
