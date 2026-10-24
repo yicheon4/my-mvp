@@ -86,3 +86,58 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - User explicitly wants female character art to be welcoming to a broad audience and not sexualized. Apply to player avatar, every wardrobe combination, free/locked companions and legacy female assets.
 - Use opaque everyday outfits with high/closed necklines and relaxed fit. Avoid cleavage, tight or shiny fabric outlining breasts, exaggerated chest/waist/hip proportions, short slit skirts or thigh emphasis.
 - Preserve character identity, expressive face, cozy anime style and existing palettes. Visual focus should be on face, expression and personality. New art must follow this preference by default.
+
+## v3 character & world integration (2026-10-15)
+- Direction: cozy life game for meeting people in a foreign language; customization and exploration come before study-style screens. Social features later.
+- Option data lives in `src/world/options-v3.json` (94 options), `maps-v3.json` (W01–W06, day/night), `mini-assets.json` (all sprites `missing`). The full handoff package (reference sheets, spec, starter code) is kept outside the public repo in the workspace `아트_자료/PersonaWorld_v3/`.
+- v3 appearance saves only under `persona-world:appearance:v3` via `src/world/avatar-runtime.ts` (tests: `npm run test:avatar`). Never map `persona-world-look-v1` or v1/v2 package IDs into v3. Keep `persona-world-v1` and `persona-world-look-v1` untouched.
+- No production sprite or background art exists yet. Never substitute shapes or another look for a missing part. Options without art stay selectable with a visible "그림 준비 중" label while the map keeps the last fully drawn look.
+- Before mini art exists, map movement/collision may be developed with a dev marker clearly labeled 임시 표시; it is never presented as the avatar.
+- Home keeps the current portrait and old wardrobe until v3 portrait art is ready. Option thumbnails may be cropped from reference sheets without labels or decorative text.
+- Map rendering uses plain Canvas 2D with the avatar runtime; no Phaser/game library for now.
+
+## v7 approved art & connected world (2026-10-17, supersedes v3 notes where they conflict)
+- Approved art lives in `public/art/v7/` (WebP converted from the v7 handoff; originals stay outside the repo): 3 complete player looks (lavender / pink-cargo / white-denim, not layered), 6 NPC portraits, 6 spaces × day/night maps, 1 fixed-appearance default walk sheet. Old anime-style art stays only for legacy sessions/old look key.
+- Home shows the selected complete look; the wardrobe offers only these 3 looks. Free per-part customization (94-option catalog) stays unimplemented until common-rig assets exist; never cut and stack catalog sheets.
+- `src/world/world-data.ts` holds walk polygons, furniture blocks, foreground occluders, portals, spawns, NPC spots and perspective scale, all in 1536×1024 image pixels; day and night share geometry. Verify coordinates with `?worlddebug` (draws zones). `src/world/world-engine.ts` holds pure collision/portal/save logic (`npm run test:world`).
+- World save: `persona-world:world:v1` {mapId, x, y, direction, timeOfDay, lookId}; invalid positions return to the map spawn. Keep `persona-world-v1` and `persona-world-look-v1` untouched.
+- `looks[].mini` stays null until a matching mini sheet exists; the map then shows the default white-tee mini with a visible notice. Never report the default mini as matching a look.
+- NPCs on the map are shown as portrait badges (no NPC minis yet). Talking from the map opens profile → scenes (place pre-selected if a free scene matches) → existing demo chat; leaving returns to the same map spot. Locked NPCs open the paywall preview only.
+
+## v9 complete-character presets (2026-10-17, supersedes the v7 three-look picker and v8 layered parts)
+- My character = {head (7 identities: face+eyes+nose+mouth+brows+hair), look (15 complete outfits incl. shoes), extra (none | necklace | bag, single slot)}. One complete full-body frame per selection from `public/persona-v9/manifest.json` (`sourceRect` per key, never split atlases into thirds, never cut/layer parts, uniform contain scaling only).
+- Files: `public/persona-v9/` (handoff assets, manifest, catalog copied as-is) plus `thumbs/` (downscaled copies only: head cards from identity images, look cards from each head×look `_none` frame). `src/presets/presets.ts` (state/validation/save, `npm run test:presets`), `src/presets/CharacterFrame.tsx` (loading, latest-selection-wins, retry on error, no silent fallback).
+- Saved only under `persona-world-presets-v9`; older look saves are never mapped to a head. 26 premium extras stay locked (disabled, not saved, no art, no price/payment).
+- Home avatar and the customize panel read the same `presetSel` state. Atlases load only for the current head×look; cards use thumbnails.
+- `scripts/export-github-static.py` copies `persona-v9/` as a folder (runtime-relative paths). The single-HTML export cannot embed these 190MB of atlases.
+- The map mini is still the fixed default (white tee/jeans); the map notice states it differs from the selected preset. Per-preset minis are not made.
+
+## v10 map mini (2026-10-18)
+- The map avatar comes from `public/persona-mini-v10/` (15 outfit sheets + manifest, copied as-is). Everyone shares the same face/brown bob; only the outfit follows v9 `selection.look` (shoes included). The v9 head and extra are not shown on the map; their saved values stay untouched.
+- Draw exactly one frame per tick from `manifest.looks[look].frames[direction][index].rect` (never quarter the PNG), feet on (x, y), uniform scale where `referenceHeight` maps to the map's perspective `miniHeight`. `src/world/mini-v10.ts` (`npm run test:mini`).
+- Walk frames advance only when the feet actually move (fps from manifest, 6); idle or blocked shows `idleFrame` (1) of the last direction; reduced motion stays idle.
+- Load the selected outfit first, then warm only its two neighbors. Sheet failure shows an error with retry; never substitute another outfit. Collision, portals, camera and NPC logic are unchanged.
+
+## Chat expressions (2026-10-23, Chloe only)
+- `src/expressions/`: six states (neutral, smile, laugh, thinking, concerned, disappointed). Each state = one complete upper-body image on the base portrait's canvas (`/art/expressions/<id>/<state>.png`, listed in `expressionArt`). Never composite face parts. A missing file or a different canvas size shows the base portrait.
+- Chloe has all six states: `public/art/expressions/chloe/*.png` (PersonaWorld_Chloe_Expressions_v1, 1024×1536 transparent PNG, derived from the v7 portrait; silhouettes, face, hands and mug align within 1 px). PNGs are ~2.2 MB each.
+- `ExpressivePortrait`: preloads the next image and fades it in over the current one (300 ms, two layers, no blank frame); late results are dropped; same image → no transition. Motions `nod` / `tilt` are tiny whole-image effects (Web Animations), once per reply cue, cleared on new chat/navigation, off with reduced motion.
+- Pre-API demo: Chloe's suggested replies follow branches in `chloeDemo`, each reply stating its expression/motion. Free typing never infers emotion (neutral). Demo lines are not Chloe's fixed dialogue or prompt data. Other characters keep the static portrait and old demo replies.
+
+## Sophie free chat (real AI test, 2026-10-23)
+- Entry: map → living room → talk to Sophie → profile → 「거실에서 자유롭게 대화하기 · 실제 AI 시험」. The existing demo chat button stays.
+- Browser (`src/freechat/`) calls only same-origin `POST /api/sophie-chat`. Server core `server/sophie-chat-core.mjs` calls Gemini `generateContent` with the key in the `x-goog-api-key` header; structured output (speech_text, translation_ko, emotion, 3 suggested_replies, learning_card) is validated server-side and errors are reported, never replaced by fake replies.
+- Local: `npm run dev:ai` (port 5185, `vite.ai.config.ts` = protected `vite.config.ts` + dev middleware). Keys in `source/.env.local` (git-ignored; see `.env.local.example`). Hosted: `api/sophie-chat.mjs` is generated by the export script; env vars in Vercel (Preview only). Hosted requires `SOPHIE_INVITE_CODE`.
+- Gemini free tier only; no paid fallback. In-memory limits per session/instance are guards, not guarantees; the free-tier quota (429) is the real ceiling. Chat history lives in sessionStorage of the tab; no long-term memory.
+- Sophie keeps her current portrait; emotion is data only (`data-emotion`), no Chloe art, no TTS.
+
+## Room life actions (2026-10-23, bedroom only)
+- No action buttons or menus. `src/world/room-actions.ts` (pure, `npm run test:room`): small standing spots (chair front, bed side, window gap, wardrobe door, shelf plants) + facing check; stop ~0.6 s (`ROOM_CONFIG.dwellMs`, override via localStorage `persona-world:room-config`) → action. Phases free → waiting → starting (≤90 px alignment, path checked) → active → ending. Movement input never gets overridden; it only ends an action. After any action the spot needs leaving (×1.3 radius) before it can repeat; starting a visit inside a spot also needs leaving first. One action at a time; overlapping spots → closest + most facing.
+- Wardrobe → the existing customize panel (`closetPanel` in Prototype, same selection state) opened over the map on the 착장 tab with 되돌리고 닫기 / 적용. Home panel unchanged. Map actions pause while it is open.
+- Window toggles (persisted `persona-world:room:v1`), light + breeze particles only. Plant: water stream/droplets/leaf sparkles; finished watering saves `lastWateredAt`, 5 min interval; watered → short leaf reaction. Cat: TEMPORARY canvas drawing labelled 임시, wanders on `catPath`, plays only if the player walked up to it.
+- Pose art does not exist (sit/lie/water/play/touch, chair pulled out, open window, curtains, watering can, cat, toy). The mini keeps its standing idle frame (never rotated/squashed); a chip says "· 동작 그림 준비 전".
+
+## Room action art v11 review (2026-10-24, DEV PREVIEW ONLY)
+- PersonaWorld_RoomActions_v11 is a review draft (productionReady=false). Files are copied to git-ignored `public/dev-art/room-v11/` and excluded from export. Enabled only with `import.meta.env.DEV` + `?roomart=v11` (`src/world/room-art-v11.ts`, `npm run test:roomart`).
+- Uses manifest rects + sheet-absolute anchors (frame-local = anchor − rect origin) at the v10 perspective scale; chair-free background + chair_in/out layer; window_open frames; v11 cat. Missing/failed art → normal v10 drawing.
+- Bed hip point is not in the package; preview uses an estimate (705, 405). Review + art-fix list: workspace `아트_자료/RoomActions_v11_검토결과.md`. Do not ship v11 art until revised.

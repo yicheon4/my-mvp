@@ -1,0 +1,363 @@
+{
+  "version": 9,
+  "heads": [
+    {
+      "id": "H01",
+      "name": "소프트 웨이브",
+      "desc": "same reference identity: soft oval face, warm almond brown eyes, softly arched eyebrows, small straight nose, softly full natural pink lips, shoulder-length chestnut wavy bob, tiny lavender flower hair clip"
+    },
+    {
+      "id": "H02",
+      "name": "시크 블랙 보브",
+      "desc": "distinct beautiful adult East Asian identity, softly squared jaw with elegant rounded corners, narrow upturned dark almond eyes, straight thick brows, defined straight nose, medium bow lips, glossy black chin-length blunt bob with a side part, no bangs, no hair accessories"
+    },
+    {
+      "id": "H03",
+      "name": "로지 라운드",
+      "desc": "distinct beautiful adult identity, pretty rounded face with soft full cheeks and well-defined chin, large round hazel eyes, gently curved brows, petite softly upturned nose, small rosebud lips, long copper-auburn loose waves and airy curtain bangs"
+    },
+    {
+      "id": "H04",
+      "name": "클래식 스트레이트",
+      "desc": "distinct beautiful adult East Asian identity, refined elongated oval face, serene narrow monolid dark eyes, straight brows, long elegant straight nose, balanced thin-to-medium lips, very long straight espresso hair centre part"
+    },
+    {
+      "id": "H05",
+      "name": "브라이트 포니",
+      "desc": "distinct beautiful adult identity, heart-shaped face with subtle cheekbones, lively round-upturned green eyes, high soft brows, short rounded nose, wide smiling lips, dark blonde high ponytail with soft face framing strands"
+    },
+    {
+      "id": "H06",
+      "name": "내추럴 컬",
+      "desc": "distinct beautiful adult Black woman, rich medium-deep brown skin, softly sculpted diamond face, wide deep brown almond eyes, softly angled full eyebrows, beautiful broad rounded nose and full lips, shoulder-length natural dark curly hair, relaxed gentle smile"
+    },
+    {
+      "id": "H07",
+      "name": "엘레강트 번",
+      "desc": "distinct beautiful adult South Asian woman, warm medium tan skin, gently angular oval face, expressive hooded brown eyes, defined curved eyebrows, gently aquiline nose, balanced full lips, dark low bun with loose face framing strands"
+    }
+  ],
+  "looks": [
+    {
+      "id": "L01",
+      "name": "화이트 데님",
+      "desc": "relaxed white crewneck T-shirt tucked into high-waisted light-blue wide straight jeans, clean white low-top sneakers",
+      "reference": "기본"
+    },
+    {
+      "id": "L02",
+      "name": "프레피 피나포어",
+      "desc": "powder-blue collared shirt with small black ribbon under charcoal pleated pinafore dress ending just above knees, gray ribbed socks, black Mary Jane flats",
+      "reference": "1"
+    },
+    {
+      "id": "L03",
+      "name": "스트라이프 레이어드",
+      "desc": "beige cardigan over blue-white striped collared shirt, matching blue striped knee-length A-line skirt, brown leather loafers",
+      "reference": "2"
+    },
+    {
+      "id": "L04",
+      "name": "네이비 체크",
+      "desc": "navy short sleeve mockneck knit with beige plaid sleeve cuffs, beige plaid knee-length pleated skirt with brown belt, brown suede slouch boots",
+      "reference": "3"
+    },
+    {
+      "id": "L05",
+      "name": "버터 데님",
+      "desc": "butter-yellow short sleeve ruched blouse, blue knee-length denim skirt with brown wide belt, brown suede boots",
+      "reference": "4"
+    },
+    {
+      "id": "L06",
+      "name": "블루 브라운 헨리",
+      "desc": "powder-blue and chocolate brown striped short sleeve henley, dark denim Bermuda shorts, brown flat sandals",
+      "reference": "5"
+    },
+    {
+      "id": "L07",
+      "name": "핑크 리본",
+      "desc": "ivory long sleeve top layered over pale pink neckline, pale pink pleated skirt ending above knee, white socks, pink bow ballet flats",
+      "reference": "6"
+    },
+    {
+      "id": "L08",
+      "name": "라임 캐주얼",
+      "desc": "lime cropped blazer over white crewneck shirt, blue capri jeans with white belt, simple gold low heeled sandals",
+      "reference": "8"
+    },
+    {
+      "id": "L09",
+      "name": "모노 스트라이프",
+      "desc": "black-white striped three-quarter sleeve top covering waist, black wide flare jeans, black low-top sneakers",
+      "reference": "9"
+    },
+    {
+      "id": "L10",
+      "name": "시티 블랙",
+      "desc": "black structured button jacket over white inner, very dark blue wide flare jeans, black square toe ankle boots",
+      "reference": "13"
+    },
+    {
+      "id": "L11",
+      "name": "핑크 가디건",
+      "desc": "soft pink button cardigan over ivory crewneck, light blue wide jeans, ivory Mary Jane flats",
+      "reference": "14"
+    },
+    {
+      "id": "L12",
+      "name": "데님 셋업",
+      "desc": "blue denim jacket over ivory crewneck top, matching blue denim knee-length skirt with brown belt, brown suede slouch boots",
+      "reference": "16"
+    },
+    {
+      "id": "L13",
+      "name": "핑크 카고",
+      "desc": "loose dusty pink long sleeve top, gray-olive camouflage Bermuda cargo shorts, white crew socks, black chunky sneakers",
+      "reference": "20"
+    },
+    {
+      "id": "L14",
+      "name": "블루 깅엄",
+      "desc": "blue-white gingham dress with short puff sleeves, white rounded collar and small red bow, skirt ending just above knees, white socks, burgundy Mary Jane shoes",
+      "reference": "21"
+    },
+    {
+      "id": "L15",
+      "name": "레드 유틸리티",
+      "desc": "burgundy red knit sweater over blue striped collared shirt with visible hem, olive relaxed cargo trousers, red flat shoes",
+      "reference": "22"
+    }
+  ],
+  "defaultSelection": {
+    "head": "H01",
+    "look": "L01",
+    "extra": "none"
+  },
+  "extraSelectionMode": "single",
+  "extras": [
+    {
+      "id": "none",
+      "name": "미착용",
+      "locked": false
+    },
+    {
+      "id": "necklace",
+      "name": "하트 목걸이",
+      "locked": false
+    },
+    {
+      "id": "bag",
+      "name": "아이보리 핸드백",
+      "locked": false
+    },
+    {
+      "id": "premium-B01",
+      "legacyId": "B01",
+      "name": "아이보리 캔버스 토트",
+      "category": "bag",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-B02",
+      "legacyId": "B02",
+      "name": "브라운 숄더백",
+      "category": "bag",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-B03",
+      "legacyId": "B03",
+      "name": "핑크 리본백",
+      "category": "bag",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-B04",
+      "legacyId": "B04",
+      "name": "아이보리 체인백",
+      "category": "bag",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-B05",
+      "legacyId": "B05",
+      "name": "버건디 보스턴백",
+      "category": "bag",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-B06",
+      "legacyId": "B06",
+      "name": "블랙 미니 백팩",
+      "category": "bag",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-G01",
+      "legacyId": "G01",
+      "name": "블랙 슬림 오벌",
+      "category": "glasses",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-G02",
+      "legacyId": "G02",
+      "name": "브라운 사각",
+      "category": "glasses",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-G03",
+      "legacyId": "G03",
+      "name": "블랙 오버사이즈",
+      "category": "glasses",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-G04",
+      "legacyId": "G04",
+      "name": "핑크 캣아이",
+      "category": "glasses",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-G05",
+      "legacyId": "G05",
+      "name": "실버 오벌",
+      "category": "glasses",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-G06",
+      "legacyId": "G06",
+      "name": "토터스 라운드",
+      "category": "glasses",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-A01",
+      "legacyId": "A01",
+      "name": "핑크 볼캡",
+      "category": "hat",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-A02",
+      "legacyId": "A02",
+      "name": "데님 볼캡",
+      "category": "hat",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-A03",
+      "legacyId": "A03",
+      "name": "블랙 뉴스보이",
+      "category": "hat",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-A04",
+      "legacyId": "A04",
+      "name": "브라운 코듀로이 뉴스보이",
+      "category": "hat",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-A05",
+      "legacyId": "A05",
+      "name": "아이보리 버킷햇",
+      "category": "hat",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-A06",
+      "legacyId": "A06",
+      "name": "라벤더 비니",
+      "category": "hat",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N01",
+      "legacyId": "N01",
+      "name": "블랙 코드 십자가 펜던트",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N02",
+      "legacyId": "N02",
+      "name": "핑크 리본 하트 초커",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N03",
+      "legacyId": "N03",
+      "name": "실버 별 레이어드 체인",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N04",
+      "legacyId": "N04",
+      "name": "핑크 나비 목걸이",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N05",
+      "legacyId": "N05",
+      "name": "컬러 비즈 목걸이",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N06",
+      "legacyId": "N06",
+      "name": "퍼플 보석 펜던트",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N07",
+      "legacyId": "N07",
+      "name": "진주 하트 레이어드",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    },
+    {
+      "id": "premium-N08",
+      "legacyId": "N08",
+      "name": "블랙 코드 실버 오벌 펜던트",
+      "category": "necklace",
+      "locked": true,
+      "artStatus": "not-included"
+    }
+  ]
+}

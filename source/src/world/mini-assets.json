@@ -1,0 +1,788 @@
+{
+  "status": "not_production_ready",
+  "atlasSpec": {
+    "width": 1024,
+    "height": 1024,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 4,
+    "rows": [
+      "down",
+      "left",
+      "right",
+      "up"
+    ]
+  },
+  "registry": {
+    "body/S01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "body/S02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "body/S03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "body/S04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "body/S05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "body/S06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "face/F01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "face/F02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "face/F03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "face/F04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "face/F05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "face/F06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "eyes/E01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "eyes/E02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "eyes/E03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "eyes/E04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "eyes/E05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "eyes/E06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T07": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T08": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T09": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T10": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T11": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "top/T12": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P07": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P08": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P09": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P10": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P11": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "pants/P12": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "outfit/D01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "outfit/D02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "outfit/D03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "outfit/D04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "outfit/D05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "outfit/D06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q07": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "shoes/Q08": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "bag/B01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "bag/B02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "bag/B03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "bag/B04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "bag/B05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "bag/B06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "glasses/G01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "glasses/G02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "glasses/G03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "glasses/G04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "glasses/G05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "glasses/G06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hat/A01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hat/A02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hat/A03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hat/A04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hat/A05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hat/A06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N07": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "necklace/N08": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H01/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H01/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H01/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H01/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H01/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H01/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H01/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H01/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H01/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H01/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H01/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H01/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H02/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H02/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H02/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H02/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H02/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H02/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H02/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H02/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H02/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H02/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H02/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H02/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H03/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H03/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H03/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H03/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H03/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H03/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H03/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H03/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H03/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H03/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H03/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H03/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H04/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H04/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H04/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H04/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H04/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H04/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H04/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H04/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H04/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H04/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H04/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H04/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H05/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H05/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H05/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H05/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H05/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H05/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H05/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H05/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H05/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H05/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H05/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H05/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H06/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H06/C01": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H06/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H06/C02": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H06/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H06/C03": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H06/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H06/C04": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H06/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H06/C05": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-front/H06/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    },
+    "hair-back/H06/C06": {
+      "url": null,
+      "status": "missing",
+      "zByDirection": null
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "speech_text",
+    "emotion",
+    "gesture",
+    "learning_card"
+  ],
+  "properties": {
+    "speech_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emotion": {
+      "type": "string",
+      "enum": [
+        "neutral",
+        "warm",
+        "playful",
+        "curious",
+        "concerned",
+        "disappointed",
+        "firm"
+      ]
+    },
+    "gesture": {
+      "type": "string",
+      "enum": [
+        "neutral",
+        "small_nod",
+        "slight_smile",
+        "thoughtful",
+        "bright_smile",
+        "small_wave",
+        "look_around",
+        "gentle_smile",
+        "head_tilt"
+      ]
+    },
+    "learning_card": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "original",
+            "suggestion",
+            "explanation_ko",
+            "register_note_ko"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "correction",
+                "alternative",
+                "requested_help"
+              ]
+            },
+            "original": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "suggestion": {
+              "type": "string"
+            },
+            "explanation_ko": {
+              "type": "string"
+            },
+            "register_note_ko": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

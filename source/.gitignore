@@ -3,3 +3,12 @@ dist/
 test-results/
 playwright-report/
 qa/
+
+# secrets: never commit API keys
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# draft art for the dev-only preview (?roomart=v11); never committed or deployed
+public/dev-art/

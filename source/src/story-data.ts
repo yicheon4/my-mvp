@@ -1,27 +1,31 @@
-export type StoryScene={title:string;place:string;detail:string;art:string;opening:string;translation:string;locked:boolean};
-export type Person={name:string;en:string;art:string;relation:string;trait:string;description:string;quote:string;tags:string[];locked:boolean};
+import { portraits, mapArt } from './world/world-data';
+import type { MapId } from './world/world-data';
+export type StoryScene={title:string;place:string;detail:string;art:string;mapId:MapId;opening:string;translation:string;locked:boolean};
+// id matches characters/character-prompts.json; the array order is the saved session index and must not change.
+// description = public intro from 캐릭터_설정집 v3. No quote/catchphrase field: character voice comes from style prompts, not fixed lines.
+export type Person={id:'chloe'|'sophie'|'ethan'|'luna'|'julian'|'oliver';name:string;en:string;art:string;relation:string;role:string;trait:string;description:string;tags:string[];locked:boolean};
 export const people:Person[]=[
- {name:'클로이',en:'CHLOE',art:'/art/chloe.png',relation:'대학교 룸메이트',trait:'다정한 현실주의자',description:'같은 기숙사 방을 쓰는 동갑내기 친구. 말없이 따뜻한 차를 건네고, 네가 준비될 때까지 기다려 줘. 함께 사는 만큼 작은 습관도 솔직하게 조율하는 사이야.',quote:'You don’t have to have it all together.',tags:['같은 방, 다른 하루','차분한 공감','함께 사는 친구'],locked:false},
- {name:'소피',en:'SOPHIE',art:'/art/sophie.png',relation:'고등학교 절친',trait:'내 마음을 먼저 알아채는',description:'고등학교 시절부터 네 흑역사와 꿈을 함께 나눈 친구. 장난스럽게 긴장을 풀어 주지만, 중요한 순간에는 누구보다 진지하게 네 편이 되어 줘.',quote:'You know you can be yourself with me.',tags:['오래된 우리','유쾌한 솔직함','설명하지 않아도'],locked:false},
- {name:'이든',en:'ETHAN',art:'/art/ethan.png',relation:'연애한 지 1년 된 남자친구',trait:'서두르지 않는 다정함',description:'네 취향과 표정을 조금씩 배워 온 1년의 연인. 작은 약속을 소중히 여기고, 서로 다른 마음도 대화로 알아가려 해. 서운함도 바람도 편하게 말해 봐.',quote:'I want to understand how you really feel.',tags:['함께한 1년','서로의 속도','다정한 연인'],locked:false},
- {name:'루나',en:'LUNA',art:'/art/luna.png',relation:'여행에서 만난 친구',trait:'낯선 곳에서도 나답게',description:'혼자 떠난 여행에서 우연히 가까워진 친구. 새로운 경험을 좋아하지만 너의 속도도 존중해. 익숙한 일상 밖에서 다른 나를 발견하게 해 줘.',quote:'Where would you go if you weren’t afraid?',tags:['새로운 시선','여행의 우연','자유로운 대화'],locked:true},
- {name:'줄리언',en:'JULIAN',art:'/art/julian.png',relation:'예술 동아리 선배',trait:'좋은 질문을 건네는',description:'작업 이야기를 하다 자연스럽게 고민을 나누게 된 선배. 답을 정해 주기보다 네가 원하는 것을 찾도록 차분히 질문해 줘.',quote:'What would you make, just for yourself?',tags:['취향을 나누는 사이','차분한 호기심','나만의 방향'],locked:true},
- {name:'올리버',en:'OLIVER',art:'/art/oliver.png',relation:'동네 서점에서 사귄 친구',trait:'이야기를 오래 기억하는',description:'자주 가는 서점에서 책을 추천받다 친해진 친구. 네가 지나가듯 한 말을 기억하고, 책 속 한 문장에서 대화를 시작해.',quote:'Some stories stay with us, don’t they?',tags:['책으로 이어진 사이','조용한 유머','느긋한 오후'],locked:true},
+ {id:'chloe',name:'클로이',en:'CHLOE',art:portraits.chloe,relation:'같은 집 룸메이트',role:'23세 · 환경디자인 3학년',trait:'다정한 현실주의자',description:'같은 쉐어하우스에 사는 동갑내기 룸메이트. 말보다 행동으로 마음을 전한다. 냉장고에는 날짜를 써두지만, 자기 마음에는 좀처럼 이름을 붙이지 못한다.',tags:['같은 집, 다른 하루','차분한 공감','함께 사는 친구'],locked:false},
+ {id:'sophie',name:'소피',en:'SOPHIE',art:portraits.sophie,relation:'고등학교 절친',role:'23세 · 미디어커뮤니케이션 3학년 · 캠퍼스 라디오',trait:'내 마음을 먼저 알아채는',description:'고등학교 때부터 알던 절친. 조용한 모임도 금세 떠들썩하게 만든다. 네가 웃는 이유는 잘 알지만, 자신이 웃지 않을 때 어떻게 보여야 할지는 아직 서툴다.',tags:['오래된 우리','유쾌한 솔직함','설명하지 않아도'],locked:false},
+ {id:'ethan',name:'이든',en:'ETHAN',art:portraits.ethan,relation:'연애한 지 1년 된 남자친구',role:'24세 · 기계공학 4학년 · 자전거 수리점 아르바이트',trait:'서두르지 않는 다정함',description:'교제한 지 1년 된 남자친구. 좋아하는 메뉴와 자주 걷는 길을 기억한다. 다정한 대답 뒤에 자기 생각을 잠시 미뤄두는 버릇이 있다.',tags:['함께한 1년','서로의 속도','다정한 연인'],locked:false},
+ {id:'luna',name:'루나',en:'LUNA',art:portraits.luna,relation:'여행에서 만난 친구',role:'25세 · 시각인류학 휴학 · 지역 이야기 기록',trait:'낯선 곳에서도 나답게',description:'여행 중 우연히 친해진 뒤 이 도시에서 다시 만난 친구. 낯선 골목을 발견하는 감각이 좋다. 다음 목적지는 쉽게 말하면서, 다음 주의 약속에는 잠시 망설인다.',tags:['새로운 시선','여행의 우연','자유로운 대화'],locked:true},
+ {id:'julian',name:'줄리언',en:'JULIAN',art:portraits.julian,relation:'예술 동아리 선배',role:'24세 · 시각예술 4학년 · 동아리 전시 총괄',trait:'좋은 질문을 건네는',description:'예술 동아리의 한 학년 선배. 네가 무심코 고른 색에서도 이야깃거리를 찾는다. 좋은 질문을 건네지만, 자기 작품의 제목을 물으면 대답이 길어진다.',tags:['취향을 나누는 사이','차분한 호기심','나만의 방향'],locked:true},
+ {id:'oliver',name:'올리버',en:'OLIVER',art:portraits.oliver,relation:'동네 서점에서 사귄 친구',role:'25세 · 문헌정보학 졸업 · 가족 서점 운영 보조',trait:'이야기를 오래 기억하는',description:'동네 서점에서 책을 추천받다 친해진 친구. 네가 고른 책은 잘 기억하지만 자기 추천이 늘 맞는다고 생각하지는 않는다. 조용한 얼굴로 엉뚱한 농담을 한다.',tags:['책으로 이어진 사이','조용한 유머','느긋한 오후'],locked:true},
 ];
-const art={cafe:'/art/scene-cafe.png',campus:'/art/scene-campus.png',park:'/art/scene-park.png',kitchen:'/art/scene-kitchen.png',seaside:'/art/scene-seaside.png',street:'/art/scene-street.png',terrace:'/art/scene-terrace.png',room:'/art/home-evening.png',sun:'/art/home-sunset.png'};
+const art={cafe:'bar',campus:'campus',park:'park',kitchen:'kitchen',seaside:'park',street:'campus',terrace:'living-room',room:'bedroom',sun:'living-room'} satisfies Record<string,MapId>;
 type Row=[string,string,string,keyof typeof art,string,string];
-function make(rows:Row[]):StoryScene[]{return rows.map((r,i)=>({title:r[0],place:r[1],detail:r[2],art:art[r[3]],opening:r[4],translation:r[5],locked:i>=7}));}
+function make(rows:Row[]):StoryScene[]{return rows.map((r,i)=>({title:r[0],place:r[1],detail:r[2],art:mapArt[art[r[3]]].day,mapId:art[r[3]],opening:r[4],translation:r[5],locked:i>=7}));}
 export const stories:StoryScene[][]=[make([
- ['함께 요리하는 저녁','기숙사 공용 주방','파스타를 만들며 오늘 유독 지쳤던 이유를 꺼내 봐.','kitchen','You’ve been quiet today. Want to tell me about it while we cook?','오늘 조용하네. 같이 요리하면서 무슨 일 있었는지 말해 줄래?'],
- ['불 끄기 전, 작은 고민','우리 기숙사 방','쉽게 잠들지 못하는 밤, 머릿속에서 맴도는 생각을 나눠.','room','Still awake? Is something keeping you up?','아직 안 자? 무슨 생각 때문에 잠이 안 와?'],
+ ['함께 요리하는 저녁','쉐어하우스 공용 주방','파스타를 만들며 오늘 유독 지쳤던 이유를 꺼내 봐.','kitchen','You’ve been quiet today. Want to tell me about it while we cook?','오늘 조용하네. 같이 요리하면서 무슨 일 있었는지 말해 줄래?'],
+ ['불 끄기 전, 작은 고민','쉐어하우스, 내 방 문 앞','쉽게 잠들지 못하는 밤, 머릿속에서 맴도는 생각을 나눠.','room','Still awake? Is something keeping you up?','아직 안 자? 무슨 생각 때문에 잠이 안 와?'],
  ['과제에 치인 오후','도서관 스터디 라운지','과제와 시험이 겹쳐 버거운 마음을 솔직하게 전해 봐.','campus','You look overwhelmed. What’s the hardest part right now?','많이 벅차 보여. 지금 가장 힘든 건 뭐야?'],
- ['서로의 생활 리듬','기숙사 소파','소음이나 청소처럼 함께 살며 생긴 작은 불편을 부드럽게 말해.','room','Can we talk about how to make our room work for both of us?','우리 둘 다 편하게 지내려면 어떻게 하면 좋을지 얘기해 볼까?'],
+ ['서로의 생활 리듬','쉐어하우스 거실 소파','소음이나 청소처럼 함께 살며 생긴 작은 불편을 부드럽게 말해.','room','Can we talk about how to make our room work for both of us?','우리 둘 다 편하게 지내려면 어떻게 하면 좋을지 얘기해 볼까?'],
  ['수업 끝, 커피 한 잔','캠퍼스 앞 카페','새 수업에서 어색했던 순간과 친구를 사귀고 싶은 마음을 나눠.','cafe','How did that new class go? Did you get to talk to anyone?','새 수업은 어땠어? 누구랑 이야기해 봤어?'],
  ['집이 그리운 날','동네 산책길','낯선 환경에서 문득 밀려온 외로움과 향수병을 털어놔.','park','What do you miss most about home today?','오늘은 집에서 뭐가 가장 그리워?'],
- ['편의점 야식 타임','기숙사 앞 편의점','간식을 고르며 이번 주의 작은 성취를 함께 축하해.','street','Tell me one little thing you’re proud of this week.','이번 주에 스스로 뿌듯했던 일 하나만 들려줘.'],
+ ['편의점 야식 타임','집 앞 편의점','간식을 고르며 이번 주의 작은 성취를 함께 축하해.','street','Tell me one little thing you’re proud of this week.','이번 주에 스스로 뿌듯했던 일 하나만 들려줘.'],
  ['처음 부딪힌 마음','늦은 밤 공용 주방','작은 말다툼 뒤, 내 의도를 설명하고 화해의 첫마디를 건네.','kitchen','I think we misunderstood each other. Can we start over?','우리 서로 오해한 것 같아. 다시 이야기해 볼까?'],
  ['비 오는 날의 속마음','창가 소파','남들과 비교하며 작아졌던 마음을 천천히 꺼내 봐.','room','You don’t have to compare yourself to everyone else. What happened?','모두와 너를 비교할 필요는 없어. 무슨 일이 있었어?'],
- ['학기가 끝나기 전에','기숙사 옥상','한 학기를 돌아보며 고마웠던 순간과 다음 학기의 바람을 나눠.','terrace','What’s one thing you want us to remember about this semester?','이번 학기에서 우리가 기억했으면 하는 순간은 뭐야?'],
+ ['학기가 끝나기 전에','쉐어하우스 옥상','한 학기를 돌아보며 고마웠던 순간과 다음 학기의 바람을 나눠.','terrace','What’s one thing you want us to remember about this semester?','이번 학기에서 우리가 기억했으면 하는 순간은 뭐야?'],
 ]),make([
  ['오랜만에 만난 우리','단골 카페','밀린 근황을 나누다가 요즘 진짜 어떤지 솔직하게 이야기해.','cafe','Okay, I’ve heard the updates. How are you really doing?','근황은 들었고, 그래서 너 진짜 어떻게 지내?'],
  ['그때 우리 기억나?','공원 벤치','고등학교 시절의 추억을 떠올리며 달라진 나를 이야기해.','park','Remember how we used to imagine our lives by now?','우리 이맘때쯤 어떻게 살고 있을지 상상하던 거 기억나?'],
@@ -52,3 +56,6 @@ const extra:Row[][]=[
  [['한 권을 고르는 오후','서점 독서 라운지','요즘 마음과 닮은 이야기를 찾아봐.','campus'],['책 속의 문장 하나','서점 옆 카페','오래 기억한 문장이 왜 좋았는지 이야기해.','cafe'],['책을 덮고 걷는 길','동네 공원','이야기를 읽고 달라진 생각을 나눠.','park'],['바쁜 날의 잠깐 쉼','서점 창가','혼자 쉬는 시간이 필요한 이유를 말해.','sun'],['나의 어린 시절 이야기','조용한 독서 공간','어릴 때 좋아했던 것과 지금의 나를 이어 봐.','campus'],['책을 선물하고 싶은 사람','동네 카페','누군가에게 전하고 싶은 마음을 골라 봐.','cafe'],['하루를 닫는 대화','서점 앞 골목','오늘 기억하고 싶은 작은 장면을 나눠.','street'],['이별을 다룬 이야기','비 오는 창가','지나간 관계를 돌아보며 남은 감정을 말해.','room'],['다시 시작하는 용기','노을빛 테라스','실패 뒤 새로운 선택을 하는 마음을 나눠.','terrace'],['내 삶을 책으로 쓴다면','조용한 밤 라운지','지금 내 삶의 장에 제목을 붙여 봐.','campus']].map(r=>[...r,'What does that story bring up for you?','그 이야기는 너에게 어떤 마음을 떠올리게 해?'] as Row)
 ];
 extra.forEach(rows=>stories.push(make(rows)));
+
+// Korean particle 와/과 after a name: 과 when the last syllable has a final consonant (이든과, 줄리언과), else 와 (클로이와).
+export function withAnd(name:string){const c=name.charCodeAt(name.length-1);const hasFinal=c>=0xac00&&c<=0xd7a3&&(c-0xac00)%28!==0;return name+(hasFinal?'과':'와');}

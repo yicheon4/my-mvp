@@ -1,0 +1,591 @@
+{
+  "version": "concept-v3",
+  "assetStatus": "reference_only_not_layered_assets",
+  "categories": [
+    {
+      "key": "skin",
+      "label": "피부색",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "S01",
+          "name": "페어 뉴트럴",
+          "productionAsset": null
+        },
+        {
+          "id": "S02",
+          "name": "라이트 웜 베이지",
+          "productionAsset": null
+        },
+        {
+          "id": "S03",
+          "name": "미디엄 골든",
+          "productionAsset": null
+        },
+        {
+          "id": "S04",
+          "name": "탄 올리브",
+          "productionAsset": null
+        },
+        {
+          "id": "S05",
+          "name": "딥 브라운",
+          "productionAsset": null
+        },
+        {
+          "id": "S06",
+          "name": "딥 에스프레소",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "face",
+      "label": "얼굴 프리셋 (윤곽·코·입·눈썹)",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "F01",
+          "name": "타원형·곧고 좁은 코·얇고 선명한 입술·일자 눈썹",
+          "productionAsset": null
+        },
+        {
+          "id": "F02",
+          "name": "부드러운 라운드·섬세한 코·균형 잡힌 장밋빛 입술·완만한 아치 눈썹",
+          "productionAsset": null
+        },
+        {
+          "id": "F03",
+          "name": "소프트 스퀘어·섬세한 직선 코·큐피드 입술·부드럽게 정돈한 눈썹",
+          "productionAsset": null
+        },
+        {
+          "id": "F04",
+          "name": "하트형·짧고 올라간 코·큐피드 입술·높은 아치 눈썹",
+          "productionAsset": null
+        },
+        {
+          "id": "F05",
+          "name": "긴형·긴 콧대·얇고 넓은 입술·각진 눈썹",
+          "productionAsset": null
+        },
+        {
+          "id": "F06",
+          "name": "다이아몬드형·둥근 코끝·도톰한 아랫입술·짧은 사선 눈썹",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "eyes",
+      "label": "눈모양",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "E01",
+          "name": "동그랗고 크게 열린 눈",
+          "productionAsset": null
+        },
+        {
+          "id": "E02",
+          "name": "가로로 길고 좁은 아몬드형",
+          "productionAsset": null
+        },
+        {
+          "id": "E03",
+          "name": "올라간 눈꼬리",
+          "productionAsset": null
+        },
+        {
+          "id": "E04",
+          "name": "내려간 눈꼬리",
+          "productionAsset": null
+        },
+        {
+          "id": "E05",
+          "name": "무쌍형",
+          "productionAsset": null
+        },
+        {
+          "id": "E06",
+          "name": "윗눈꺼풀이 접힘을 덮는 후디드형",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "hairStyle",
+      "label": "헤어스타일",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "H01",
+          "name": "미디엄 웨이브",
+          "productionAsset": null
+        },
+        {
+          "id": "H02",
+          "name": "긴 생머리",
+          "productionAsset": null
+        },
+        {
+          "id": "H03",
+          "name": "앞머리 단발",
+          "productionAsset": null
+        },
+        {
+          "id": "H04",
+          "name": "하이 포니테일",
+          "productionAsset": null
+        },
+        {
+          "id": "H05",
+          "name": "리본 반묶음",
+          "productionAsset": null
+        },
+        {
+          "id": "H06",
+          "name": "로우 번",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "hairColor",
+      "label": "염색",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "C01",
+          "name": "소프트 블랙",
+          "productionAsset": null
+        },
+        {
+          "id": "C02",
+          "name": "다크 초콜릿",
+          "productionAsset": null
+        },
+        {
+          "id": "C03",
+          "name": "체스트넛 브라운",
+          "productionAsset": null
+        },
+        {
+          "id": "C04",
+          "name": "허니 블론드",
+          "productionAsset": null
+        },
+        {
+          "id": "C05",
+          "name": "체리 오번",
+          "productionAsset": null
+        },
+        {
+          "id": "C06",
+          "name": "애시 라벤더",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "top",
+      "label": "상의",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "T01",
+          "name": "흰 크루넥 티셔츠",
+          "productionAsset": null
+        },
+        {
+          "id": "T02",
+          "name": "블루 브라운 스트라이프 헨리 티",
+          "productionAsset": null
+        },
+        {
+          "id": "T03",
+          "name": "버터옐로 블라우스",
+          "productionAsset": null
+        },
+        {
+          "id": "T04",
+          "name": "아이보리 핑크 레이어드 긴팔",
+          "productionAsset": null
+        },
+        {
+          "id": "T05",
+          "name": "화이트 루즈 오프숄더 니트",
+          "productionAsset": null
+        },
+        {
+          "id": "T06",
+          "name": "흑백 스트라이프 7부 티",
+          "productionAsset": null
+        },
+        {
+          "id": "T07",
+          "name": "핑크 카디건과 흰 이너",
+          "productionAsset": null
+        },
+        {
+          "id": "T08",
+          "name": "네이비 블루 하이넥 민소매",
+          "productionAsset": null
+        },
+        {
+          "id": "T09",
+          "name": "화이트 핑크 그래픽 티",
+          "productionAsset": null
+        },
+        {
+          "id": "T10",
+          "name": "블러시 핑크 사이드타이 긴팔",
+          "productionAsset": null
+        },
+        {
+          "id": "T11",
+          "name": "블루 스트라이프 셔츠와 흰 이너",
+          "productionAsset": null
+        },
+        {
+          "id": "T12",
+          "name": "버건디 니트와 스트라이프 셔츠",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "pants",
+      "label": "바지",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "P01",
+          "name": "중청 스트레이트 진",
+          "productionAsset": null
+        },
+        {
+          "id": "P02",
+          "name": "진청 플레어 진",
+          "productionAsset": null
+        },
+        {
+          "id": "P03",
+          "name": "연청 와이드 진",
+          "productionAsset": null
+        },
+        {
+          "id": "P04",
+          "name": "올리브 카고 팬츠",
+          "productionAsset": null
+        },
+        {
+          "id": "P05",
+          "name": "핑크 드로스트링 팬츠",
+          "productionAsset": null
+        },
+        {
+          "id": "P06",
+          "name": "그레이 저지 버뮤다",
+          "productionAsset": null
+        },
+        {
+          "id": "P07",
+          "name": "카모 카고 버뮤다",
+          "productionAsset": null
+        },
+        {
+          "id": "P08",
+          "name": "흑백 스트라이프 라운지 팬츠",
+          "productionAsset": null
+        },
+        {
+          "id": "P09",
+          "name": "체인 데님 버뮤다",
+          "productionAsset": null
+        },
+        {
+          "id": "P10",
+          "name": "롤업 데님 카프리",
+          "productionAsset": null
+        },
+        {
+          "id": "P11",
+          "name": "블랙 플레어 슬랙스",
+          "productionAsset": null
+        },
+        {
+          "id": "P12",
+          "name": "화이트 유틸리티 와이드 팬츠",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "outfit",
+      "label": "원피스·셋업",
+      "allowNone": true,
+      "options": [
+        {
+          "id": "D01",
+          "name": "셔츠·차콜 피나포어",
+          "productionAsset": null
+        },
+        {
+          "id": "D02",
+          "name": "블루 깅엄 원피스",
+          "productionAsset": null
+        },
+        {
+          "id": "D03",
+          "name": "데님 재킷·스커트 셋업",
+          "productionAsset": null
+        },
+        {
+          "id": "D04",
+          "name": "네이비 니트·체크 스커트",
+          "productionAsset": null
+        },
+        {
+          "id": "D05",
+          "name": "아이보리·핑크 니트·스커트",
+          "productionAsset": null
+        },
+        {
+          "id": "D06",
+          "name": "레드 니트·올리브 카고 셋업",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "shoes",
+      "label": "신발",
+      "allowNone": false,
+      "options": [
+        {
+          "id": "Q01",
+          "name": "화이트 스니커즈",
+          "productionAsset": null
+        },
+        {
+          "id": "Q02",
+          "name": "블랙 더블스트랩 메리제인",
+          "productionAsset": null
+        },
+        {
+          "id": "Q03",
+          "name": "핑크 리본 슈즈",
+          "productionAsset": null
+        },
+        {
+          "id": "Q04",
+          "name": "브라운 슬라우치 오픈토 부츠",
+          "productionAsset": null
+        },
+        {
+          "id": "Q05",
+          "name": "아이보리 레이스업 롱부츠",
+          "productionAsset": null
+        },
+        {
+          "id": "Q06",
+          "name": "블랙 청키 스니커즈",
+          "productionAsset": null
+        },
+        {
+          "id": "Q07",
+          "name": "화이트 패딩 부츠",
+          "productionAsset": null
+        },
+        {
+          "id": "Q08",
+          "name": "골드 스트랩 샌들",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "bag",
+      "label": "가방",
+      "allowNone": true,
+      "options": [
+        {
+          "id": "B01",
+          "name": "아이보리 캔버스 토트",
+          "productionAsset": null
+        },
+        {
+          "id": "B02",
+          "name": "브라운 숄더백",
+          "productionAsset": null
+        },
+        {
+          "id": "B03",
+          "name": "핑크 리본백",
+          "productionAsset": null
+        },
+        {
+          "id": "B04",
+          "name": "아이보리 체인백",
+          "productionAsset": null
+        },
+        {
+          "id": "B05",
+          "name": "버건디 보스턴백",
+          "productionAsset": null
+        },
+        {
+          "id": "B06",
+          "name": "블랙 미니 백팩",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "glasses",
+      "label": "선글라스",
+      "allowNone": true,
+      "options": [
+        {
+          "id": "G01",
+          "name": "블랙 슬림 오벌",
+          "productionAsset": null
+        },
+        {
+          "id": "G02",
+          "name": "브라운 사각",
+          "productionAsset": null
+        },
+        {
+          "id": "G03",
+          "name": "블랙 오버사이즈",
+          "productionAsset": null
+        },
+        {
+          "id": "G04",
+          "name": "핑크 캣아이",
+          "productionAsset": null
+        },
+        {
+          "id": "G05",
+          "name": "실버 오벌",
+          "productionAsset": null
+        },
+        {
+          "id": "G06",
+          "name": "토터스 라운드",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "hat",
+      "label": "모자",
+      "allowNone": true,
+      "options": [
+        {
+          "id": "A01",
+          "name": "핑크 볼캡",
+          "productionAsset": null
+        },
+        {
+          "id": "A02",
+          "name": "데님 볼캡",
+          "productionAsset": null
+        },
+        {
+          "id": "A03",
+          "name": "블랙 뉴스보이",
+          "productionAsset": null
+        },
+        {
+          "id": "A04",
+          "name": "브라운 코듀로이 뉴스보이",
+          "productionAsset": null
+        },
+        {
+          "id": "A05",
+          "name": "아이보리 버킷햇",
+          "productionAsset": null
+        },
+        {
+          "id": "A06",
+          "name": "라벤더 비니",
+          "productionAsset": null
+        }
+      ]
+    },
+    {
+      "key": "necklace",
+      "label": "목걸이",
+      "allowNone": true,
+      "options": [
+        {
+          "id": "N01",
+          "name": "블랙 코드 십자가 펜던트",
+          "productionAsset": null
+        },
+        {
+          "id": "N02",
+          "name": "핑크 리본 하트 초커",
+          "productionAsset": null
+        },
+        {
+          "id": "N03",
+          "name": "실버 별 레이어드 체인",
+          "productionAsset": null
+        },
+        {
+          "id": "N04",
+          "name": "핑크 나비 목걸이",
+          "productionAsset": null
+        },
+        {
+          "id": "N05",
+          "name": "컬러 비즈 목걸이",
+          "productionAsset": null
+        },
+        {
+          "id": "N06",
+          "name": "퍼플 보석 펜던트",
+          "productionAsset": null
+        },
+        {
+          "id": "N07",
+          "name": "진주 하트 레이어드",
+          "productionAsset": null
+        },
+        {
+          "id": "N08",
+          "name": "블랙 코드 실버 오벌 펜던트",
+          "productionAsset": null
+        }
+      ]
+    }
+  ],
+  "defaultSelection": {
+    "skin": "S02",
+    "face": "F01",
+    "eyes": "E02",
+    "hairStyle": "H01",
+    "hairColor": "C03",
+    "top": "T01",
+    "pants": "P01",
+    "outfit": null,
+    "shoes": "Q01",
+    "bag": null,
+    "glasses": null,
+    "hat": null,
+    "necklace": null
+  },
+  "migration": "Keep v1/v2 save data; use a v3 namespace. v2 IDs retain their meaning except for refined F02/F03 art. Never reinterpret v1 IDs as v3 without explicit mapping.",
+  "combinationRules": [
+    "눈 선택은 얼굴 프리셋의 기본 눈을 덮어쓰며 코·입·눈썹을 유지한다.",
+    "피부색과 헤어스타일, 염색은 독립 선택한다.",
+    "원피스/셋업 선택 시 상의·바지 렌더링을 숨긴다. 개별 상의/바지를 선택하면 셋업을 해제한다.",
+    "가방·선글라스·모자·목걸이는 미착용 가능.",
+    "선택은 상세 초상화와 미니 아바타에 동일한 ID로 연결한다. 이미지 정렬·레이어·각도별 리소스는 별도 제작해야 한다."
+  ],
+  "optionCount": 94
+}
