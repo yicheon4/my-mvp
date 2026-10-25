@@ -32,14 +32,35 @@ const legacyPeople = [
 const legacyScenes = ['기숙사에서 함께 저녁','저녁을 먹으며 오늘 이야기','식탁에서 나누는 속마음'];
 // Demo-only placeholders until a server-side model is connected: these lines, demoReply below and scene openings are
 // not character data and are never used as prompts, memories or a default-line table (see characters/prompt.ts).
-const phrases:Phrase[] = [
- {id:'mind',en:'It’s been on my mind.',ko:'계속 마음에 걸렸어.',context:'쉽게 떨쳐내지 못한 고민을 친구에게 꺼낼 때'},
- {id:'chest',en:'I needed to get it off my chest.',ko:'누군가에게 털어놓고 싶었어.',context:'혼자 품고 있던 마음을 이야기하고 후련함을 표현할 때'},
- {id:'overwhelmed',en:'I’m feeling a little overwhelmed.',ko:'조금 벅차게 느껴져.',context:'과제나 해야 할 일이 겹쳐 감당하기 버거울 때'},
- {id:'mean',en:'That means a lot to me.',ko:'그 말이 나에게 정말 큰 힘이 돼.',context:'친구의 다정한 말이나 도움에 진심으로 고마울 때'},
- {id:'wrong',en:'I’m worried it came out wrong.',ko:'내 말이 다르게 들렸을까 봐 걱정돼.',context:'친구에게 한 말이 내 의도와 다르게 전해졌을까 걱정될 때'},
- {id:'future',en:'I’m still figuring things out.',ko:'아직 내 방향을 찾아가는 중이야.',context:'진로나 앞으로의 계획을 확신하기 어려울 때'},
-];
+// One set per free character, matched to the relationship. Order is the demoReply role: follow-up, opening up,
+// overwhelmed, thanks, worried it came out wrong, future.
+const phraseSets:Record<'chloe'|'sophie'|'ethan',Phrase[]> = {
+ chloe:[
+  {id:'chloe-run-by',en:'Can I run something by you?',ko:'네 생각 좀 들어 봐도 될까?',context:'같이 사는 친구에게 고민을 가볍게 꺼낼 때'},
+  {id:'chloe-meaning-to',en:'I’ve been meaning to tell you something.',ko:'너한테 말하려던 게 있었어.',context:'집에서 마주친 룸메이트에게 미뤄 둔 이야기를 꺼낼 때'},
+  {id:'chloe-empty',en:'I’m running on empty this week.',ko:'이번 주는 완전히 방전됐어.',context:'과제와 일이 겹쳐 지친 걸 룸메이트에게 털어놓을 때'},
+  {id:'chloe-saved',en:'You really saved me today.',ko:'오늘 네 덕분에 살았어.',context:'룸메이트가 챙겨 주거나 도와줘서 고마울 때'},
+  {id:'chloe-like-that',en:'I didn’t mean it like that.',ko:'그런 뜻으로 한 말 아니었어.',context:'같이 사는 친구에게 한 말이 오해를 샀을 때'},
+  {id:'chloe-options',en:'I’m still weighing my options.',ko:'아직 여러 선택지를 고민 중이야.',context:'현실적인 친구에게 진로 고민을 솔직하게 말할 때'},
+ ],
+ sophie:[
+  {id:'sophie-something-up',en:'You always know when something’s up.',ko:'넌 내게 무슨 일 있으면 늘 알아채더라.',context:'오래된 절친이 내 기분을 먼저 알아봐 줬을 때'},
+  {id:'sophie-cant-hide',en:'I can’t hide anything from you.',ko:'너한테는 아무것도 못 숨기겠어.',context:'절친에게 숨기던 속마음을 털어놓을 때'},
+  {id:'sophie-keeping-up',en:'Honestly, I’m barely keeping up.',ko:'솔직히 겨우 버티고 있어.',context:'편한 친구에게 요즘 버거운 마음을 솔직하게 말할 때'},
+  {id:'sophie-lucky',en:'I’m so lucky to have you.',ko:'너 같은 친구가 있어서 정말 다행이야.',context:'오래 곁에 있어 준 친구에게 고마움을 전할 때'},
+  {id:'sophie-weird',en:'I hope that didn’t sound weird.',ko:'내 말이 이상하게 들리지 않았으면 좋겠어.',context:'친한 친구에게 한 말이 어색하게 들렸을까 걱정될 때'},
+  {id:'sophie-ahead',en:'I feel like everyone’s ahead of me.',ko:'다들 나보다 앞서가는 것 같아.',context:'절친에게 진로나 비교로 불안한 마음을 털어놓을 때'},
+ ],
+ ethan:[
+  {id:'ethan-voice',en:'I just wanted to hear your voice.',ko:'그냥 네 목소리가 듣고 싶었어.',context:'연인에게 특별한 이유 없이 연락하고 싶었을 때'},
+  {id:'ethan-honest',en:'Can I be honest with you about something?',ko:'솔직하게 말해도 될까?',context:'연인에게 조심스러운 속마음을 꺼낼 때'},
+  {id:'ethan-hug',en:'I just need a hug right now.',ko:'지금은 그냥 안아 줬으면 좋겠어.',context:'지치고 벅찬 날 연인에게 위로받고 싶을 때'},
+  {id:'ethan-lighter',en:'You make everything feel lighter.',ko:'네가 있으면 다 가벼워지는 것 같아.',context:'곁에 있어 주는 연인에게 고마움을 전할 때'},
+  {id:'ethan-hurt',en:'I didn’t mean to hurt your feelings.',ko:'네 마음을 아프게 하려던 건 아니었어.',context:'연인에게 한 말이 상처가 됐을까 걱정될 때'},
+  {id:'ethan-together',en:'I want to figure it out together.',ko:'같이 방법을 찾아보고 싶어.',context:'연인과 앞으로의 계획을 함께 고민하고 싶을 때'},
+ ],
+};
+function phrasesFor(character:number){const id=people[character]?.id;return id==='sophie'||id==='ethan'?phraseSets[id]:phraseSets.chloe;}
 type Look = { outfit:0|1; hair:0|1; makeup:0|1; background:0|1 };
 const LOOK_STORE='persona-world-look-v1';
 const defaultLook:Look={outfit:0,hair:0,makeup:0,background:0};
@@ -54,7 +75,7 @@ type ClosetTab = 'head' | 'look' | 'extra';
 const STORE='persona-world-v1';
 function readSaved(){try {const x=JSON.parse(localStorage.getItem(STORE)||'{}');return {notes:Array.isArray(x.notes)?x.notes.filter((n:Phrase)=>n&&typeof n.id==='string'&&typeof n.en==='string'&&typeof n.ko==='string'):[],session:x.session&&Array.isArray(x.session.turns)&&Array.isArray(x.session.phrases)&&(x.session.version===2?people[x.session.character]&&stories[x.session.character]?.[x.session.scene]:legacyPeople[x.session.character]&&legacyScenes[x.session.scene])?x.session:null};}catch{return {notes:[],session:null};}}
 function demoReply(text:string,count:number,character=0){
- const t=text.toLowerCase();
+ const t=text.toLowerCase();const phrases=phrasesFor(character);
  if(character===2&&/love you|miss you|사랑|보고 싶/.test(t))return {text:'I love being close to you, too. What made you feel that way today?',ko:'나도 너와 가까이 있는 게 좋아. 오늘 어떤 순간에 그런 마음이 들었어?',phrase:phrases[3]};
  if(/thank|고마|means a lot/.test(t))return {text:'I’m glad you told me. You don’t have to carry everything on your own.',ko:'말해 줘서 고마워. 모든 걸 혼자 감당할 필요는 없어.',phrase:phrases[3]};
  if(/friend|misunder|wrong|친구|오해/.test(t))return {text:'It’s hard when your words don’t land the way you hoped. What did you want them to understand?',ko:'내 말이 뜻대로 전해지지 않으면 속상하지. 어떤 마음을 전하고 싶었어?',phrase:phrases[4]};
@@ -135,7 +156,7 @@ export default function Prototype(){
   if(timer.current)clearTimeout(timer.current);setBusy(false);
   const reply=chosenScene.opening;
   const expressive=people[character]?.id==='chloe';
-  setSession({version:2,sceneDetails:chosenScene,character,scene,avatar,reply,translation:chosenScene.translation,turns:[{role:'friend',text:reply,ko:chosenScene.translation,...(expressive?{expression:chloeOpening.expression}:{})}],phrases:[phrases[0]],tip:phrases[0],...(expressive?{expression:chloeOpening.expression,node:'hub'}:{})});go('voice');
+  setSession({version:2,sceneDetails:chosenScene,character,scene,avatar,reply,translation:chosenScene.translation,turns:[{role:'friend',text:reply,ko:chosenScene.translation,...(expressive?{expression:chloeOpening.expression}:{})}],phrases:[phrasesFor(character)[1]],tip:phrasesFor(character)[1],...(expressive?{expression:chloeOpening.expression,node:'hub'}:{})});go('voice');
  }
  // Temporary browser read-aloud for testing only; not the characters' final voice. voice_direction is not applied here.
  function speak(text:string){
