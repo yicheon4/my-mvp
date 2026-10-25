@@ -156,7 +156,7 @@ export default function Prototype(){
   if(timer.current)clearTimeout(timer.current);setBusy(false);
   const reply=chosenScene.opening;
   const expressive=people[character]?.id==='chloe';
-  setSession({version:2,sceneDetails:chosenScene,character,scene,avatar,reply,translation:chosenScene.translation,turns:[{role:'friend',text:reply,ko:chosenScene.translation,...(expressive?{expression:chloeOpening.expression}:{})}],phrases:[],...(expressive?{expression:chloeOpening.expression,node:'hub'}:{})});go('voice');
+  setSession({version:2,sceneDetails:chosenScene,character,scene,avatar,reply,translation:chosenScene.translation,turns:[{role:'friend',text:reply,ko:chosenScene.translation,...(expressive?{expression:chloeOpening.expression}:{})}],phrases:[phrasesFor(character)[1]],tip:phrasesFor(character)[1],...(expressive?{expression:chloeOpening.expression,node:'hub'}:{})});go('voice');
  }
  // Temporary browser read-aloud for testing only; not the characters' final voice. voice_direction is not applied here.
  function speak(text:string){
