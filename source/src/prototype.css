@@ -131,3 +131,33 @@ button.world-notice{text-align:left;border:0;width:auto}
 .world-screen~.closet-panel{z-index:5}
 .closet-actions{display:flex;gap:10px;align-items:center;margin-top:6px}.closet-actions .text-button{width:auto;flex:1;margin:0}.closet-actions .gold-button{flex:1;min-height:42px}
 .room-art-badge{position:absolute;top:112px;right:12px;z-index:3;padding:4px 9px;border-radius:10px;background:#ffe7a8;color:#4a3a20!important;font-size:10px!important;pointer-events:none}
+/* Week 8 design practice (2026-10-29): shared button shapes and the feedback screen's white theme follow DESIGN.md. */
+.gold-button{min-height:44px;padding:10px 20px;background:#000;color:#fff!important;border:0!important;border-radius:50px;font-size:20px!important;line-height:1.4;letter-spacing:-.1px}
+.gold-button:disabled,.persona-app .gold-button:disabled{opacity:1;background:#e6e6e6;color:#000!important}
+.text-button{min-height:44px;padding:8px 12px;border-radius:9999px;font-size:20px!important;line-height:1.4;letter-spacing:-.1px}
+.icon-button{width:44px;height:44px;border-radius:9999px;background:#ffffff29}
+/* Buttons that already had their own look keep it: home start button colors and corners, Sophie entry text size. */
+.story-start{padding:1px 6px;background:#ecd3a8;color:#30232b!important;border:1px solid #f3dfba!important;border-radius:13px;font-size:16px!important;line-height:1.6;letter-spacing:1px}
+.freechat-entry{font-size:12.5px!important;line-height:1.6;letter-spacing:normal}
+.canvas-theme{--ink:#000;--muted:#000;--gold:#000;background:#fff;color:#000}
+.canvas-theme button:focus-visible{outline-color:#000}
+.canvas-theme .page-header{background:#fff;border-bottom:1px solid #e6e6e6;padding-bottom:16px}
+.canvas-theme .page-header .icon-button{background:#f7f7f5;color:#000}
+.canvas-theme .page-header .eyebrow,.canvas-theme .feedback-content .eyebrow,.canvas-theme .tiny-label{font-size:12px;line-height:1;letter-spacing:.6px}
+.canvas-theme .page-header h1{font-size:26px;line-height:1.35;letter-spacing:-.26px;margin-top:8px}
+.canvas-theme .page-header .muted,.canvas-theme .feedback-content>.muted{font-size:16px;line-height:1.45;letter-spacing:-.14px}
+.canvas-theme .feedback-content h2{font-size:26px;line-height:1.35;letter-spacing:-.26px}
+.canvas-theme .expression-list{margin-top:32px;display:grid;gap:12px}
+.canvas-theme .expression{gap:12px;padding:16px;background:#f7f7f5;border:1px solid transparent!important;border-radius:8px}
+.canvas-theme .expression.checked{border-color:#000!important}
+.canvas-theme .expression:disabled{opacity:1}
+.canvas-theme .check-box{width:24px;height:24px;border:1px solid #000;border-radius:6px}
+.canvas-theme .checked .check-box{background:#000;color:#fff}
+.canvas-theme .expression h3{font-size:24px;line-height:1.45;margin:4px 0!important}
+.canvas-theme .expression p{font-size:18px;line-height:1.45;letter-spacing:-.26px;color:#000}
+.canvas-theme .expression small{font-size:16px;line-height:1.45;letter-spacing:-.14px;margin-top:8px}
+.canvas-theme .empty-state{padding:48px 4px}
+.canvas-theme .empty-state p{font-size:18px;line-height:1.45}
+.canvas-theme .demo-note{font-size:16px!important;line-height:1.45;margin:24px 0!important}
+.canvas-theme .fixed-footer{background:#fff;border-top:1px solid #e6e6e6;padding-top:16px}
+.canvas-theme .fixed-footer .text-button{margin-top:8px}
