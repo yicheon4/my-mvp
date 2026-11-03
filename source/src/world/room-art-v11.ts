@@ -38,6 +38,26 @@ export function waterIndex(a: V11Action, elapsed: number, duration: number) {
   if (elapsed >= duration - step) return a.frames.length - 1;
   return p0 + at(a.fps, elapsed - step) % (p1 - p0 + 1);
 }
+/** Some cat cells also hold a stray ear/tail piece of the neighbouring cell, separated by empty rows.
+ * Given the opaque-pixel count of each row of a frame, keep only the band of rows with the most pixels (the cat itself). */
+export function mainBand(rows: number[]): [number, number] {
+  let best: [number, number] = [0, rows.length - 1], bestSum = -1, start = -1, sum = 0;
+  for (let y = 0; y <= rows.length; y++) {
+    if (y < rows.length && rows[y] > 0) { if (start < 0) { start = y; sum = 0; } sum += rows[y]; continue; }
+    if (start >= 0 && sum > bestSum) { bestSum = sum; best = [start, y - 1]; }
+    start = -1;
+  }
+  return best;
+}
+/** Same frame with its rect cut to the main band; the anchor stays on the same sheet pixel, so placement does not move. */
+export const trimRows = (f: V11Frame, rows: number[]): V11Frame => { const [a, b] = mainBand(rows); return { rect: [f.rect[0], f.rect[1] + a, f.rect[2], b - a + 1], anchor: f.anchor }; };
+
+/** The water stream shows only on the pour frames (pourRange, both ends included); never while lifting or lowering. */
+export const WATER_TIMING: V11Action = { loop: 'pour', fps: 6, pourRange: [1, 3], frames: Array(5).fill(null) };
+export function pouring(a: V11Action, elapsed: number, duration: number) {
+  const [p0, p1] = a.pourRange ?? [1, 3], i = waterIndex(a, elapsed, duration);
+  return elapsed >= 0 && elapsed < duration && i >= p0 && i <= p1;
+}
 /** One-shot plays once then holds the last frame; loop repeats. */
 export const playIndex = (a: V11Action, elapsed: number) => a.loop === true ? at(a.fps, elapsed) % a.frames.length : Math.min(a.frames.length - 1, at(a.fps, elapsed));
 /** Getting up: the down action backwards (art for the transition is not final). */

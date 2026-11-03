@@ -8,7 +8,7 @@ release=root.parent  # my-mvp 저장소 최상단 = Vercel이 그대로 배포�
 out.mkdir(parents=True,exist_ok=True)
 images={}
 for p in build.rglob('*'):
- if p.is_file() and p.suffix in ('.png','.svg','.webp') and not {'persona-v9','persona-mini-v10','dev-art'} & set(p.relative_to(build).parts):
+ if p.is_file() and p.suffix in ('.png','.svg','.webp') and not {'persona-v9','persona-mini-v10','persona-v12','dev-art'} & set(p.relative_to(build).parts):
   name=hashlib.sha256(str(p.relative_to(build)).encode()).hexdigest()[:8]+'-'+p.name
   images['/'+str(p.relative_to(build))]=name
   shutil.copy2(p,out/name)
@@ -39,7 +39,7 @@ assert all(p.stat().st_size<25*1024*1024 for p in out.iterdir())
 print('Prepared',len(list(out.iterdir())),'files; largest',round(max(p.stat().st_size for p in out.iterdir())/1024/1024,1),'MiB')
 for p in out.iterdir(): shutil.copy2(p,release/p.name)
 # Folders whose files are addressed at runtime by relative paths (e.g. /persona-v9/ + manifest src) keep their structure.
-for folder in ('persona-v9','persona-mini-v10'):
+for folder in ('persona-v9','persona-mini-v10','persona-v12'):
  if (build/folder).is_dir():
   shutil.rmtree(release/folder,ignore_errors=True)
   shutil.copytree(build/folder,release/folder)

@@ -18,11 +18,12 @@ export function pointInPolygon(x: number, y: number, poly: Pt[]) {
   return inside;
 }
 
-export function canOccupy(map: WorldMapDef, x: number, y: number) {
+/** `npcs`: where the people really stand right now (patrolling NPCs); defaults to the static map positions. */
+export function canOccupy(map: WorldMapDef, x: number, y: number, npcs: { x: number; y: number }[] = map.npcs) {
   return FEET.every(([dx, dy]) => {
     const px = x + dx, py = y + dy;
     return map.walk.some(p => pointInPolygon(px, py, p)) && !map.blocks.some(p => pointInPolygon(px, py, p));
-  }) && !map.npcs.some(n => Math.hypot(n.x - x, (n.y - y) * 1.6) < NPC_RADIUS);
+  }) && !npcs.some(n => Math.hypot(n.x - x, (n.y - y) * 1.6) < NPC_RADIUS);
 }
 
 export function portalAt(map: WorldMapDef, x: number, y: number): Portal | null {
@@ -36,9 +37,9 @@ export function arrival(portal: Portal) {
   return { mapId: target.id, x: entry.spawn.x, y: entry.spawn.y, direction: entry.spawn.dir };
 }
 
-export function nearestNpc(map: WorldMapDef, x: number, y: number): Npc | null {
-  let best: Npc | null = null, dist = TALK_RANGE;
-  for (const n of map.npcs) { const d = Math.hypot(n.x - x, n.y - y); if (d < dist) { dist = d; best = n; } }
+export function nearestNpc<N extends Npc = Npc>(map: WorldMapDef, x: number, y: number, npcs: N[] = map.npcs as N[]): N | null {
+  let best: N | null = null, dist = TALK_RANGE;
+  for (const n of npcs) { const d = Math.hypot(n.x - x, n.y - y); if (d < dist) { dist = d; best = n; } }
   return best;
 }
 

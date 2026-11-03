@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { placeFrame, waterIndex, playIndex, reverseIndex, v11Enabled } from '../src/world/room-art-v11.ts';
+import { placeFrame, waterIndex, playIndex, reverseIndex, v11Enabled, pouring, WATER_TIMING, mainBand, trimRows } from '../src/world/room-art-v11.ts';
 
 const dir = new URL('../public/dev-art/room-v11/', import.meta.url);
 const have = existsSync(new URL('manifest.json', dir));
@@ -29,6 +29,20 @@ test('frame order: water lift → 1..3 loop → lower; loops and one-shots; reve
   assert.deepEqual([0, 200, 400, 900].map(t => playIndex(once as any, t)), [0, 1, 2, 2]);
   assert.deepEqual([0, 500, 1000].map(t => playIndex(loop as any, t)), [0, 1, 0]);
   assert.deepEqual([0, 200, 400].map(t => reverseIndex(once as any, t)), [2, 1, 0]);
+});
+
+test('water stream only on pour frames 1..3: hidden while lifting, lowering, and after the end', () => {
+  const at = [0, 100, 200, 1000, 2000, 2100, 2200, 2500].map(t => pouring(WATER_TIMING, t, 2200));
+  assert.deepEqual(at, [false, false, true, true, true, false, false, false]);
+});
+
+test('cat frame trim: keeps the biggest row band, drops stray neighbour pieces, anchor unchanged', () => {
+  assert.deepEqual(mainBand([0, 3, 3, 0, 0, 20, 30, 25, 0, 4, 4]), [5, 7]);
+  assert.deepEqual(mainBand([5, 5, 5]), [0, 2]);
+  const t = trimRows({ rect: [10, 100, 50, 11], anchor: [30, 108] }, [0, 3, 3, 0, 0, 20, 30, 25, 0, 4, 4]);
+  assert.deepEqual(t, { rect: [10, 105, 50, 3], anchor: [30, 108] });
+  const a = placeFrame({ rect: [10, 100, 50, 11], anchor: [30, 108] }, [400, 700], 1), b = placeFrame(t, [400, 700], 1);
+  assert.equal(b.dy - a.dy, 5, 'the kept rows land exactly where they were');
 });
 
 test('v11 package: only the 11 kept outfits, 25 frames each inside 1600×2560 sheets', { skip: !have && 'dev-art not copied' }, () => {

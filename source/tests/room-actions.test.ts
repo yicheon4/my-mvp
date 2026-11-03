@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { worldMaps } from '../src/world/world-data.ts';
 import { canOccupy, portalAt } from '../src/world/world-engine.ts';
-import { ROOM_CONFIG, roomSpots, catPath, stepRoom, initialRoom, pickSpot, catSpot, stepCat, initialCat, loadRoom, needsWater, facing } from '../src/world/room-actions.ts';
+import { ROOM_CONFIG, roomSpots, catPath, stepRoom, initialRoom, pickSpot, catSpot, stepCat, initialCat, loadRoom, needsWater, facing, dwellOf, spotKey, towardWindow, spotDist, dirTo } from '../src/world/room-actions.ts';
 import type { RoomState, Spot } from '../src/world/room-actions.ts';
 
 const map = worldMaps.bedroom, spots = roomSpots.bedroom!, cfg = ROOM_CONFIG;
@@ -13,14 +13,18 @@ const run = (s: RoomState, frames: number, inp: Partial<Parameters<typeof stepRo
   return { out, events };
 };
 
+// Points where the player can stand to use a spot: its point, or samples all along its edge line.
+const standPoints = (s: Spot): [number, number][] => !s.edge ? [s.at] : s.edge.slice(1).flatMap((b, i) => { const a = s.edge![i]; return [0, .25, .5, .75, 1].map(t => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t] as [number, number]); });
+
 test('every spot is a walkable standing place, away from the door, and spots do not overlap', () => {
-  for (const s of spots) {
-    assert.ok(canStand(s.at[0], s.at[1]), s.id);
-    assert.ok(!portalAt(map, s.at[0], s.at[1]), s.id);
-    assert.ok(facing(s.face, s.at, s.target), `${s.id} face`);
+  for (const s of spots) for (const p of standPoints(s)) {
+    assert.ok(canStand(p[0], p[1]), `${spotKey(s)} ${p}`);
+    assert.ok(!portalAt(map, p[0], p[1]), spotKey(s));
+    assert.ok(facing(s.edge ? dirTo(p, s.target) : s.face, p, s.target), `${spotKey(s)} face`);
   }
-  for (const a of spots) for (const b of spots) if (a !== b) assert.ok(Math.hypot(a.at[0] - b.at[0], a.at[1] - b.at[1]) > a.r + b.r, `${a.id}/${b.id}`);
-  for (const p of catPath.bedroom!) { assert.ok(canStand(p[0], p[1]), String(p)); assert.ok(spots.every(s => Math.hypot(p[0] - s.at[0], p[1] - s.at[1]) > s.r + 20), 'cat path clear of spots ' + p); }
+  for (const a of spots) for (const b of spots) if (a !== b) for (const p of standPoints(a)) assert.ok(spotDist(b, p[0], p[1]) > a.r + b.r, `${spotKey(a)}/${spotKey(b)} at ${p}`);
+  assert.equal(new Set(spots.map(spotKey)).size, spots.length, 'spot keys are unique');
+  for (const p of catPath.bedroom!) { assert.ok(canStand(p[0], p[1]), String(p)); assert.ok(spots.every(s => spotDist(s, p[0], p[1]) > s.r + 20), 'cat path clear of spots ' + p); }
 });
 
 test('passing by with movement input never starts an action', () => {
@@ -29,14 +33,58 @@ test('passing by with movement input never starts an action', () => {
   assert.deepEqual(events, []);
 });
 
-test('stop inside a spot facing the object for ~0.6 s → starts once, with a short alignment', () => {
+test('stop inside a spot facing the object for its stop time → starts once, with a short alignment', () => {
   const bed = spots.find(s => s.id === 'bed')!;
   const near = { x: bed.at[0] + 20, y: bed.at[1] + 10, dir: bed.face };
-  const short = run(initialRoom(), Math.floor(cfg.dwellMs / 16) - 3, near);
+  const short = run(initialRoom(), Math.floor(dwellOf(bed, cfg) / 16) - 3, near);
   assert.deepEqual(short.events, [], 'not before dwell');
   const r = run(short.out.state, 30, near);
   assert.deepEqual(r.events, ['start:bed']);
   assert.equal(r.out.state.phase, 'active');
+});
+
+test('bed: anywhere along its edge (foot, long side, head side) lies down after 2 s, not before; wardrobe edge needs 1.5 s', () => {
+  const bed = spots.find(s => s.id === 'bed')!;
+  for (const p of standPoints(bed)) {
+    const at = { x: p[0], y: p[1], dir: dirTo(p, bed.target) };
+    const early = run(initialRoom(), Math.floor(1900 / 16), at);
+    assert.deepEqual(early.events, [], `${p} not before 2 s`);
+    const r = run(early.out.state, 20, at);
+    assert.deepEqual(r.events, ['start:bed'], String(p));
+    assert.deepEqual(r.out.state.to, p, 'she stays where she stopped');
+  }
+  const w = spots.find(s => s.id === 'wardrobe')!;
+  for (const p of standPoints(w)) {
+    const at = { x: p[0], y: p[1], dir: 'up' as const };
+    const early = run(initialRoom(), Math.floor(1400 / 16), at);
+    assert.deepEqual(early.events, [], `${p} not before 1.5 s`);
+    assert.deepEqual(run(early.out.state, 20, at).events.slice(0, 1), ['start:wardrobe'], String(p));
+  }
+});
+
+test('after lying, the bed needs leaving its edge before it can repeat', () => {
+  const bed = spots.find(s => s.id === 'bed')!, [x, y] = standPoints(bed)[6], dir = dirTo([x, y], bed.target);
+  let r = run(initialRoom(), 160, { x, y, dir });
+  r = run(r.out.state, 20, { x, y, dir, input: true });
+  assert.deepEqual(r.events, ['end:bed']);
+  const [x2, y2] = standPoints(bed)[2];
+  assert.deepEqual(run(r.out.state, 200, { x: x2, y: y2, dir: dirTo([x2, y2], bed.target) }).events, [], 'still at the bed edge: waits');
+  r = run(r.out.state, 5, { x, y: y + 150, dir: 'down', input: true });
+  assert.deepEqual(run(r.out.state, 160, { x, y, dir }).events, ['start:bed'], 'after stepping away it works again');
+});
+
+test('bed / wardrobe edge: stopping sideways after walking along it counts; back turned does not', () => {
+  const bed = spots.find(s => s.id === 'bed')!, [x, y] = standPoints(bed)[6];
+  for (const p of standPoints(bed)) for (const dir of ['left', 'right', 'up'] as const) assert.deepEqual(run(initialRoom(), 160, { x: p[0], y: p[1], dir }).events, ['start:bed'], `${p} ${dir}`);
+  assert.deepEqual(run(initialRoom(), 160, { x, y, dir: 'down' }).events, [], 'back turned');
+  const w = spots.find(s => s.id === 'wardrobe')!;
+  for (const p of standPoints(w)) for (const dir of ['left', 'right'] as const) assert.deepEqual(run(initialRoom(), 120, { x: p[0], y: p[1], dir }).events.slice(0, 1), ['start:wardrobe'], `${p} ${dir}`);
+});
+
+test('lying on the bed: pushing up or left points at the window, down or right does not', () => {
+  const bed = spots.find(s => s.id === 'bed')!.target, win = spots.find(s => s.id === 'window')!.target;
+  assert.ok(towardWindow([0, -1], bed, win)); assert.ok(towardWindow([-1, 0], bed, win)); assert.ok(towardWindow([-.7, -.7], bed, win));
+  assert.ok(!towardWindow([0, 1], bed, win)); assert.ok(!towardWindow([1, 0], bed, win)); assert.ok(!towardWindow([0, 0], bed, win));
 });
 
 test('not facing the object → no action', () => {
@@ -76,14 +124,14 @@ test('paused (other screen open) → no action, and an active hold ends', () => 
   const p = spots.find(s => s.id === 'plant')!;
   assert.deepEqual(run(initialRoom(), 100, { x: p.at[0], y: p.at[1], dir: p.face, paused: true }).events, []);
   const bed = spots.find(s => s.id === 'bed')!;
-  let r = run(initialRoom(), 60, { x: bed.at[0], y: bed.at[1], dir: bed.face });
+  let r = run(initialRoom(), 160, { x: bed.at[0], y: bed.at[1], dir: bed.face });
   r = run(r.out.state, 20, { x: bed.at[0], y: bed.at[1], dir: bed.face, paused: true });
   assert.deepEqual(r.events, ['end:bed']);
 });
 
 test('overlapping candidates → one target chosen by distance and facing', () => {
   const a: Spot = { ...spots[0], id: 'chair', at: [500, 700], r: 80, target: [500, 600] };
-  const b: Spot = { ...spots[1], id: 'bed', at: [540, 700], r: 80, target: [540, 600] };
+  const b: Spot = { ...spots[1], id: 'bed', at: [540, 700], r: 80, target: [540, 600], edge: undefined };
   assert.equal(pickSpot([a, b], 535, 700, 'up', cfg, new Set())?.id, 'bed');
   assert.equal(pickSpot([a, b], 505, 700, 'up', cfg, new Set())?.id, 'chair');
 });
