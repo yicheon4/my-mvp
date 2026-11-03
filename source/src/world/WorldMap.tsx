@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Sun, MoonStars, ChatCircleDots, DoorOpen, Info } from '@phosphor-icons/react';
+import { ArrowLeft, Sun, MoonStars, ChatCircleDots, DoorOpen, Info, HandWaving, Bicycle } from '@phosphor-icons/react';
 import { worldMaps, mapArt, WORLD_W, WORLD_H } from './world-data';
 import type { Direction, MapId, Npc, WorldMapDef } from './world-data';
 import { canOccupy, portalAt, arrival, nearestNpc, miniHeight } from './world-engine';
@@ -8,16 +8,23 @@ import { stepPosition } from './avatar-runtime';
 import { loadMiniManifest, loadMiniSheet, frameFor, miniPlacement, neighborLooks } from './mini-v10';
 import type { MiniManifest, MiniDirection } from './mini-v10';
 import { withAnd } from '../story-data';
-import { ROOM_CONFIG, roomSpots, catPath, catSpot, stepRoom, initialRoom, stepCat, initialCat, loadRoom, saveRoom, needsWater } from './room-actions';
+import { ROOM_CONFIG, roomSpots, catPath, catSpot, stepRoom, initialRoom, stepCat, initialCat, loadRoom, saveRoom, needsWater, spotKey, dwellOf, towardWindow, spotDist } from './room-actions';
 import type { RoomState, Spot, Cat, RoomConfig, RoomSave } from './room-actions';
 import type { Pt } from './world-data';
-import { V11_BASE, placeFrame, waterIndex, playIndex, reverseIndex, BED_HIP_ESTIMATE, v11Enabled } from './room-art-v11';
+import { V11_BASE, placeFrame, waterIndex, playIndex, reverseIndex, BED_HIP_ESTIMATE, v11Enabled, pouring, WATER_TIMING, trimRows } from './room-art-v11';
 import type { V11Manifest, V11Frame } from './room-art-v11';
+import { V12_BASE, clipFrame, clipMs, placeV12, npcFrame, toRoomSpot, autoSpots, initNpcs, stepNpc, rememberNpc, BIKE_OFF, canRideAt, bikeTouches, rideStep, dismountSpot, nearBike, rideClip, drawWater, drawFlame } from './social-v12';
+import type { V12Manifest, V12Locations, V12Spot, V12Frame, NpcRun, Bike } from './social-v12';
 
 // DEV-ONLY draft art preview (?roomart=v11). Production builds never enable it.
 const ROOM_ART = typeof location !== 'undefined' && v11Enabled(!!import.meta.env.DEV, location.search);
 let v11Promise: Promise<V11Manifest> | null = null;
 const loadV11 = () => (v11Promise ??= fetch(V11_BASE + 'manifest.json').then(r => { if (!r.ok) throw new Error('v11 ' + r.status); return r.json(); }).catch(e => { v11Promise = null; throw e; }));
+// v12 social actions: manifest + locations once; sheets load lazily on first draw (current look, current map's NPCs only).
+let v12Promise: Promise<[V12Manifest, V12Locations]> | null = null;
+const getJson = (u: string) => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
+const loadV12 = () => (v12Promise ??= Promise.all([getJson(V12_BASE + 'manifest.json'), getJson(V12_BASE + 'locations.json')]).catch(e => { v12Promise = null; throw e; }) as Promise<[V12Manifest, V12Locations]>);
+const NPC_WAVE_DELAY = 250; // the friend waves back a moment after the player
 
 type Person = { name: string; art: string; locked: boolean };
 type Props = {
@@ -44,12 +51,26 @@ function image(src: string) {
   return img;
 }
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
+// Cat frames cut to the cat itself (drops stray neighbour pieces), measured once per frame from the loaded sheet.
+// This only changes the cat's draw rect/ground point in memory; the v11 files and manifest stay as delivered.
+const trimmed = new Map<string, V11Frame>();
+function catFrame(img: HTMLImageElement, f: V11Frame) {
+  const key = f.rect.join(','); let t = trimmed.get(key);
+  if (!t) {
+    const [x, y, w, h] = f.rect, c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d', { willReadFrequently: true })!; g.drawImage(img, x, y, w, h, 0, 0, w, h);
+    const px = g.getImageData(0, 0, w, h).data, rows = Array.from({ length: h }, (_, r) => { let n = 0; for (let i = 0; i < w; i++) if (px[(r * w + i) * 4 + 3] > 20) n++; return n; });
+    // the cell-bottom anchor sat under the stray piece, so after the cut the paws (last kept row) stand on the ground point
+    t = trimRows(f, rows); t = { rect: t.rect, anchor: [t.anchor[0], t.rect[1] + t.rect[3]] }; trimmed.set(key, t);
+  }
+  return t;
+}
 const typing = () => { const el = document.activeElement as HTMLElement | null; return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); };
 
 // Room-action effects drawn on the map (no extra art: light, particles and temporary cat/toy drawings only).
 type Fx = { kind: 'window' | 'water' | 'leaf' | 'touch'; start: number; until: number };
 const roomConfig = (): RoomConfig => { try { return { ...ROOM_CONFIG, ...JSON.parse(localStorage.getItem('persona-world:room-config') ?? '{}') }; } catch { return ROOM_CONFIG; } };
-const POSE_LABEL: Record<string, string> = { chair: '의자에 앉음', bed: '침대에 누움', plant: '물주기', cat: '고양이와 놀기' };
+const POSE_LABEL: Record<string, string> = { chair: '의자에 앉음', bed: '침대에 누움', plant: '물주기', cat: '고양이와 놀기', sofa: '소파에 앉음', 'island-stool': '아일랜드 의자에 앉음', bench: '벤치에 앉음', sink: '설거지', stove: '요리' };
 
 export default function WorldMap({ initial, look, lookName, people, onSave, onTalk, onHome, paused = false, onWardrobe }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -57,7 +78,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   const stateRef = useRef<WorldState>(initial);
   const [mapId, setMapId] = useState<MapId>(initial.mapId);
   const [time, setTime] = useState(initial.timeOfDay);
-  const [near, setNear] = useState<Npc | null>(null);
+  const [near, setNear] = useState<NpcRun | null>(null);
   const [door, setDoor] = useState<string | null>(null);
   const [fading, setFading] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -86,16 +107,32 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   const lock = useRef(true); // no portal until the feet leave every exit zone once
   const moving = useRef(false);
   const busy = useRef(false);
-  const nearRef = useRef<Npc | null>(null);
+  const nearRef = useRef<NpcRun | null>(null);
   const debug = typeof location !== 'undefined' && location.search.includes('worlddebug');
+  const debugLines = debug && new URLSearchParams(location.search).get('worlddebug') === 'lines'; // walk/block outlines only when asked
   if (debug) (window as any).__pwWorld = stateRef;
   const cb = useRef({ onSave, onTalk, onWardrobe });
   cb.current = { onSave, onTalk, onWardrobe };
   const pausedRef = useRef(paused); pausedRef.current = paused;
+  // v12 social actions
+  const v12 = useRef<V12Manifest | null>(null), loc = useRef<V12Locations | null>(null);
+  const [v12State, setV12State] = useState<'loading' | 'ready' | 'error'>('loading');
+  useEffect(() => { loadV12().then(([m, l]) => { v12.current = m; loc.current = l; npcs.current = null; roomMap.current = null; setV12State('ready'); }, () => setV12State('error')); }, []);
+  const npcs = useRef<NpcRun[] | null>(null);       // where the people of this map really are now (null → set up on next frame)
+  const wave = useRef<{ t0: number; person: number } | null>(null);
+  const [waving, setWaving] = useState(false), wavingRef = useRef(false);
+  const bike = useRef<Bike>(BIKE_OFF);
+  const [bikeUi, setBikeUi] = useState<{ can: boolean; riding: boolean; hint: string }>({ can: false, riding: false, hint: '' });
+  const bikeHint = useRef({ text: '', until: 0 }), bikeKey = useRef('');
+  /** v12 auto spots (sofa / stool / sink / stove / bench) join the room actions of their map. */
+  function spotsFor(id: MapId): Spot[] { return [...(roomSpots[id] ?? []), ...(loc.current ? autoSpots(loc.current, id).map(toRoomSpot) : [])]; }
+  const v12Spot = (sp: Spot | null): V12Spot | null => (sp && loc.current?.spots.find(v => v.id === sp.key && v.auto)) || null;
+  /** The player's v12 sheet for the chosen outfit, or null (no mapping to another outfit). */
+  const v12Player = () => { const e = v12.current?.players[lookRef.current]; if (!e) return null; const img = image(V12_BASE + e.src); return ready(img) ? { e, img } : null; };
   // room actions
   const cfg = useRef(roomConfig());
   // Starting (reload / arrival) inside a spot never auto-triggers it: leave the spot once first.
-  const startRoom = (st: WorldState): RoomState => { const r = initialRoom(); for (const sp of roomSpots[st.mapId] ?? []) if (Math.hypot(st.x - sp.at[0], st.y - sp.at[1]) <= sp.r * ROOM_CONFIG.zoneScale * ROOM_CONFIG.exitScale) r.rearm.add(sp.id); return r; };
+  const startRoom = (st: WorldState): RoomState => { const r = initialRoom(); for (const sp of spotsFor(st.mapId)) if (spotDist(sp, st.x, st.y) <= sp.r * ROOM_CONFIG.zoneScale * ROOM_CONFIG.exitScale) r.rearm.add(spotKey(sp)); return r; };
   const room = useRef<RoomState>(startRoom(initial));
   const roomSave = useRef<RoomSave>(loadRoom(localStorage));
   const lockMove = useRef(false);
@@ -107,10 +144,12 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   // v11 draft art (dev preview only)
   const v11 = useRef<V11Manifest | null>(null);
   const [v11State, setV11State] = useState<'off' | 'loading' | 'ready' | 'error'>(ROOM_ART ? 'loading' : 'off');
-  useEffect(() => { if (!ROOM_ART) return; loadV11().then(m => { v11.current = m; setV11State('ready'); }, () => setV11State('error')); }, []);
+  useEffect(() => { if (!ROOM_ART) return; loadV11().then(m => { v11.current = m; const r = m.room; for (const t of ['day', 'night'] as const) [r.background[t], r.chair_in[t].src, r.chair_out[t].src, ...r.window_open[t].frames.map((f: { src: string }) => f.src)].forEach(src => image(V11_BASE + src)); image(V11_BASE + m.cat.src); setV11State('ready'); }, () => setV11State('error')); }, []);
   const actT0 = useRef(0), endT0 = useRef(0), lastPhase = useRef('free');
   const catPrev = useRef<Pt | null>(null), catVel = useRef<Pt>([0, 0]);
-  if (debug) (window as any).__pwRoom = { room, cat, roomSave, cfg };
+  const bedReach = useRef(false);
+  const roomMap = useRef<MapId | null>(null); // lying + pushing toward the window: this push closed it, so it must not also get her up
+  if (debug) (window as any).__pwRoom = { room, cat, roomSave, cfg, npcs, bike };
   const save = (patch: Partial<WorldState> = {}) => { stateRef.current = { ...stateRef.current, ...patch }; cb.current.onSave(stateRef.current); };
 
   useEffect(() => {
@@ -142,58 +181,101 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     resize();
     const ro = new ResizeObserver(resize); ro.observe(wrap);
 
+    let npcMap: MapId | null = null;
     const frame = (now: number) => {
       const dt = Math.min((now - last) / 1000, .05); last = now;
       const s = stateRef.current, map = worldMaps[s.mapId];
       const clean = v11.current && s.mapId === 'bedroom' ? image(V11_BASE + v11.current.room.background[s.timeOfDay]) : null;
-      const bg = clean && ready(clean) ? clean : image(mapArt[s.mapId][s.timeOfDay]); // chair-free background only with the chair layer
+      const chairIn = v11.current && s.mapId === 'bedroom' ? image(V11_BASE + v11.current.room.chair_in[s.timeOfDay].src) : null;
+      const bg = clean && ready(clean) && chairIn && ready(chairIn) ? clean : image(mapArt[s.mapId][s.timeOfDay]); // chair-free background only with the chair layer
       // input
       let ix = 0, iy = 0;
       keys.current.forEach(k => { ix += KEYS[k][0]; iy += KEYS[k][1]; });
       if (stick.current.active) { ix += stick.current.x; iy += stick.current.y; }
-      const isPaused = busy.current || typing() || pausedRef.current;
+      const isPaused = busy.current || typing() || pausedRef.current || document.hidden;
       if (isPaused) { ix = 0; iy = 0; }
-      const input = Math.hypot(ix, iy) > .2;
-      if (lockMove.current) { ix = 0; iy = 0; } // an action is starting/running/ending; movement input only ends it
-      const next = stepPosition({ x: s.x, y: s.y, direction: s.direction }, { x: ix, y: iy }, dt, SPEED, (x, y) => canOccupy(map, x, y));
+      const input = Math.hypot(ix, iy) > .2, push: Pt = [ix, iy];
+      // people of this map: set up on arrival (remembered positions survive a talk), then patrol every frame
+      if (!npcs.current || npcMap !== s.mapId) { npcs.current = initNpcs(map, loc.current, (x, y) => canOccupy(map, x, y, [])); npcMap = s.mapId; wave.current = null; }
+      const people = npcs.current;
+      // someone already touching the player never traps her; everyone else blocks her
+      const b = bike.current, bc = loc.current?.bicycle;
+      const blockers = people.filter(n => b.phase === 'off' ? Math.hypot(n.x - s.x, (n.y - s.y) * 1.6) >= 46 : !bikeTouches(n, s.x, s.y));
+      if (lockMove.current || b.phase === 'mount' || b.phase === 'dismount') { ix = 0; iy = 0; } // an action is starting/running/ending; movement input only ends it
+      const dirIn: Direction = Math.abs(ix) > Math.abs(iy) ? (ix > 0 ? 'right' : 'left') : (iy > 0 ? 'down' : 'up');
+      let next: { x: number; y: number; moving?: boolean; direction?: Direction };
+      if (b.phase === 'ride' && bc) {
+        const r = rideStep([s.x, s.y], [ix, iy], dt, SPEED * bc.speedMultiplier, (x, y) => canRideAt(map, x, y, bc.collisionRadius, blockers));
+        next = { ...r, direction: dirIn };
+        const len = Math.hypot(ix, iy);
+        if (len > .2 && portalAt(map, r.x + ix / len * (bc.collisionRadius + 20), r.y + iy / len * (bc.collisionRadius + 20))) bikeHint.current = { text: '자전거에서 내린 뒤 지나갈 수 있어요', until: now + 1800 };
+      } else if (b.phase !== 'off') next = { x: s.x, y: s.y, moving: false };
+      else next = stepPosition({ x: s.x, y: s.y, direction: s.direction }, { x: ix, y: iy }, dt, SPEED, (x, y) => canOccupy(map, x, y, blockers));
       moving.current = !!next.moving;
       if (next.moving) walkClock += dt * 1000; else walkClock = 0;
       stateRef.current = { ...s, x: next.x, y: next.y, direction: (Math.hypot(ix, iy) > .2 && next.direction) || s.direction };
-      roomStep(map, dt * 1000, input, isPaused, !!next.moving, now);
+      bikeStep(map, dt * 1000, now);
+      // waving: any movement input cancels the player's wave at once; it never repeats by itself
+      const pl = v12Player(), waveDur = pl ? clipMs(pl.e, 'wave') : 1000;
+      if (wave.current && (input || now - wave.current.t0 >= waveDur)) wave.current = null;
+      roomStep(map, dt * 1000, input, push, isPaused || bike.current.phase !== 'off', !!next.moving, now);
       const cur = stateRef.current;
-      // portals
+      // patrol: walls, furniture, exits, the player and the other people all block; talking / pause / waving stops them
+      const npcWaveDur = (n: NpcRun) => { const e = v12.current?.npcs[n.id]; return e ? clipMs(e, 'wave') : 1000; };
+      const riding = bike.current.phase !== 'off';
+      npcs.current = people.map((n, i) => {
+        const others = people.filter((_, j) => j !== i);
+        const ok = (x: number, y: number) => canOccupy(map, x, y, others) && !portalAt(map, x, y) && (riding ? !bikeTouches({ x, y }, cur.x, cur.y) : Math.hypot(x - cur.x, (y - cur.y) * 1.6) >= 46);
+        let m = stepNpc(n, dt * 1000, isPaused, ok, Math.random);
+        if (m.waveMs !== null && m.waveMs >= npcWaveDur(m)) m = { ...m, waveMs: null, dir: 'down', wait: 900 };
+        rememberNpc(map.id, m);
+        return m;
+      });
+      const w = !!wave.current || npcs.current.some(n => n.waveMs !== null);
+      if (w !== wavingRef.current) { wavingRef.current = w; setWaving(w); }
+      // portals (never on the bike: riding stops before exits)
       const portal = portalAt(map, cur.x, cur.y);
       if (!portal) lock.current = false;
-      else if (!lock.current && !busy.current) travel(portal);
+      else if (!lock.current && !busy.current && bike.current.phase === 'off') travel(portal);
       setDoor(portalLabel(map, cur.x, cur.y));
-      const npc = nearestNpc(map, cur.x, cur.y);
-      if (npc !== nearRef.current) { nearRef.current = npc; setNear(npc); }
+      const npc = bike.current.phase === 'off' ? nearestNpc(map, cur.x, cur.y, npcs.current) : null;
+      if (npc?.person !== nearRef.current?.person) setNear(npc);
+      nearRef.current = npc;
       if (now - lastSave > 1500) { lastSave = now; cb.current.onSave(cur); }
       draw(ctx, view, map, bg, cur, walkClock, reduced);
       setLoading(!ready(bg));
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); room.current = initialRoom(); fx.current = null; lockMove.current = false; cb.current.onSave(stateRef.current); };
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); room.current = initialRoom(); fx.current = null; lockMove.current = false; wave.current = null; bike.current = BIKE_OFF; cb.current.onSave(stateRef.current); };
   }, []);
 
-  /** One frame of automatic room actions (bedroom only). Movement input is never overridden: it only ends an action. */
-  function roomStep(map: WorldMapDef, dtMs: number, input: boolean, isPaused: boolean, playerMoved: boolean, now: number) {
-    const base = roomSpots[map.id];
-    if (!base) { if (room.current.phase !== 'free' || cat.current) { room.current = initialRoom(); lockMove.current = false; fx.current = null; cat.current = null; } return; }
-    if (!cat.current) room.current = startRoom(stateRef.current); // just arrived in the room
+  /** One frame of automatic actions (bedroom; v12 sofa / kitchen / bench). Movement input is never overridden: it only ends an action. */
+  function roomStep(map: WorldMapDef, dtMs: number, input: boolean, push: Pt, isPaused: boolean, playerMoved: boolean, now: number) {
+    const base = spotsFor(map.id);
+    if (roomMap.current !== map.id) { roomMap.current = map.id; room.current = startRoom(stateRef.current); lockMove.current = false; fx.current = null; cat.current = null; } // just arrived (or spots just loaded)
+    if (!base.length) return;
     const s = stateRef.current, me: Pt = [s.x, s.y], c = cfg.current;
-    const path = catPath[map.id]!;
-    cat.current ??= initialCat(path);
-    // the cat plays only if the player walked up to it (the cat wandering next to a still player never starts play)
-    const dCat = Math.hypot(cat.current.x - s.x, cat.current.y - s.y);
-    if (dCat > c.catPlayRadius * c.exitScale) catEligible.current = false;
-    else if (playerMoved && dCat <= c.catPlayRadius) catEligible.current = true;
+    const path = catPath[map.id];
+    if (path) {
+      cat.current ??= initialCat(path);
+      // the cat plays only if the player walked up to it (the cat wandering next to a still player never starts play)
+      const dCat = Math.hypot(cat.current.x - s.x, cat.current.y - s.y);
+      if (dCat > c.catPlayRadius * c.exitScale) catEligible.current = false;
+      else if (playerMoved && dCat <= c.catPlayRadius) catEligible.current = true;
+    }
     const watered = !needsWater(roomSave.current, Date.now(), c);
     const spots: Spot[] = base.map(sp => sp.id === 'plant' && watered ? { ...sp, durationMs: 900 } : sp);
     const playing = room.current.spot?.id === 'cat' && room.current.phase !== 'free' && room.current.phase !== 'waiting';
-    if (catEligible.current || playing) spots.push(catSpot([cat.current.x, cat.current.y], me, c));
-    const out = stepRoom(room.current, { x: s.x, y: s.y, dir: s.direction, dt: dtMs, input, paused: isPaused, spots, canStand: (x, y) => canOccupy(map, x, y), cfg: c });
+    if (cat.current && (catEligible.current || playing)) spots.push(catSpot([cat.current.x, cat.current.y], me, c));
+    // Lying on the bed: a push toward the open window closes it (she stays lying); any other push gets her up.
+    const win = base.find(sp => sp.id === 'window');
+    if (!input) bedReach.current = false;
+    else if (win && room.current.spot?.id === 'bed' && room.current.phase === 'active' && (bedReach.current || (roomSave.current.windowOpen && towardWindow(push, room.current.spot.target, win.target)))) {
+      if (!bedReach.current) { roomSave.current = { ...roomSave.current, windowOpen: false }; saveRoom(localStorage, roomSave.current); fx.current = { kind: 'window', start: now, until: now + 900 }; }
+      bedReach.current = true; input = false;
+    }
+    const out = stepRoom(room.current, { x: s.x, y: s.y, dir: s.direction, dt: dtMs, input, paused: isPaused, spots, canStand: (x, y) => canOccupy(map, x, y, npcs.current ?? map.npcs), cfg: c });
     room.current = out.state; lockMove.current = out.lockMove;
     if (out.started) actT0.current = now;
     if (out.state.phase === 'ending' && lastPhase.current !== 'ending') endT0.current = now;
@@ -207,26 +289,66 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
         if (watered) fx.current = { kind: 'leaf', start: t, until: t + 900 };
         else fx.current = { kind: 'water', start: t, until: t + out.started.durationMs };
       }
-      if (id === 'wardrobe') fx.current = { kind: 'touch', start: t, until: t + out.started.durationMs };
+      if (id === 'wardrobe') { fx.current = { kind: 'touch', start: t, until: t + out.started.durationMs }; cb.current.onWardrobe?.(); } // open right at the stop time
     }
     if (out.ended) {
       if (fx.current && fx.current.kind !== 'window') fx.current = null; // nothing (can, toy, water) stays on screen
-      if (out.ended.id === 'wardrobe' && !out.cancelled && !isPaused) cb.current.onWardrobe?.();
       if (out.ended.id === 'plant' && !out.cancelled && !watered) { roomSave.current = { ...roomSave.current, lastWateredAt: Date.now() }; saveRoom(localStorage, roomSave.current); } // only a finished watering counts
     }
-    const playingNow = room.current.spot?.id === 'cat' && (room.current.phase === 'starting' || room.current.phase === 'active');
-    const before: Pt = [cat.current.x, cat.current.y];
-    cat.current = stepCat(cat.current, path, dtMs, Math.random, [stateRef.current.x, stateRef.current.y], playingNow, (x, y) => canOccupy(map, x, y));
-    const mv: Pt = [cat.current.x - before[0], cat.current.y - before[1]]; if (Math.hypot(mv[0], mv[1]) > .01) catVel.current = mv;
+    if (path && cat.current) {
+      const playingNow = room.current.spot?.id === 'cat' && (room.current.phase === 'starting' || room.current.phase === 'active');
+      const before: Pt = [cat.current.x, cat.current.y];
+      cat.current = stepCat(cat.current, path, dtMs, Math.random, [stateRef.current.x, stateRef.current.y], playingNow, (x, y) => canOccupy(map, x, y));
+      const mv: Pt = [cat.current.x - before[0], cat.current.y - before[1]]; if (Math.hypot(mv[0], mv[1]) > .01) catVel.current = mv;
+    }
     const sp = room.current.spot, ph = room.current.phase;
     const active = ph === 'starting' || ph === 'active' || ph === 'ending';
-    const draft = !!(v11.current && v11.current.looks[lookRef.current] && ready(image(V11_BASE + v11.current.looks[lookRef.current].src)));
-    const chip = !active || !sp ? '' : draft && (sp.id !== 'plant' || fx.current?.kind === 'water') && sp.id !== 'cat'
-      ? `${POSE_LABEL[sp.id] ?? (sp.id === 'wardrobe' ? '옷장에 손 뻗기' : '창문에 손 뻗기')} · v11 초안 그림${sp.id === 'chair' ? ' (앉는 과정 원화 미완성)' : sp.id === 'bed' ? ' (눕는 과정·침대 위치 추정)' : ''}`
-      : draft && sp.id === 'cat' ? '고양이와 놀기 · v11 초안 그림'
+    const draft = v12Spot(sp) ? !!v12Player() : !!(v11.current && v11.current.looks[lookRef.current] && ready(image(V11_BASE + v11.current.looks[lookRef.current].src)));
+    const chip = !active || !sp || draft ? '' // the pose itself is drawn: no label
       : sp.pose && sp.pose !== 'touch' ? `${POSE_LABEL[sp.id]} · 동작 그림 준비 전` : '';
     const key = `${ph}|${active ? sp?.id : ''}|${chip}`;
     if (key !== uiKey.current) { uiKey.current = key; setRoomUi({ phase: ph, action: active ? sp?.id ?? '' : ph === 'waiting' ? `near:${sp?.id}` : '', chip }); }
+  }
+
+  /** Bicycle (campus only): mount (~0.75 s) → ride with the stick/keys → dismount beside the bike, never inside anything. */
+  function bikeStep(map: WorldMapDef, dtMs: number, now: number) {
+    const b = bike.current, bc = loc.current?.bicycle, s = stateRef.current;
+    if (b.phase !== 'off' && (!bc || !bc.allowedMaps.includes(map.id))) bike.current = BIKE_OFF; // never indoors
+    else if (b.phase === 'mount') bike.current = b.t + dtMs >= bc!.mountMs ? { phase: 'ride', t: 0 } : { ...b, t: b.t + dtMs };
+    else if (b.phase === 'ride') bike.current = { ...b, t: b.t + dtMs };
+    else if (b.phase === 'dismount') {
+      const t = b.t + dtMs, k = Math.min(1, t / bc!.dismountMs), e = k * k * (3 - 2 * k), [fx, fy] = b.from!, [tx, ty] = b.to!;
+      stateRef.current = { ...s, x: fx + (tx - fx) * e, y: fy + (ty - fy) * e }; // short slide to the free side, no jump
+      bike.current = k >= 1 ? BIKE_OFF : { ...b, t };
+    }
+    const cur = stateRef.current, ph = bike.current.phase, rf = room.current.phase;
+    const can = ph === 'off' && !!loc.current && nearBike(loc.current, map.id, cur.x, cur.y) && !!v12Player() && (rf === 'free' || rf === 'waiting') && !wave.current;
+    const hint = now < bikeHint.current.until ? bikeHint.current.text : '';
+    const key = `${can}|${ph !== 'off'}|${hint}`;
+    if (key !== bikeKey.current) { bikeKey.current = key; setBikeUi({ can, riding: ph !== 'off', hint }); }
+  }
+  function toggleBike() {
+    const b = bike.current, map = worldMaps[stateRef.current.mapId], s = stateRef.current;
+    if (b.phase === 'off') {
+      if (!loc.current || !nearBike(loc.current, map.id, s.x, s.y) || !v12Player()) return;
+      keys.current.clear(); wave.current = null; bike.current = { phase: 'mount', t: 0 };
+      stateRef.current = { ...s, direction: 'right' };
+    } else if (b.phase === 'ride') {
+      const others = (npcs.current ?? []).filter(n => Math.hypot(n.x - s.x, (n.y - s.y) * 1.6) >= 46);
+      const spot = dismountSpot([s.x, s.y], (x, y) => canOccupy(map, x, y, others) && !portalAt(map, x, y));
+      if (!spot) { bikeHint.current = { text: '내릴 자리가 없어요. 조금 넓은 곳으로 가 주세요', until: performance.now() + 2200 }; return; } // keep riding
+      keys.current.clear(); bike.current = { phase: 'dismount', t: 0, from: [s.x, s.y], to: spot };
+    }
+  }
+  /** Wave once at the friend nearby; the friend waves back once. Never opens a talk, payment or unlock. */
+  function waveAt() {
+    const n = nearRef.current;
+    if (!n || wave.current || bike.current.phase !== 'off' || busy.current || lockMove.current || npcs.current?.some(m => m.waveMs !== null)) return;
+    const now = performance.now();
+    wave.current = { t0: now, person: n.person };
+    stateRef.current = { ...stateRef.current, direction: 'down' }; // the wave frames face the front
+    npcs.current = (npcs.current ?? []).map(m => m.person === n.person ? { ...m, waveMs: -NPC_WAVE_DELAY, dir: 'down', moving: false } : m);
+    wavingRef.current = true; setWaving(true);
   }
 
   function portalLabel(map: WorldMapDef, x: number, y: number) {
@@ -292,9 +414,15 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     <div className="world-stick" onPointerDown={e => { stick.current = { x: 0, y: 0, active: true, id: e.pointerId }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* capture is optional */ } stickMove(e); }} onPointerMove={stickMove} onPointerUp={stickEnd} onPointerCancel={stickEnd} onLostPointerCapture={stickEnd} data-scroll-drag="ignore" aria-label="이동 조이스틱">
       <span style={{ transform: `translate(${knob.x}px, ${knob.y}px)` }} />
     </div>
-    {person && <button className="world-talk" onClick={talk}><ChatCircleDots size={20} weight="fill" /><span><b>{person.name}</b>{person.locked ? '친밀도 쌓기 안내 보기' : `${withAnd(person.name).slice(person.name.length)} 이야기하기`}</span><kbd>E</kbd></button>}
+    {(person || bikeUi.can || bikeUi.riding) && <div className="world-actions">
+    {bikeUi.can && <button className="world-bike" onClick={toggleBike}><Bicycle size={18} weight="fill" />자전거 타기</button>}
+    {bikeUi.riding && <button className="world-bike" onClick={toggleBike}><Bicycle size={18} weight="fill" />자전거에서 내리기</button>}
+    {person && !bikeUi.riding && <button className="world-wave" onClick={waveAt} disabled={waving || !(roomUi.phase === 'free' || roomUi.phase === 'waiting')} aria-label={`${person.name}에게 손 흔들기`}><HandWaving size={18} weight="fill" />손흔들기</button>}
+    {person && !bikeUi.riding && <button className="world-talk" onClick={talk}><ChatCircleDots size={20} weight="fill" /><span><b>{person.name}</b>{person.locked ? '친밀도 쌓기 안내 보기' : `${withAnd(person.name).slice(person.name.length)} 이야기하기`}</span><kbd>E</kbd></button>}
+    </div>}
+    {bikeUi.hint && <p className="room-chip bike-hint" role="status">{bikeUi.hint}</p>}
     {roomUi.chip && <p className="room-chip" role="status">{roomUi.chip}</p>}
-    {v11State !== 'off' && mapId === 'bedroom' && <p className="room-art-badge">{v11State === 'ready' ? '아트 미리보기 v11 · 검토용 초안 (개발용)' : v11State === 'error' ? 'v11 초안을 불러오지 못해 기존 그림으로 표시 중' : 'v11 초안 불러오는 중…'}</p>}
+    {(v11State === 'loading' || v11State === 'error') && mapId === 'bedroom' && <p className="room-art-badge">{v11State === 'error' ? '방 행동 그림을 불러오지 못해 기존 그림으로 표시 중' : '방 행동 그림 불러오는 중…'}</p>}
     {debug && <p className="world-debug">{mapId} · {Math.round(stateRef.current.x)}, {Math.round(stateRef.current.y)}</p>}
   </section>;
 
@@ -324,10 +452,68 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     return { img, frame: a.frames[idx], world, scale: miniHeight(map, world[1]) / lk.referenceHeight, seated };
   }
 
+  /** v12 player frame: bike > wave > sit / wash / cook spot pose. null → the normal v10 walk mini.
+   * Scale stays the standing mini's (miniHeight at the feet / referenceHeight) so the body never jumps in size. */
+  function socialPose(map: WorldMapDef, s: WorldState, t: number, walkMs: number, reduced: boolean): { img: HTMLImageElement; frame: V12Frame; world: Pt; scale: number; mirror: boolean; alpha: number; seated: boolean; spot: V12Spot | null } | null {
+    const P = v12Player(); if (!P) return null;
+    const { e, img } = P, base = miniHeight(map, s.y) / e.referenceHeight, gs = (k: string) => e.groupScale?.[k] ?? 1;
+    const b = bike.current;
+    if (b.phase !== 'off') {
+      // left/right: two pedal frames only while really moving; up/down are single still frames
+      const f = b.phase === 'mount' ? clipFrame(e, 'mount', b.t, reduced) : b.phase === 'dismount' ? clipFrame(e, 'dismount', b.t, reduced)
+        : clipFrame(e, rideClip(s.direction), moving.current ? walkMs : 0, reduced);
+      // Head-size check (alpha width of the head rows, L01/L05): side ride + mount frames are drawn ~20% smaller than standing,
+      // front/back ride frames are not. So the package's ride groupScale applies only to wheel-ground frames outside ride_down/up.
+      const still = [...(e.clips.ride_down?.frames ?? []), ...(e.clips.ride_up?.frames ?? [])].map(i => e.frames[i]);
+      const k = f && f.anchorKind === 'wheel-ground' && !still.includes(f) ? gs('ride') : 1;
+      return f && { img, frame: f, world: [s.x, s.y], scale: base * k, mirror: false, alpha: 1, seated: false, spot: null };
+    }
+    if (wave.current) { const f = clipFrame(e, 'wave', t - wave.current.t0, reduced); return f && { img, frame: f, world: [s.x, s.y], scale: base * gs('wave'), mirror: false, alpha: 1, seated: false, spot: null }; }
+    const r = room.current, v = v12Spot(r.spot);
+    if (!v || !v.clip || !(r.phase === 'starting' || r.phase === 'active' || r.phase === 'ending')) return null;
+    const f = clipFrame(e, v.clip, t - actT0.current, reduced); if (!f) return null;
+    // short crossfade from the standing mini (a static seated frame, not a knee-bend animation)
+    const alpha = r.phase === 'starting' ? Math.min(1, r.t / Math.max(1, cfg.current.alignMs)) : r.phase === 'ending' ? Math.max(0, 1 - (t - endT0.current) / 160) : 1;
+    return { img, frame: f, world: v.render, scale: miniHeight(map, v.approach[1]) / e.referenceHeight * gs(v.clip.split('_')[0]), mirror: !!v.mirrorX, alpha, seated: f.anchorKind === 'hip', spot: v };
+  }
+  /** Full-body friend: walk frames only while moving, idle frame of the facing when still, front wave once. Name + lock tag above. */
+  function drawNpc(ctx: CanvasRenderingContext2D, map: WorldMapDef, n: NpcRun, reduced: boolean, tags: (() => void)[]) {
+    const p = people[n.person], e = v12.current?.npcs[n.id], img = e ? image(V12_BASE + e.src) : null;
+    const h = miniHeight(map, n.y), near = n.person === nearRef.current?.person;
+    const label = p.locked ? `${p.name} 🔒` : p.name;
+    const pill = (cx: number, y: number) => {
+      ctx.font = '600 22px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
+      const tw = ctx.measureText(label).width + 24;
+      ctx.fillStyle = near ? '#6d4f96' : '#3b2d4bd9'; ctx.beginPath(); ctx.roundRect(cx - tw / 2, y - 34, tw, 34, 17); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.fillText(label, cx, y - 9);
+    };
+    const f = e && img && ready(img) ? npcFrame(e, n.dir, n.moving, n.walkMs, n.waveMs !== null && n.waveMs >= 0 ? n.waveMs : null, reduced) : null;
+    if (e && img && f) {
+      const { dx, dy, dw, dh } = placeV12(f, [n.x, n.y], h / e.referenceHeight);
+      ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(n.x, n.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.drawImage(img, f.rect[0], f.rect[1], f.rect[2], f.rect[3], dx, dy, dw, dh);
+      tags.push(() => pill(n.x, n.y - h - 10));
+      return;
+    }
+    // sheet not loaded (or failed): the previous portrait badge
+    tags.push(() => {
+      const art = image(p.art), cx = n.x, cy = n.y - 118, r = 46;
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(cx, cy, r + 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx - 12, cy + r); ctx.lineTo(cx, cy + r + 20); ctx.lineTo(cx + 12, cy + r); ctx.fill();
+      if (ready(art)) {
+        ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+        ctx.fillStyle = '#ece3f4'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+        const [fx, fy, fs] = n.face;
+        ctx.drawImage(art, fx - fs / 2, fy - fs / 2, fs, fs, cx - r, cy - r, r * 2, r * 2); ctx.restore();
+      }
+      pill(cx, cy - r - 10);
+    });
+  }
+
   // Soft highlight on the object the player is about to use, and the open-window light/breeze.
-  function drawRoomBack(ctx: CanvasRenderingContext2D, t: number, playerBox: [number, number, number, number] | null) {
+  function drawRoomBack(ctx: CanvasRenderingContext2D, map: WorldMapDef, t: number, playerBox: [number, number, number, number] | null) {
     const r = room.current;
-    if (roomSave.current.windowOpen || fx.current?.kind === 'window') {
+    if (map.id === 'bedroom' && (roomSave.current.windowOpen || fx.current?.kind === 'window')) {
       const k = fx.current?.kind === 'window' ? Math.min(1, (t - fx.current.start) / 600) : 1;
       const a = roomSave.current.windowOpen ? k : 1 - k;
       if (a > 0.01) {
@@ -347,7 +533,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     }
     const sp = r.spot;
     if (sp && (r.phase === 'waiting' || r.phase === 'starting')) {
-      const k = r.phase === 'waiting' ? Math.min(1, r.dwell / cfg.current.dwellMs) : 1;
+      const k = r.phase === 'waiting' ? Math.min(1, r.dwell / dwellOf(sp, cfg.current)) : 1;
       const pulse = .5 + .5 * Math.sin(t / 260);
       ctx.save();
       if (playerBox) { ctx.beginPath(); ctx.rect(0, 0, WORLD_W, WORLD_H); ctx.rect(...playerBox); ctx.clip('evenodd'); } // keep the glow off the player
@@ -358,12 +544,13 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     }
   }
   // Water stream, droplets and leaf sparkles; cat toy (temporary drawing) while playing.
-  function drawRoomFront(ctx: CanvasRenderingContext2D, s: WorldState, h: number, t: number) {
+  function drawRoomFront(ctx: CanvasRenderingContext2D, s: WorldState, h: number, t: number, posed: boolean) {
     const f = fx.current;
     if (f && (f.kind === 'water' || f.kind === 'leaf')) {
       const k = (t - f.start) / (f.until - f.start);
       const plant = roomSpots.bedroom!.find(p => p.id === 'plant')!.target;
-      if (f.kind === 'water' && k < .8) {
+      const water = (posed && v11.current?.looks[lookRef.current]?.actions.water) || WATER_TIMING;
+      if (f.kind === 'water' && pouring(water, t - f.start, f.until - f.start)) { // pour frames only, gone on lift/lower/cancel
         const hx = s.x + h * .14, hy = s.y - h * .5;
         ctx.strokeStyle = 'rgba(90,160,235,.85)'; ctx.lineWidth = 8; ctx.lineCap = 'round'; ctx.setLineDash([14, 12]); ctx.lineDashOffset = -t / 10;
         ctx.beginPath(); ctx.moveTo(hx, hy); ctx.quadraticCurveTo((hx + plant[0]) / 2, hy - 60, plant[0] - 10, plant[1] - 20); ctx.stroke(); ctx.setLineDash([]);
@@ -376,8 +563,8 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       }
     }
     const r = room.current;
-    if (r.spot?.id === 'cat' && r.phase === 'active' && cat.current?.mode === 'play') {
-      // TEMPORARY toy drawing (stick + feather) swinging from the player's hand toward the cat
+    if (!posed && r.spot?.id === 'cat' && r.phase === 'active' && cat.current?.mode === 'play') {
+      // TEMPORARY toy drawing (the v11 play frames already hold their own toy) (stick + feather) swinging from the player's hand toward the cat
       const c = cat.current, side = c.x >= s.x ? 1 : -1, hx = s.x + side * h * .12, hy = s.y - h * .45;
       const sw = Math.sin(t / 180) * 18, tx = hx + side * 70, ty = hy + 30 + sw;
       ctx.strokeStyle = '#8a6a4a'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tx, ty); ctx.stroke();
@@ -395,12 +582,10 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
           : c.mode === 'play' ? 'paw' : c.mode === 'rest' ? 'loaf' : c.mode === 'cooldown' ? 'look_up' : 'sit';
         const a = m.cat.frames[key];
         if (a?.frames.length) {
-          const f = a.frames[Math.floor(t * a.fps / 1000) % a.frames.length];
+          const f = catFrame(img, a.frames[Math.floor(t * a.fps / 1000) % a.frames.length]);
           const { dx, dy, dw, dh } = placeFrame(f, [c.x, c.y], m.cat.displayScale);
           ctx.fillStyle = 'rgba(58,42,74,.2)'; ctx.beginPath(); ctx.ellipse(c.x, c.y, 26, 7, 0, 0, Math.PI * 2); ctx.fill();
           ctx.drawImage(img, f.rect[0], f.rect[1], f.rect[2], f.rect[3], dx, dy, dw, dh);
-          ctx.font = '600 13px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
-          ctx.fillStyle = '#3b2d4bcc'; ctx.beginPath(); ctx.roundRect(c.x - 18, dy - 24, 36, 18, 9); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillText('초안', c.x, dy - 11);
           return;
         }
       }
@@ -449,69 +634,73 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       ctx.fillStyle = '#3b2d4be6'; ctx.beginPath(); ctx.roundRect(lx - tw / 2, ly - 20, tw, 40, 20); ctx.fill();
       ctx.fillStyle = '#fff6c8'; ctx.fillText(label, lx, ly + 8);
     }
-    // NPC ground rings (behind characters)
-    for (const n of map.npcs) {
-      ctx.fillStyle = '#7a5aa333'; ctx.beginPath(); ctx.ellipse(n.x, n.y, 44, 15, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#f5ecff'; ctx.lineWidth = 3; ctx.setLineDash([8, 7]); ctx.stroke(); ctx.setLineDash([]);
-    }
     const roomT = performance.now();
     let playerBox: [number, number, number, number] | null = null;
     // v11 draft room layers (dev preview): chair layer only on top of the chair-free background (no double chair)
     const v11m = v11.current, v11Room = !!v11m && map.id === 'bedroom' && bg.src.includes('/dev-art/');
     const sitting = room.current.spot?.id === 'chair' && room.current.phase !== 'free' && room.current.phase !== 'waiting';
-    const chairLayer = v11Room ? image(V11_BASE + v11m!.room[sitting ? 'chair_out' : 'chair_in'][s.timeOfDay].src) : null;
+    const chairOut = v11Room ? image(V11_BASE + v11m!.room.chair_out[s.timeOfDay].src) : null;
+    const chairLayer = v11Room ? (sitting && chairOut && ready(chairOut) ? chairOut : image(V11_BASE + v11m!.room.chair_in[s.timeOfDay].src)) : null; // the chair never disappears
     if (v11Room) {
       if (roomSave.current.windowOpen) { const w = v11m!.room.window_open[s.timeOfDay]; const fr = image(V11_BASE + w.frames[Math.floor(roomT * w.fps / 1000) % w.frames.length].src); if (ready(fr)) ctx.drawImage(fr, 0, 0, WORLD_W, WORLD_H); }
       if (chairLayer && ready(chairLayer)) ctx.drawImage(chairLayer, 0, 0, WORLD_W, WORLD_H);
     }
-    // player
     const h = miniHeight(map, s.y);
-    const catObj = roomSpots[map.id] ? cat.current : null;
-    if (catObj && catObj.y < s.y) drawCat(ctx, map, catObj, roomT);
+    const catObj = catPath[map.id] ? cat.current : null;
     const pose = v11Room ? v11Pose(map, s, roomT) : null;
-    if (!pose?.seated) { ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(s.x, s.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill(); }
-    const m = miniManifest.current, sheet = miniSheet.current;
-    if (pose) {
-      // draft pose frame: manifest rect, sheet-absolute anchor on the world point, one common scale
-      const { dx, dy, dw, dh } = placeFrame(pose.frame, pose.world, pose.scale);
-      ctx.drawImage(pose.img, pose.frame.rect[0], pose.frame.rect[1], pose.frame.rect[2], pose.frame.rect[3], dx, dy, dw, dh);
-      playerBox = [dx, dy, dw, dh];
-      if (debug) { ctx.fillStyle = '#00e5ff'; ctx.beginPath(); ctx.arc(pose.world[0], pose.world[1], 5, 0, Math.PI * 2); ctx.fill(); }
-    } else if (m && sheet) {
-      // One complete frame at its manifest rect, feet on (x, y), uniform scale; idleFrame when not actually moving.
-      const { entry, rect } = frameFor(m, lookRef.current, s.direction as MiniDirection, moving.current, walkMs, reduced);
-      const nudge = fx.current?.kind === 'touch' ? Math.sin(Math.min(1, (roomT - fx.current.start) / (fx.current.until - fx.current.start)) * Math.PI) * 6 : 0; // reaches toward the wardrobe
-      const { dx, dy, dw, dh } = miniPlacement(entry, rect, s.x, s.y - nudge, h);
-      ctx.drawImage(sheet, rect[0], rect[1], rect[2], rect[3], dx, dy, dw, dh);
-      playerBox = [dx, dy, dw, dh];
+    const social = pose ? null : socialPose(map, s, roomT, walkMs, reduced);
+    const clipPolys = (polys: Pt[][]) => { ctx.save(); ctx.beginPath(); for (const poly of polys) poly.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.clip(); ctx.drawImage(bg, 0, 0, WORLD_W, WORLD_H); ctx.restore(); };
+    // sink water / hob flame: on the back counter, so behind the player; the pot is redrawn over the flame ring
+    if (social?.spot && room.current.phase === 'active') {
+      const v = social.spot, [ex, ey] = v.effectPoint ?? v.render;
+      if (v.effect === 'water') drawWater(ctx, ex, ey, roomT, reduced);
+      if (v.effect === 'flame') { drawFlame(ctx, ex, ey, roomT, reduced); if (v.effectOcclusion?.length) clipPolys(v.effectOcclusion); }
     }
-    if (catObj && catObj.y >= s.y) drawCat(ctx, map, catObj, roomT);
-    // foreground parts of the art that stand in front of the player
-    for (const o of map.occluders) {
-      if (s.y >= o.baseY) continue;
-      ctx.save(); ctx.beginPath(); o.poly.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.clip();
-      ctx.drawImage(bg, 0, 0, WORLD_W, WORLD_H); ctx.restore();
-    }
-    // room effects go above furniture fronts (water on the shelf plants, window light), never over the player herself
-    if (roomSpots[map.id]) { drawRoomBack(ctx, roomT, playerBox); drawRoomFront(ctx, s, h, roomT); }
-    // NPC badges (portrait circle + name). NPC minis are not made yet.
-    for (const n of map.npcs) {
-      const p = people[n.person], img = image(p.art);
-      const cx = n.x, cy = n.y - 118, r = 46;
-      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(cx, cy, r + 5, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(cx - 12, cy + r); ctx.lineTo(cx, cy + r + 20); ctx.lineTo(cx + 12, cy + r); ctx.fill();
-      if (ready(img)) {
-        ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
-        ctx.fillStyle = '#ece3f4'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
-        const [fx, fy, fs] = n.face;
-        ctx.drawImage(img, fx - fs / 2, fy - fs / 2, fs, fs, cx - r, cy - r, r * 2, r * 2); ctx.restore();
+    const drawPlayer = () => {
+      if (!pose?.seated && !social?.seated) { ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(s.x, s.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill(); }
+      const m = miniManifest.current, sheet = miniSheet.current;
+      if (pose) {
+        // draft pose frame: manifest rect, sheet-absolute anchor on the world point, one common scale
+        const { dx, dy, dw, dh } = placeFrame(pose.frame, pose.world, pose.scale);
+        ctx.drawImage(pose.img, pose.frame.rect[0], pose.frame.rect[1], pose.frame.rect[2], pose.frame.rect[3], dx, dy, dw, dh);
+        playerBox = [dx, dy, dw, dh];
+        if (debugLines) { ctx.fillStyle = '#00e5ff'; ctx.beginPath(); ctx.arc(pose.world[0], pose.world[1], 5, 0, Math.PI * 2); ctx.fill(); }
+        return;
       }
-      ctx.font = '600 22px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
-      const label = p.locked ? `${p.name} 🔒` : p.name, tw = ctx.measureText(label).width + 24;
-      ctx.fillStyle = n === nearRef.current ? '#6d4f96' : '#3b2d4bd9';
-      ctx.beginPath(); ctx.roundRect(cx - tw / 2, cy - r - 44, tw, 34, 17); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.fillText(label, cx, cy - r - 19);
-    }
+      const a = social?.alpha ?? 0;
+      if (a < 1 && m && sheet) {
+        // One complete frame at its manifest rect, feet on (x, y), uniform scale; idleFrame when not actually moving.
+        const { entry, rect } = frameFor(m, lookRef.current, s.direction as MiniDirection, moving.current, walkMs, reduced);
+        const nudge = fx.current?.kind === 'touch' ? Math.sin(Math.min(1, (roomT - fx.current.start) / (fx.current.until - fx.current.start)) * Math.PI) * 6 : 0; // reaches toward the wardrobe
+        const { dx, dy, dw, dh } = miniPlacement(entry, rect, s.x, s.y - nudge, h);
+        ctx.globalAlpha = 1 - a; ctx.drawImage(sheet, rect[0], rect[1], rect[2], rect[3], dx, dy, dw, dh); ctx.globalAlpha = 1;
+        playerBox = [dx, dy, dw, dh];
+      }
+      if (social && a > 0) {
+        // v12 frame: frame-local anchor on the world point, one uniform scale (sit: hip point; wash/cook: feet; bike: wheels)
+        const { dx, dy, dw, dh } = placeV12(social.frame, social.world, social.scale), [rx, ry, rw, rh] = social.frame.rect;
+        ctx.save(); ctx.globalAlpha = a;
+        if (social.mirror) { ctx.translate(social.world[0] * 2, 0); ctx.scale(-1, 1); } // mirror around the anchor
+        ctx.drawImage(social.img, rx, ry, rw, rh, dx, dy, dw, dh); ctx.restore();
+        playerBox = social.mirror ? [social.world[0] * 2 - dx - dw, dy, dw, dh] : [dx, dy, dw, dh];
+        if (debugLines) { ctx.fillStyle = '#00e5ff'; ctx.beginPath(); ctx.arc(social.world[0], social.world[1], 5, 0, Math.PI * 2); ctx.fill(); }
+      }
+    };
+    // Everyone (player, friends, cat) and the art's foreground parts sorted by where their feet touch the floor.
+    // Ties: the foreground part first, so a foot exactly on its base line stands in front.
+    const tags: (() => void)[] = [];
+    const items: { y: number; occ: boolean; draw: () => void }[] = [{ y: s.y, occ: false, draw: drawPlayer }];
+    for (const n of npcs.current ?? map.npcs as NpcRun[]) items.push({ y: n.y, occ: false, draw: () => drawNpc(ctx, map, n, reduced, tags) });
+    if (catObj) items.push({ y: catObj.y, occ: false, draw: () => drawCat(ctx, map, catObj, roomT) });
+    const spotOcc = social?.spot?.occlusion?.length ? social.spot.occlusion : null;
+    for (const o of map.occluders) if (!(spotOcc && o.baseY < 9999)) items.push({ y: o.baseY, occ: true, draw: () => clipPolys([o.poly]) }); // during sink/stove the spot's own island cut replaces the map one
+    if (spotOcc) items.push({ y: s.y + .01, occ: true, draw: () => clipPolys(spotOcc) }); // island front over the legs at the sink / stove
+    items.sort((p, q) => p.y - q.y || (q.occ ? 1 : 0) - (p.occ ? 1 : 0));
+    for (const it of items) it.draw();
+    // room effects go above furniture fronts (water on the shelf plants, window light), never over the player herself
+    if (spotsFor(map.id).length) drawRoomBack(ctx, map, roomT, playerBox);
+    if (map.id === 'bedroom') drawRoomFront(ctx, s, h, roomT, !!pose);
+    tags.forEach(t => t());
     // Off-screen exits: pin a small direction tag to the screen edge so every connection stays findable.
     ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
     ctx.font = '600 11px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
@@ -530,7 +719,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       ctx.fillStyle = '#fff6c8'; ctx.fillText(label, x, y + 4);
     }
     ctx.setTransform(k, 0, 0, k, -camX * k, -camY * k);
-    if (debug && !(window as any).__pwNoOutline) {
+    if (debugLines) {
       const poly = (pts: [number, number][], c: string) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.strokeStyle = c; ctx.lineWidth = 3; ctx.stroke(); };
       map.walk.forEach(p => poly(p, '#00e676')); map.blocks.forEach(p => poly(p, '#ff1744')); map.occluders.forEach(o => poly(o.poly, '#2979ff'));
       map.portals.forEach(p => { ctx.fillStyle = '#ffea0066'; ctx.fillRect(...p.rect); });

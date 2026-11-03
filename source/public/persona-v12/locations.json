@@ -1,0 +1,473 @@
+{
+  "worldSize": [
+    1536,
+    1024
+  ],
+  "coordinateSpace": "background-image-pixels",
+  "sourceCommit": "098d85e",
+  "spots": [
+    {
+      "id": "sofa",
+      "map": "living-room",
+      "label": "소파",
+      "auto": true,
+      "approach": [
+        720,
+        650
+      ],
+      "render": [
+        780,
+        474
+      ],
+      "facing": "up",
+      "clip": "sit_front_right",
+      "radius": 44,
+      "dwellMs": 600,
+      "height": 205,
+      "occlusion": [],
+      "requestedApproach": [
+        720,
+        650
+      ],
+      "geometryStatus": "approach-footprint-valid-render-needs-app-check"
+    },
+    {
+      "id": "island-stool",
+      "map": "kitchen",
+      "label": "아일랜드 의자",
+      "auto": true,
+      "approach": [
+        637,
+        720
+      ],
+      "render": [
+        627,
+        505
+      ],
+      "facing": "up",
+      "clip": "sit_back_right",
+      "radius": 38,
+      "dwellMs": 600,
+      "height": 195,
+      "occlusion": [],
+      "requestedApproach": [
+        637,
+        720
+      ],
+      "geometryStatus": "approach-footprint-valid-render-needs-app-check"
+    },
+    {
+      "id": "sink",
+      "map": "kitchen",
+      "label": "싱크대",
+      "auto": true,
+      "approach": [
+        720,
+        345
+      ],
+      "render": [
+        790,
+        375
+      ],
+      "mirrorX": true,
+      "facing": "up",
+      "clip": "wash",
+      "radius": 27,
+      "dwellMs": 2000,
+      "height": 270,
+      "effect": "water",
+      "effectPoint": [
+        756,
+        176
+      ],
+      "occlusion": [
+        [
+          [
+            470,
+            372
+          ],
+          [
+            630,
+            300
+          ],
+          [
+            1022,
+            432
+          ],
+          [
+            1012,
+            622
+          ],
+          [
+            820,
+            708
+          ],
+          [
+            478,
+            592
+          ]
+        ]
+      ],
+      "requestedApproach": [
+        720,
+        345
+      ],
+      "geometryStatus": "approach-footprint-valid-render-needs-app-check"
+    },
+    {
+      "id": "stove",
+      "map": "kitchen",
+      "label": "가스레인지",
+      "auto": true,
+      "approach": [
+        938,
+        413
+      ],
+      "render": [
+        920,
+        410
+      ],
+      "facing": "up",
+      "clip": "cook",
+      "radius": 30,
+      "dwellMs": 2000,
+      "height": 270,
+      "effect": "flame",
+      "effectPoint": [
+        966,
+        258
+      ],
+      "effectOcclusion": [
+        [
+          [
+            944,
+            213
+          ],
+          [
+            990,
+            213
+          ],
+          [
+            1001,
+            240
+          ],
+          [
+            993,
+            253
+          ],
+          [
+            950,
+            253
+          ],
+          [
+            941,
+            239
+          ]
+        ]
+      ],
+      "occlusion": [
+        [
+          [
+            470,
+            372
+          ],
+          [
+            630,
+            300
+          ],
+          [
+            1022,
+            432
+          ],
+          [
+            1012,
+            622
+          ],
+          [
+            820,
+            708
+          ],
+          [
+            478,
+            592
+          ]
+        ]
+      ],
+      "requestedApproach": [
+        927,
+        402
+      ],
+      "geometryStatus": "approach-footprint-valid-render-needs-app-check"
+    },
+    {
+      "id": "bench",
+      "map": "campus",
+      "label": "앞쪽 벤치",
+      "auto": true,
+      "approach": [
+        360,
+        713
+      ],
+      "render": [
+        242,
+        670
+      ],
+      "facing": "left",
+      "clip": "sit_front_right",
+      "radius": 40,
+      "dwellMs": 600,
+      "height": 195,
+      "occlusion": [],
+      "requestedApproach": [
+        360,
+        713
+      ],
+      "geometryStatus": "approach-footprint-valid-render-needs-app-check"
+    },
+    {
+      "id": "bicycle",
+      "map": "campus",
+      "label": "자전거 타기",
+      "auto": false,
+      "approach": [
+        348,
+        297
+      ],
+      "render": [
+        348,
+        297
+      ],
+      "facing": "up",
+      "radius": 85,
+      "dwellMs": 0,
+      "height": 190,
+      "requestedApproach": [
+        348,
+        297
+      ],
+      "geometryStatus": "approach-footprint-valid-render-needs-app-check"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "sophie",
+      "person": 1,
+      "map": "living-room",
+      "spawn": [
+        760,
+        720
+      ],
+      "patrol": [
+        [
+          760,
+          720
+        ],
+        [
+          805,
+          720
+        ],
+        [
+          805,
+          745
+        ],
+        [
+          760,
+          745
+        ],
+        [
+          720,
+          720
+        ]
+      ],
+      "speed": 35,
+      "talkRange": 150,
+      "greetRange": 150,
+      "locked": false
+    },
+    {
+      "id": "chloe",
+      "person": 0,
+      "map": "kitchen",
+      "spawn": [
+        1050,
+        560
+      ],
+      "patrol": [
+        [
+          1050,
+          560
+        ],
+        [
+          1095,
+          560
+        ],
+        [
+          1095,
+          585
+        ],
+        [
+          1050,
+          585
+        ]
+      ],
+      "speed": 35,
+      "talkRange": 150,
+      "greetRange": 150,
+      "locked": false
+    },
+    {
+      "id": "luna",
+      "person": 3,
+      "map": "campus",
+      "spawn": [
+        840,
+        610
+      ],
+      "patrol": [
+        [
+          840,
+          610
+        ],
+        [
+          885,
+          610
+        ],
+        [
+          885,
+          635
+        ],
+        [
+          840,
+          635
+        ],
+        [
+          800,
+          610
+        ]
+      ],
+      "speed": 35,
+      "talkRange": 150,
+      "greetRange": 150,
+      "locked": true
+    },
+    {
+      "id": "julian",
+      "person": 4,
+      "map": "campus",
+      "spawn": [
+        820,
+        300
+      ],
+      "patrol": [
+        [
+          820,
+          300
+        ],
+        [
+          865,
+          300
+        ],
+        [
+          865,
+          325
+        ],
+        [
+          820,
+          325
+        ],
+        [
+          780,
+          300
+        ]
+      ],
+      "speed": 35,
+      "talkRange": 150,
+      "greetRange": 150,
+      "locked": true
+    },
+    {
+      "id": "ethan",
+      "person": 2,
+      "map": "park",
+      "spawn": [
+        720,
+        600
+      ],
+      "patrol": [
+        [
+          720,
+          600
+        ],
+        [
+          765,
+          600
+        ],
+        [
+          765,
+          625
+        ],
+        [
+          720,
+          625
+        ],
+        [
+          680,
+          600
+        ]
+      ],
+      "speed": 35,
+      "talkRange": 150,
+      "greetRange": 150,
+      "locked": false
+    },
+    {
+      "id": "oliver",
+      "person": 5,
+      "map": "bar",
+      "spawn": [
+        720,
+        660
+      ],
+      "patrol": [
+        [
+          720,
+          660
+        ],
+        [
+          765,
+          660
+        ],
+        [
+          765,
+          685
+        ],
+        [
+          720,
+          685
+        ],
+        [
+          680,
+          660
+        ]
+      ],
+      "speed": 35,
+      "talkRange": 150,
+      "greetRange": 150,
+      "locked": true
+    }
+  ],
+  "bicycle": {
+    "allowedMaps": [
+      "campus"
+    ],
+    "speedMultiplier": 1.65,
+    "collisionRadius": 30,
+    "mountMs": 750,
+    "dismountMs": 750,
+    "stopBeforePortal": true
+  },
+  "notes": [
+    "Render anchors calibrated in supplied preview; recheck camera scale and actor occlusion in actual app.",
+    "Original parked bikes remain background decoration. Riding is a separate actor, not removal of the painted bicycle."
+  ]
+}

@@ -44,7 +44,12 @@
 .world-door{position:absolute;bottom:200px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;white-space:nowrap;padding:6px 12px;border-radius:16px;background:#2f2340d9;color:#fff4e4;font-size:11px;pointer-events:none}
 .world-stick{position:absolute;left:26px;bottom:56px;width:116px;height:116px;border-radius:50%;background:#2f234059;border:2px solid #ffffff99;backdrop-filter:blur(6px);touch-action:none;z-index:3}
 .world-stick span{position:absolute;left:50%;top:50%;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;background:#fff7ec;box-shadow:0 4px 12px #2a1a3a55;pointer-events:none}
-.world-talk{position:absolute;right:20px;bottom:76px;display:flex;align-items:center;gap:8px;max-width:200px;padding:11px 14px;border-radius:22px;background:#6d4f96;color:#fff!important;box-shadow:0 8px 20px #2a1a3a55;z-index:3;text-align:left;font-size:12px!important;line-height:1.35}
+.world-actions{position:absolute;right:20px;bottom:76px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.world-wave,.world-bike{display:flex;align-items:center;gap:5px;padding:11px 13px;border-radius:22px;background:#fff7ec;color:#4b3a59!important;box-shadow:0 8px 20px #2a1a3a40;font-size:12px!important;font-weight:600;white-space:nowrap}
+.world-wave:disabled{opacity:.55}
+.world-bike{background:#6d4f96;color:#fff!important}
+.bike-hint{bottom:190px}
+.world-talk{position:relative;display:flex;align-items:center;gap:8px;max-width:200px;padding:11px 14px;border-radius:22px;background:#6d4f96;color:#fff!important;box-shadow:0 8px 20px #2a1a3a55;text-align:left;font-size:12px!important;line-height:1.35}
 .world-talk b{display:block;font-size:14px}
 .world-talk kbd{font:600 10px sans-serif;padding:2px 6px;border-radius:5px;background:#ffffff33}
 .world-debug{position:absolute;bottom:8px;right:8px;background:#000a;color:#0f0;font:11px monospace;padding:2px 6px}
