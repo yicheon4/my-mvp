@@ -166,3 +166,24 @@ button.world-notice{text-align:left;border:0;width:auto}
 .canvas-theme .demo-note{font-size:16px!important;line-height:1.45;margin:24px 0!important}
 .canvas-theme .fixed-footer{background:#fff;border-top:1px solid #e6e6e6;padding-top:16px}
 .canvas-theme .fixed-footer .text-button{margin-top:8px}
+/* Pinterest DESIGN.md experiment (2026-11-04): feedback screen only (canvas-theme); other screens keep the shared Week 8 buttons. Revert after captures. */
+.canvas-theme .page-header{border-bottom-color:#dadad3}
+.canvas-theme .page-header .icon-button{background:#f6f6f3}
+.canvas-theme .page-header .eyebrow,.canvas-theme .feedback-content .eyebrow,.canvas-theme .tiny-label{font-weight:500;line-height:1.5;color:#62625b}
+.canvas-theme .page-header h1{font-size:22px;font-weight:600;line-height:1.25;letter-spacing:0}
+.canvas-theme .page-header .muted,.canvas-theme .feedback-content>.muted{font-size:16px;line-height:1.4;letter-spacing:0;color:#62625b}
+.canvas-theme .feedback-content h2{font-size:28px;font-weight:700;line-height:1.2;letter-spacing:-1.2px}
+.canvas-theme .expression{padding:15px;background:#f6f6f3;border:2px solid transparent!important;border-radius:16px}
+.canvas-theme .expression.checked{border-color:#000!important}
+.canvas-theme .check-box{border-radius:9999px}
+.canvas-theme .expression h3{font-size:18px;font-weight:600;line-height:1.3;margin:4px 0!important}
+.canvas-theme .expression p{font-size:16px;line-height:1.4;letter-spacing:0;color:#33332e}
+.canvas-theme .expression small{font-size:14px;line-height:1.4;letter-spacing:0;color:#62625b}
+.canvas-theme .empty-state p{font-size:16px;line-height:1.4}
+.canvas-theme .demo-note{font-size:14px!important;line-height:1.4;color:#62625b}
+.canvas-theme .fixed-footer{border-top-color:#dadad3}
+.canvas-theme .gold-button{padding:6px 14px;background:#e60023;color:#fff!important;border-radius:16px;font-size:14px!important;font-weight:700!important;line-height:1;letter-spacing:0}
+.canvas-theme .gold-button:active:not(:disabled){background:#cc001f}
+.canvas-theme .gold-button:disabled{background:#e5e5e0;color:#62625b!important}
+.canvas-theme .fixed-footer .text-button{padding:6px 14px;background:#e5e5e0;color:#000!important;border-radius:16px;font-size:14px!important;font-weight:700!important;line-height:1;letter-spacing:0}
+.canvas-theme .fixed-footer .text-button:active{background:#c8c8c1}
