@@ -1,399 +1,407 @@
 ---
 version: alpha
-name: Figma-design-analysis
-description: "A confident black-and-white editorial frame interrupted by oversized, hand-cut pastel color blocks. The marketing canvas is rigorously monochrome — figmaSans variable type, pure white surfaces, pure black ink, pill-shaped CTAs — while each story section drops the page into a saturated lime, lavender, cream, mint, or pink panel that reads like a sticky note placed on a clean desk. The result is a design system that feels both technical and joyful — a tool for serious work, made by people who like color."
+name: Pinterest-design-analysis
+description: |
+  A photography-first discovery system organized around the Pinterest Red CTA, the masonry pin grid, and a soft warm-cream chrome that gets out of the imagery's way. The home page is a content-discovery tool wearing the chrome of a magazine publisher: 70px display headlines, friendly Pin Sans typography, fully-rounded pill buttons (16px) on a cream-tinted neutral palette, and a sticky red "Sign up" CTA that anchors every viewport. Pin imagery is the system's load-bearing visual element — square, portrait, and landscape pins tile in a column-based masonry grid where each tile is a fully-rounded 16px-radius card, separated by tight 8px gutters. The chrome is otherwise quiet: warm grays, true whites, and a single saturated red — no decorative gradients, no atmospheric backgrounds, no shadows beyond a soft modal scrim.
 
 colors:
-  primary: "#000000"
+  primary: "#e60023"
   on-primary: "#ffffff"
+  primary-pressed: "#cc001f"
   ink: "#000000"
+  ink-soft: "#211922"
+  body: "#33332e"
+  charcoal: "#262622"
+  mute: "#62625b"
+  ash: "#91918c"
+  stone: "#c8c8c1"
+  hairline: "#dadad3"
+  hairline-soft: "#e5e5e0"
+  on-secondary: "#000000"
+  secondary-bg: "#e5e5e0"
+  secondary-pressed: "#c8c8c1"
   canvas: "#ffffff"
-  inverse-canvas: "#000000"
-  inverse-ink: "#ffffff"
-  on-inverse-soft: "#ffffff"
-  hairline: "#e6e6e6"
-  hairline-soft: "#f1f1f1"
-  surface-soft: "#f7f7f5"
-  block-lime: "#dceeb1"
-  block-lilac: "#c5b0f4"
-  block-cream: "#f4ecd6"
-  block-pink: "#efd4d4"
-  block-mint: "#c8e6cd"
-  block-coral: "#f3c9b6"
-  block-navy: "#1f1d3d"
-  accent-magenta: "#ff3d8b"
-  semantic-success: "#1ea64a"
-  overlay-scrim: "#000000"
+  surface-soft: "#fbfbf9"
+  surface-card: "#f6f6f3"
+  surface-elevated: "#ffffff"
+  on-dark: "#ffffff"
+  on-dark-mute: "rgba(255,255,255,0.7)"
+  surface-dark: "#262622"
+  focus-outer: "#435ee5"
+  focus-inner: "#ffffff"
+  accent-pressed-blue: "#617bff"
+  accent-purple: "#7e238b"
+  accent-purple-deep: "#6845ab"
+  success-deep: "#103c25"
+  success-pale: "#c7f0da"
+  error: "#9e0a0a"
+  error-deep: "#cc001f"
 
 typography:
   display-xl:
-    fontFamily: figmaSans
-    fontSize: 86px
-    fontWeight: 340
-    lineHeight: 1.00
-    letterSpacing: -1.72px
-    fontFeature: kern
+    fontFamily: Pin Sans
+    fontSize: 70px
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: -1.2px
   display-lg:
-    fontFamily: figmaSans
-    fontSize: 64px
-    fontWeight: 340
-    lineHeight: 1.10
-    letterSpacing: -0.96px
-    fontFeature: kern
-  headline:
-    fontFamily: figmaSans
-    fontSize: 26px
-    fontWeight: 540
-    lineHeight: 1.35
-    letterSpacing: -0.26px
-    fontFeature: kern
-  subhead:
-    fontFamily: figmaSans
-    fontSize: 26px
-    fontWeight: 340
-    lineHeight: 1.35
-    letterSpacing: -0.26px
-    fontFeature: kern
-  card-title:
-    fontFamily: figmaSans
-    fontSize: 24px
+    fontFamily: Pin Sans
+    fontSize: 44px
     fontWeight: 700
-    lineHeight: 1.45
+    lineHeight: 1.15
+    letterSpacing: -0.8px
+  heading-xl:
+    fontFamily: Pin Sans
+    fontSize: 28px
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: -1.2px
+  heading-lg:
+    fontFamily: Pin Sans
+    fontSize: 22px
+    fontWeight: 600
+    lineHeight: 1.25
     letterSpacing: 0
-    fontFeature: kern
-  body-lg:
-    fontFamily: figmaSans
-    fontSize: 20px
-    fontWeight: 330
-    lineHeight: 1.40
-    letterSpacing: -0.14px
-    fontFeature: kern
-  body:
-    fontFamily: figmaSans
+  heading-md:
+    fontFamily: Pin Sans
     fontSize: 18px
-    fontWeight: 320
-    lineHeight: 1.45
-    letterSpacing: -0.26px
-    fontFeature: kern
-  body-sm:
-    fontFamily: figmaSans
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: 0
+  body-md:
+    fontFamily: Pin Sans
     fontSize: 16px
-    fontWeight: 330
-    lineHeight: 1.45
-    letterSpacing: -0.14px
-    fontFeature: kern
-  link:
-    fontFamily: figmaSans
-    fontSize: 20px
-    fontWeight: 480
-    lineHeight: 1.40
-    letterSpacing: -0.10px
-    fontFeature: kern
-  button:
-    fontFamily: figmaSans
-    fontSize: 20px
-    fontWeight: 480
-    lineHeight: 1.40
-    letterSpacing: -0.10px
-    fontFeature: kern
-  eyebrow:
-    fontFamily: figmaMono
-    fontSize: 18px
     fontWeight: 400
-    lineHeight: 1.30
-    letterSpacing: 0.54px
-    fontFeature: kern
-  caption:
-    fontFamily: figmaMono
+    lineHeight: 1.4
+    letterSpacing: 0
+  body-strong:
+    fontFamily: Pin Sans
+    fontSize: 16px
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: 0
+  body-sm:
+    fontFamily: Pin Sans
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: 0
+  body-sm-strong:
+    fontFamily: Pin Sans
+    fontSize: 14px
+    fontWeight: 700
+    lineHeight: 1.4
+    letterSpacing: 0
+  caption-md:
+    fontFamily: Pin Sans
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0
+  caption-sm:
+    fontFamily: Pin Sans
     fontSize: 12px
     fontWeight: 400
-    lineHeight: 1.00
-    letterSpacing: 0.60px
-    fontFeature: kern
+    lineHeight: 1.4
+    letterSpacing: 0
+  link-md:
+    fontFamily: Pin Sans
+    fontSize: 16px
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: 0
+  button-md:
+    fontFamily: Pin Sans
+    fontSize: 14px
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: 0
+  button-sm:
+    fontFamily: Pin Sans
+    fontSize: 12px
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: 0
 
 rounded:
-  xs: 2px
-  sm: 6px
-  md: 8px
-  lg: 24px
-  xl: 32px
-  pill: 50px
+  none: 0px
+  sm: 8px
+  md: 16px
+  lg: 32px
   full: 9999px
 
 spacing:
-  hair: 1px
   xxs: 4px
-  xs: 8px
-  sm: 12px
-  md: 16px
-  lg: 24px
-  xl: 32px
-  xxl: 48px
-  section: 96px
+  xs: 6px
+  sm: 8px
+  md: 12px
+  lg: 16px
+  xl: 24px
+  xxl: 32px
+  section: 64px
 
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
-    typography: "{typography.button}"
-    rounded: "{rounded.pill}"
-    padding: 10px 20px
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
+    padding: 6px 14px
+    height: 40px
   button-primary-pressed:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.primary-pressed}"
     textColor: "{colors.on-primary}"
-    typography: "{typography.button}"
-    rounded: "{rounded.pill}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
   button-secondary:
-    backgroundColor: "{colors.canvas}"
+    backgroundColor: "{colors.secondary-bg}"
+    textColor: "{colors.on-secondary}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
+    padding: 6px 14px
+    height: 40px
+  button-secondary-pressed:
+    backgroundColor: "{colors.secondary-pressed}"
+    textColor: "{colors.on-secondary}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
+  button-tertiary:
+    backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    typography: "{typography.button}"
-    rounded: "{rounded.pill}"
-    padding: 8px 18px 10px
-  button-tertiary-text:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.link}"
-    rounded: "{rounded.full}"
-    padding: 8px 12px
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
   button-icon-circular:
-    backgroundColor: "{colors.surface-soft}"
+    backgroundColor: "{colors.surface-card}"
     textColor: "{colors.ink}"
-    typography: "{typography.button}"
     rounded: "{rounded.full}"
     size: 40px
-  button-icon-circular-inverse:
-    backgroundColor: "{colors.on-inverse-soft}"
-    textColor: "{colors.inverse-ink}"
-    typography: "{typography.button}"
-    rounded: "{rounded.full}"
-    size: 40px
-  button-magenta-promo:
-    backgroundColor: "{colors.accent-magenta}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.button}"
-    rounded: "{rounded.pill}"
-    padding: 10px 18px
-  pricing-tab-default:
+  button-pill-on-image:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.button}"
-    rounded: "{rounded.pill}"
-    padding: 8px 18px
-  pricing-tab-selected:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.button}"
-    rounded: "{rounded.pill}"
-    padding: 8px 18px
+    typography: "{typography.button-md}"
+    rounded: "{rounded.full}"
+    padding: 8px 14px
+  button-disabled:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.ash}"
+    rounded: "{rounded.md}"
+  search-bar:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.full}"
+    padding: 11px 15px
+    height: 48px
+  search-bar-focused:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.full}"
   text-input:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.body}"
+    typography: "{typography.body-md}"
     rounded: "{rounded.md}"
-    padding: 12px 14px
+    padding: 11px 15px
+    height: 44px
   text-input-focused:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.body}"
     rounded: "{rounded.md}"
-    padding: 12px 14px
-  pricing-card:
+  pin-card:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: 0px
+  pin-card-large:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
+    padding: 0px
+  pin-overlay-pill:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    rounded: "{rounded.lg}"
-    padding: 24px
-  pricing-card-feature-row:
-    backgroundColor: "{colors.canvas}"
+    typography: "{typography.button-sm}"
+    rounded: "{rounded.full}"
+    padding: 6px 12px
+  filter-chip:
+    backgroundColor: "{colors.surface-card}"
     textColor: "{colors.ink}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.xs}"
-  color-block-section:
-    backgroundColor: "{colors.block-lime}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.full}"
+    padding: 8px 16px
+  filter-chip-active:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-dark}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.full}"
+  category-tile:
+    backgroundColor: "{colors.surface-card}"
     textColor: "{colors.ink}"
-    typography: "{typography.subhead}"
-    rounded: "{rounded.lg}"
-    padding: 48px
-  color-block-section-lilac:
-    backgroundColor: "{colors.block-lilac}"
-    textColor: "{colors.ink}"
-    typography: "{typography.subhead}"
-    rounded: "{rounded.lg}"
-    padding: 48px
-  color-block-section-navy:
-    backgroundColor: "{colors.block-navy}"
-    textColor: "{colors.inverse-ink}"
-    typography: "{typography.subhead}"
-    rounded: "{rounded.lg}"
-    padding: 48px
-  promo-banner-lilac:
-    backgroundColor: "{colors.block-lilac}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.md}"
-    padding: 16px 24px
-  template-card:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-sm}"
+    typography: "{typography.body-strong}"
     rounded: "{rounded.md}"
     padding: 16px
-  feature-illustration-tile:
-    backgroundColor: "{colors.surface-soft}"
+  feature-card:
+    backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.eyebrow}"
+    typography: "{typography.heading-xl}"
     rounded: "{rounded.md}"
-    padding: 24px
-  top-nav:
+    padding: 32px
+  feature-card-soft:
+    backgroundColor: "{colors.surface-card}"
+    textColor: "{colors.ink}"
+    typography: "{typography.heading-xl}"
+    rounded: "{rounded.md}"
+    padding: 32px
+  modal-card:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.xs}"
-    height: 56px
-  marquee-strip:
-    backgroundColor: "{colors.inverse-canvas}"
-    textColor: "{colors.inverse-ink}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.xs}"
-    height: 36px
-  comparison-checkmark:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.semantic-success}"
-    typography: "{typography.body-sm}"
-    rounded: "{rounded.full}"
-    size: 16px
-  footer:
+    typography: "{typography.body-md}"
+    rounded: "{rounded.lg}"
+    padding: 32px
+  hero-cta-strip:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.on-dark}"
+    typography: "{typography.heading-xl}"
+    rounded: "{rounded.none}"
+    padding: 48px 32px
+  primary-nav:
     backgroundColor: "{colors.canvas}"
     textColor: "{colors.ink}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.xs}"
-    padding: 64px 32px
+    typography: "{typography.body-strong}"
+    rounded: "{rounded.none}"
+    height: 64px
+  footer-section:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.mute}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.none}"
+    padding: 32px 24px
+  link-inline:
+    textColor: "{colors.ink-soft}"
+    typography: "{typography.link-md}"
 ---
 
 ## Overview
 
-Figma's marketing canvas is, at the system level, an editor-clean black-and-white frame. The chrome — top nav, body type, footer, primary CTA — is monochrome. Headlines are oversized `{typography.display-xl}` set in `figmaSans` with aggressive negative tracking, body copy hovers around weight 320–340 of the same variable family, and small mono `{typography.eyebrow}` and `{typography.caption}` labels (figmaMono, all-caps, positive tracking) act as section markers. Every CTA is a pill — `{rounded.pill}` — and the primary action across the entire site is the same black `{components.button-primary}` paired with the same white `{components.button-secondary}`.
+Pinterest's marketing system is built around a single instructional principle: get out of the photograph's way. The chrome is a quiet warm-cream neutral palette (`{colors.surface-soft}`, `{colors.surface-card}`, `{colors.canvas}`) carrying typography in Pinterest's proprietary Pin Sans face, with Pinterest Red (`{colors.primary}` — `#e60023`) reserved exclusively for the "Sign up" CTA, the active-tab indicator, and the sticky top-nav anchor. Every other surface is allowed to fade behind the imagery — pin tiles, category tiles, content thumbnails, profile shots — that constitutes the actual product.
 
-What makes the design unique is what happens **between** those monochrome bookends: the page repeatedly drops into oversized pastel **color-block sections** — lime, lavender, cream, mint, pink, coral, and a deep navy — that span the full content width with `{rounded.lg}` corners and `{spacing.xxl}` interior padding. These blocks are where the storytelling lives. They aren't accents tucked into a card; they take over a whole viewport's worth of vertical space, like a designer arranging giant sticky notes on a clean wall. FigJam is the most pastel-saturated, the home page rotates through the full set, and the pricing page ends with a lime FAQ panel — same vocabulary, different rhythm per route.
+The design system has two distinct surface modes that alternate down the home page: the **hero/CTA chrome** (cream surfaces, large 70px Pin Sans display headlines, alternating left/right photo-illustrated feature cards) and the **content masonry** (a column-based grid of 16px-radius pin cards on `{colors.surface-card}` with no internal padding — the pin is the card). The search results page is almost pure masonry: a tight column grid of pin imagery in mixed aspect ratios, with a small filter-chip strip at the top and the sticky red Sign-up CTA in the upper-right corner. The `create.pinterest.com` business surface inverts the grid back to a more traditional editorial layout but keeps every other rule of the system: Pin Sans, cream chrome, red CTA, 16px-radius pills.
 
-This is a system built on contrast: the monochrome chrome makes the color blocks feel intentional rather than decorative, and the color blocks make the monochrome chrome feel like editorial paper rather than enterprise SaaS. Density is generous, line-heights are tight on display sizes, and the interface never reaches for shadows or gradients to do the work that color blocks and confident typography already do.
+The system's signature gesture is **shape geometry**: 16px radius (`{rounded.md}`) for nearly every surface — buttons, inputs, pin cards, feature cards — and 32px radius (`{rounded.lg}`) reserved for pin-card-large and modal cards. There are exactly three radius values in active use: 16px, 32px, and pill (9999px). The system never goes flat (sharp corners) and never goes radius-medium — those two values are the entire shape vocabulary.
 
 **Key Characteristics:**
-- Monochrome system core: `{colors.primary}` (black) and `{colors.canvas}` (white) carry every CTA, every body line, every footer link.
-- Oversized pastel **color-block sections** (`{colors.block-lime}`, `{colors.block-lilac}`, `{colors.block-cream}`, `{colors.block-mint}`, `{colors.block-pink}`, `{colors.block-coral}`, `{colors.block-navy}`) define the narrative rhythm of every long-form page.
-- Pill is the only button shape — `{rounded.pill}` for text CTAs, `{rounded.full}` for icon buttons. No square buttons anywhere.
-- `figmaSans` variable typeface used at unusually fine weight increments (320, 330, 340, 450, 480, 540) — the type system reads as a single voice that flexes rather than a multi-weight family.
-- Tight negative letter-spacing on display sizes (-1.72px at 86px, -0.96px at 64px) creates a confident editorial cadence.
-- `figmaMono` reserved for category labels, eyebrows, and captions — always uppercase, positive tracking — to flag taxonomy without competing with display type.
-- Color-block page rhythm (home): white hero → marquee strip → white feature → lime systems block → navy ship-products block → coral developer block → white template grid → white footer.
+- Single-accent CTA: Pinterest Red (`{colors.primary}`) carries every primary action; everything else is monochrome
+- Pin Sans proprietary typography across every text role from `{typography.display-xl}` (70px) down to `{typography.caption-sm}` (12px) — no serif, no monospace anywhere
+- Two-radius shape system: `{rounded.md}` (16px) for most components, `{rounded.lg}` (32px) for large cards and modals, `{rounded.full}` for circular elements
+- Masonry pin grid as the load-bearing visual element — column-based layout where each pin's natural aspect ratio is preserved
+- Warm-cream neutral chrome (`{colors.surface-card}` — #f6f6f3) that softly recedes behind imagery without competing
+- Sticky top nav with the always-red Sign-up CTA anchored in the upper-right at every breakpoint
+- Modal overlay (login/signup) using a soft scrim over the page content rather than a navigation jump
 
 ## Colors
 
-> Source pages: figma.com (home), /design/, /figjam/brainstorming-tool/, /pricing/, /contact/.
+> **Source pages:** `/` (home), `/search/pins/?q=bold lip` (search results), `create.pinterest.com/` (creator marketing), `create.pinterest.com/product-features/how-to-create-boards/` (creator article). The chrome palette is identical across all four pages.
 
 ### Brand & Accent
-- **Black** ({colors.primary}): The system primary. Every primary CTA, every headline, every body line, the marquee strip, the inverse canvas of dark sections.
-- **White** ({colors.on-primary}): Inverse text on black surfaces; also the canvas color used as the foreground of secondary pill buttons (`{components.button-secondary}`).
-- **Magenta Promo** ({colors.accent-magenta}): A single saturated CTA pink reserved for promotional inline buttons — appears, for example, on the lilac "Save your spot" Release Notes banner. Use scarcely; it is not a section color.
+- **Pinterest Red** (`{colors.primary}` — `#e60023`): the brand's only highly-saturated color. Sign-up CTAs, sticky top-nav anchor, active state in tab strips, and the brand wordmark.
+- **Pinterest Red Pressed** (`{colors.primary-pressed}` — `#cc001f`): pressed state for the primary button — a single notch deeper than brand red.
 
 ### Surface
-- **Canvas** ({colors.canvas}): Default page background and the body of every white card.
-- **Inverse Canvas** ({colors.inverse-canvas}): Footer, marquee strip, and a subset of "ship products"-style story sections.
-- **Surface Soft** ({colors.surface-soft}): Off-white tile background used for icon buttons, template cards, and feature illustration tiles when they sit on the white canvas.
-- **Hairline** ({colors.hairline}): 1px borders on form inputs, pricing cards, and table dividers.
-- **Hairline Soft** ({colors.hairline-soft}): Even subtler dividers — comparison-table row separators and footer column rules.
-- **Block Lime** ({colors.block-lime}): The signature **systems / FAQ / contact-form** color block. Recurs across home, pricing, contact.
-- **Block Lilac** ({colors.block-lilac}): Hero block on `/design/`; also the inline Release Notes promo banner.
-- **Block Cream** ({colors.block-cream}): Soft warm background — FigJam hero strip, template-grid section.
-- **Block Mint** ({colors.block-mint}): FigJam pastel section.
-- **Block Pink** ({colors.block-pink}): FigJam pastel section.
-- **Block Coral** ({colors.block-coral}): "Ship products" coral story block on home.
-- **Block Navy** ({colors.block-navy}): Deep indigo story block — only place dark surfaces appear above the footer.
+- **Canvas** (`{colors.canvas}` — `#ffffff`): true white. The base surface for the primary nav, modals, feature cards, and content body.
+- **Soft Surface** (`{colors.surface-soft}` — `#fbfbf9`): faintly cream-tinted off-white used for the page body wash on the home page hero.
+- **Surface Card** (`{colors.surface-card}` — `#f6f6f3`): warm-cream card and pin-tile background. Carries category tiles, search-bar default fill, button-secondary default, and pin-card backgrounds.
+- **Secondary BG** (`{colors.secondary-bg}` — `#e5e5e0`): the gray-cream used for `{component.button-secondary}` ("I already have an account") fill — a notch deeper than `{colors.surface-card}`.
+- **Secondary Pressed** (`{colors.secondary-pressed}` — `#c8c8c1`): pressed state for the secondary button.
+- **Surface Dark** (`{colors.surface-dark}` — `#262622`): warm near-black used in the rare dark CTA strip on `create.pinterest.com`.
+- **Hairline** (`{colors.hairline}` — `#dadad3`): 1px row dividers, footer column rules.
+- **Hairline Soft** (`{colors.hairline-soft}` — `#e5e5e0`): lighter inline divider; doubles as the secondary-button background.
 
 ### Text
-- **Ink** ({colors.ink}): All headline, body, and caption type on light surfaces. There is no softer mid-gray text role on marketing — body copy is always black at weight 320–340, and weight (not opacity) carries the hierarchy.
-- **Inverse Ink** ({colors.inverse-ink}): Type on inverse-canvas surfaces (footer, marquee strip, navy color block).
-- **On-Inverse Soft** ({colors.on-inverse-soft}): White used at ~16% opacity for circular icon-button surfaces against dark sections (token captures the base color; the translucency is applied at render time).
+- **Ink** (`{colors.ink}` — `#000000`): primary headlines, button text, primary nav links.
+- **Ink Soft** (`{colors.ink-soft}` — `#211922`): inline-link color in body prose. The brand's only "color" beyond Pinterest Red used in chrome — a near-black with a faint warm cast.
+- **Body** (`{colors.body}` — `#33332e`): default paragraph text on `{colors.canvas}`.
+- **Charcoal** (`{colors.charcoal}` — `#262622`): subtly softer body where pure ink is too heavy.
+- **Mute** (`{colors.mute}` — `#62625b`): metadata text, footer links, secondary captions.
+- **Ash** (`{colors.ash}` — `#91918c`): disabled button text, placeholder text in inputs.
+- **Stone** (`{colors.stone}` — `#c8c8c1`): least-emphasis utility text, disabled-state borders.
+- **On Dark** (`{colors.on-dark}` — `#ffffff`): primary text on `{colors.surface-dark}`.
 
 ### Semantic
-- **Success Green** ({colors.semantic-success}): Comparison-table checkmarks on pricing. Used as a glyph fill, not a surface.
-- **Overlay Scrim** ({colors.overlay-scrim}): Black used at ~60% opacity behind modal / video-overlay surfaces (token captures the base; opacity applied at render time).
+- **Error** (`{colors.error}` — `#9e0a0a`): validation messages, destructive confirmation copy.
+- **Error Deep** (`{colors.error-deep}` — `#cc001f`): deepened error background where the regular error tone needs more contrast. Note: this matches the primary-pressed value but in error context represents semantic destructiveness.
+- **Success Deep** (`{colors.success-deep}` — `#103c25`): in-product success messaging.
+- **Success Pale** (`{colors.success-pale}` — `#c7f0da`): pale success-pill background.
+- **Focus Outer** (`{colors.focus-outer}` — `#435ee5`): the system's focus-ring blue — appears as a 2px outer outline around focused inputs and buttons.
+- **Focus Inner** (`{colors.focus-inner}` — `#ffffff`): white inner gap inside the focus-ring stack.
+
+### Editorial Accents (used sparingly inside content imagery and category badges)
+- **Accent Pressed Blue** (`{colors.accent-pressed-blue}` — `#617bff`): pressed state for blue informational badges and editorial pin chips.
+- **Accent Purple** (`{colors.accent-purple}` — `#7e238b`): editorial recommendation badge, in-product "Pinterest Predicts" callout.
+- **Accent Purple Deep** (`{colors.accent-purple-deep}` — `#6845ab`): paired dark for purple lockups and "Performance+" iconography.
 
 ## Typography
 
 ### Font Family
-
-- **figmaSans** — Figma's proprietary variable typeface; fallback stack `figmaSans Fallback, SF Pro Display, system-ui, helvetica`. Variable weight axis is exercised at unusually fine increments (320, 330, 340, 450, 480, 540, 700) — the design system reads as a single voice modulating rather than a stepped weight family.
-- **figmaMono** — Proprietary monospace; fallback `figmaMono Fallback, SF Mono, menlo`. Used exclusively for eyebrow labels and captions, always uppercase with positive letter-spacing.
-
-OpenType `kern` is enabled across every role.
+**Pin Sans** is Pinterest's proprietary geometric sans-serif used across every text role on every page. It carries weights 400 (regular), 500 (medium), 600 (semibold), and 700 (bold), and falls back through a long stack — `-apple-system` → `system-ui` → `Segoe UI` → `Roboto` → `Helvetica Neue` → `Arial` plus emoji fallbacks. The face's distinctive trait is its tight letter-spacing at display sizes (-1.2px on `{typography.display-xl}` and `{typography.heading-xl}`), which gives 70px headlines a confident, friendly density rather than the airy spread of more conventional display geometric sans faces.
 
 ### Hierarchy
 
 | Token | Size | Weight | Line Height | Letter Spacing | Use |
 |---|---|---|---|---|---|
-| `{typography.display-xl}` | 86px | 340 | 1.00 | -1.72px | Hero headlines (home, FigJam) |
-| `{typography.display-lg}` | 64px | 340 | 1.10 | -0.96px | Section opener headlines |
-| `{typography.headline}` | 26px | 540 | 1.35 | -0.26px | Story-block titles inside color blocks |
-| `{typography.subhead}` | 26px | 340 | 1.35 | -0.26px | Long-form intro paragraphs that sit at near-headline scale |
-| `{typography.card-title}` | 24px | 700 | 1.45 | 0 | Pricing-tier titles, feature card titles |
-| `{typography.body-lg}` | 20px | 330 | 1.40 | -0.14px | Lead body copy on hero, contact form labels |
-| `{typography.body}` | 18px | 320 | 1.45 | -0.26px | Default body |
-| `{typography.body-sm}` | 16px | 330 | 1.45 | -0.14px | Card body, footer link list |
-| `{typography.link}` | 20px | 480 | 1.40 | -0.10px | Inline link emphasis |
-| `{typography.button}` | 20px | 480 | 1.40 | -0.10px | All pill buttons, primary and secondary |
-| `{typography.eyebrow}` | 18px | 400 | 1.30 | 0.54px | figmaMono uppercase section eyebrows |
-| `{typography.caption}` | 12px | 400 | 1.00 | 0.60px | figmaMono uppercase captions, footer column heads |
+| `{typography.display-xl}` | 70px | 600 | 1.1 | -1.2px | Marketing hero headline ("Create the life you love on Pinterest") |
+| `{typography.display-lg}` | 44px | 700 | 1.15 | -0.8px | "Where your content can thrive" creator hero |
+| `{typography.heading-xl}` | 28px | 700 | 1.2 | -1.2px | Section heading ("Bring your favorite ideas to life", "Pinterest for your brand") |
+| `{typography.heading-lg}` | 22px | 600 | 1.25 | 0 | Sub-section heading, modal title ("Welcome to Pinterest") |
+| `{typography.heading-md}` | 18px | 600 | 1.3 | 0 | Card title, in-grid pin label |
+| `{typography.body-md}` | 16px | 400 | 1.4 | 0 | Body copy, modal body, default paragraph |
+| `{typography.body-strong}` | 16px | 600 | 1.4 | 0 | Inline emphasis, primary nav link, form label |
+| `{typography.body-sm}` | 14px | 400 | 1.4 | 0 | Footer copy, in-grid pin metadata, helper text |
+| `{typography.body-sm-strong}` | 14px | 700 | 1.4 | 0 | Search-result count label, table-header text |
+| `{typography.caption-md}` | 12px | 500 | 1.5 | 0 | Caption text, link metadata |
+| `{typography.caption-sm}` | 12px | 400 | 1.4 | 0 | Smallest utility text, copyright |
+| `{typography.link-md}` | 16px | 600 | 1.4 | 0 | Inline anchor link in body prose |
+| `{typography.button-md}` | 14px | 700 | 1 | 0 | Standard primary/secondary button label |
+| `{typography.button-sm}` | 12px | 700 | 1 | 0 | Compact pill chip, in-card button |
 
 ### Principles
-
-- **Weight, not size, carries hierarchy on body copy.** A 20px paragraph at weight 330 sits next to a 20px link at weight 480 — the eye reads emphasis without scale change.
-- **Negative letter-spacing scales with size.** Display-xl pulls -1.72px; subhead pulls only -0.26px. Body copy stays near-zero. The result is editorial-feeling display type without sacrificing readability at body size.
-- **Mono is taxonomy, not body.** figmaMono is reserved for eyebrows and captions — never used to set a paragraph.
-- **Tight line-heights on display, generous on body.** Display sizes run 1.00–1.10; body runs 1.40–1.45. The contrast reinforces that headlines are graphics and body copy is for reading.
+The system has an unusually steep size jump between display and body — `{typography.display-xl}` (70px) drops directly to `{typography.body-md}` (16px) on the home hero with no intermediate tier between. The negative tracking on the largest tiers (-1.2px / -0.8px) creates a tighter, more confident headline than a default geometric sans would deliver, and the body copy sits at a generous 1.4 line-height to keep multi-line descriptions breathing.
 
 ### Note on Font Substitutes
-
-If implementing without access to figmaSans / figmaMono, suitable open-source substitutes are **Inter** (or **Geist**) for the sans, and **JetBrains Mono** (or **Geist Mono**) for the mono. Inter at variable weights closely matches the fine-grained weight axis figmaSans uses; expect to manually adjust line-heights down by ~0.02 to compensate for Inter's slightly taller x-height.
+Pin Sans is proprietary. The closest open-source substitute is **Inter** (weights 400 / 500 / 600 / 700) — its geometry, x-height, and metric balance match Pin Sans within ~3% at body sizes. **Manrope** is a strong secondary substitute for the display tier where slightly tighter letterspacing helps the 70px headline feel weighted. Apply -1.2px tracking on the substitute at display sizes regardless of which substitute is chosen.
 
 ## Layout
 
 ### Spacing System
-
-- **Base unit**: 8px.
-- **Tokens (front matter)**: `{spacing.hair}` 1px · `{spacing.xxs}` 4px · `{spacing.xs}` 8px · `{spacing.sm}` 12px · `{spacing.md}` 16px · `{spacing.lg}` 24px · `{spacing.xl}` 32px · `{spacing.xxl}` 48px · `{spacing.section}` 96px.
-- Section interior padding: `{spacing.xxl}` (48px) on color-block sections.
-- Card interior padding: `{spacing.lg}` (24px) on pricing cards and template tiles.
-- Form input padding: `{spacing.sm}` 12px vertical · 14px horizontal.
-- Button padding: `{spacing.xs}` 8px vertical · `{spacing.lg}` 24px horizontal for pill buttons (the asymmetric `8px 18px 10px` extracted on `button-secondary` nudges the type optically inside the pill).
-- Universal rhythm constant: `{spacing.section}` (96px) — the vertical gap between major content sections holds across home, pricing, and FigJam pages.
+- **Base unit:** 8px (with finer 4/6/7px steps available for tight inline gaps in pill buttons and chips).
+- **Tokens (front matter):** `{spacing.xxs}` (4px) · `{spacing.xs}` (6px) · `{spacing.sm}` (8px) · `{spacing.md}` (12px) · `{spacing.lg}` (16px) · `{spacing.xl}` (24px) · `{spacing.xxl}` (32px) · `{spacing.section}` (64px).
+- **Universal section rhythm:** every page in the set uses `{spacing.section}` (64px) as the vertical gap between major content blocks. Pin grids use `{spacing.sm}` (8px) gutters between tiles — the tightest grid gutter in the system, designed so imagery effectively touches across columns.
+- **Modal padding:** `{component.modal-card}` uses 32px internal padding (`{spacing.xxl}`) on all sides.
 
 ### Grid & Container
-
-- Max content width sits around 1280px (one of the explicit breakpoints), with side gutters that scale from `{spacing.xxl}` on desktop down to `{spacing.lg}` on mobile.
-- Three- and four-column grids on the desktop pricing comparison and FigJam template galleries.
-- Color-block sections break the column grid — they span content width with full bleed inside the rounded `{rounded.lg}` corners, then place a single editorial column of headline + body inside.
+- **Max width:** ~1280px content area at desktop with 24px gutters (~48px at ultrawide).
+- **Pin masonry grid:** auto-fitting column-based layout — 5–6 columns at ultrawide, 4 columns at desktop, 3 at tablet, 2 at mobile-landscape, 1 at mobile. Each tile preserves its natural aspect ratio (square / 2:3 / 3:4 / 4:5 portrait — never landscape because pins are vertically-oriented). Gutters are `{spacing.sm}` (8px) horizontal and vertical.
+- **Home hero feature row:** asymmetric 2-column split where text and imagery alternate left/right down the page (text-left + image-right, then image-left + text-right, etc.).
+- **Footer:** 4-column link grid at desktop, collapsing to 2-up at tablet, 1-up at mobile.
 
 ### Whitespace Philosophy
-
-White space is used to make the color blocks feel deliberate. Between every colored panel and the next, the page returns to white canvas with `{spacing.section}` of breathing room. Inside a color block, the type itself is given generous side margins (often more than 1/4 of the block's width on each side) so the panel reads as a poster, not a wall of copy.
+Whitespace is generous on the marketing surfaces and tight on the discovery surfaces. The home page sits sections 64px apart with photo-illustrated feature cards using 32px internal padding, while the search results page collapses to an 8px-gutter masonry grid that tiles imagery edge-to-edge. The system reads as two tools sharing the same chrome: a magazine (hero / feature / CTA / footer) and a search engine (top nav / filter row / pin grid / load more).
 
 ## Elevation & Depth
 
 | Level | Treatment | Use |
 |---|---|---|
-| 0 (flat) | No shadow, no border | Default for color-block sections, inverse-canvas footer, hero |
-| 1 (hairline) | 1px `{colors.hairline}` border on `{colors.canvas}` | Pricing cards, form inputs, comparison table cells |
-| 2 (soft elevation) | Subtle drop shadow approx 0 4px 16px rgba(0,0,0,0.06) | Floating template tiles, dropdown menus |
-| 3 (modal) | Stronger shadow + `{colors.overlay-scrim}` behind | Video / image lightbox overlays |
+| 0 — Flat | No border, no shadow | Default for pin cards, feature cards, footer — the dominant treatment |
+| 1 — Hairline border | 1px solid `{colors.hairline}` | Inputs, footer column dividers, in-list rows |
+| 2 — Modal scrim + soft shadow | Modal sits on a dark scrim over the page content with a soft 16px ambient shadow | Login / signup modal, image preview modal |
+| 3 — Pin hover lift | (intentionally undocumented per system policy) | n/a |
 
-Figma's marketing system is shadow-light by design — the color blocks substitute for traditional elevation. Where most SaaS sites use a shadowed white card to draw attention, Figma uses a saturated background panel. This makes the rare actual shadow (e.g., a floating template card hovering over a cream section) feel like an exception worth noticing.
+Pinterest's system has effectively no shadow elevation in its content surfaces. Pin cards sit flat on the canvas; the only "elevation" appears on the modal layer where a 16px ambient shadow paired with a 50%-opacity scrim lifts the modal above the page content.
 
 ### Decorative Depth
-
-- **Color-block sections** are the primary depth device. The change from white canvas to lime / lavender / cream is the section break.
-- **Sticky-note style component thumbnails** in FigJam — slightly off-axis pastel rectangles arranged like notes on a board — read as collage, not card-stack.
-- **Embedded product UI mocks** (Figma Design panels, FigJam canvas snippets) appear as flat compositions on color blocks; their internal shadows are subtle and stay within the mock.
+Depth comes entirely from the imagery itself, not from CSS effects:
+- **Pin photography** carries cinematic depth through composition (food photography, fashion close-ups, interior shots) — the design lets each tile's image speak rather than adding chrome to it.
+- **Category tile thumbnails** in the home page's feature rows use Pinterest's own pin imagery as composition assets, often with a small `{component.pin-overlay-pill}` ("Cherry red", "Preppy look", "Earthy space inspo") overlaid in the corner of the image.
+- **Modal scrim** — a 50%-opacity dark overlay over the entire page content when the login modal opens, with a 16px ambient shadow underneath the modal card lifting it to the visual top.
 
 ## Shapes
 
@@ -401,130 +409,140 @@ Figma's marketing system is shadow-light by design — the color blocks substitu
 
 | Token | Value | Use |
 |---|---|---|
-| `{rounded.xs}` | 2px | Anchor / link decoration corners |
-| `{rounded.sm}` | 6px | Small chips, sub-nav tabs |
-| `{rounded.md}` | 8px | Form inputs, list items, image frames |
-| `{rounded.lg}` | 24px | Pricing cards, color-block sections, large image containers |
-| `{rounded.xl}` | 32px | Hero feature panels, oversized callouts |
-| `{rounded.pill}` | 50px | All text CTAs (primary, secondary, tab toggles) |
-| `{rounded.full}` | 9999px | Circular icon buttons, comparison-table checkmark glyphs |
+| `{rounded.none}` | 0px | Footer, primary nav, page sections — all flat structural surfaces |
+| `{rounded.sm}` | 8px | Rare medium-radius surface (e.g., editorial tooltip) |
+| `{rounded.md}` | 16px | Buttons, inputs, pin cards, feature cards, category tiles — the dominant component radius |
+| `{rounded.lg}` | 32px | Large pin cards, modal cards — used sparingly for "big" content surfaces |
+| `{rounded.full}` | 9999px | Search bar, filter chips, pin overlay pills, icon-circular buttons, avatars |
 
-### Photography & Illustration Geometry
+The radius vocabulary is essentially three values: 16px for most things, 32px for big cards and modals, and pill for circular elements. There are no sharp-cornered buttons or sharp-cornered pin cards.
 
-- Image frames use `{rounded.md}` (8px) — generous enough to feel friendly, conservative enough to read as editorial.
-- Template thumbnails on the home grid sit in `{rounded.md}` tiles with `{spacing.md}` interior padding around the embedded preview.
-- FigJam pastel sticky-note component thumbnails preserve a small `{rounded.sm}` corner that mimics actual sticky paper.
-- No avatar circles appear in marketing surfaces — Figma's marketing avoids personification.
+### Photography Geometry
+- **Pin imagery:** mixed aspect ratios — square (1:1), portrait (3:4, 2:3, 4:5), and rare landscape — preserved at their natural ratio inside `{rounded.md}` (16px) corners on small tiles and `{rounded.lg}` (32px) on large feature pins.
+- **Category tile thumbnails:** square (1:1) with `{rounded.md}` corners.
+- **Avatar circles:** 32–48px at `{rounded.full}` for in-pin attribution and profile chips.
+- **Feature card imagery:** typically 4:5 portrait on home-page category cards, with the photo occupying ~60% of the card and the headline + CTA stacked beneath.
 
 ## Components
 
+> **No hover states documented** per system policy. Each spec covers Default and Active/Pressed only.
+
 ### Buttons
 
-**`button-primary`** — The black "Get started for free" pill that appears in the top nav, every hero, and every closing CTA.
-- Background `{colors.primary}`, text `{colors.on-primary}`, type `{typography.button}`, padding 10px 20px, rounded `{rounded.pill}`.
-- Pressed state lives in `button-primary-pressed` (same surface; the live site relies on micro-scale rather than a darkened fill).
+**`button-primary`** — the universal Pinterest CTA
+- Background `{colors.primary}` (Pinterest Red), text `{colors.on-primary}`, type `{typography.button-md}`, padding `6px 14px`, height ~40px, rounded `{rounded.md}` (16px).
+- Used for "Sign up", "Join Pinterest for free", "Get started" — every primary action across every surface in the system.
+- Pressed state lives in `button-primary-pressed` — background drops to `{colors.primary-pressed}` (`#cc001f`).
 
-**`button-secondary`** — White pill with black text. Used for tertiary navigation actions ("Contact sales") and as the visual counterpart to the primary pill.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.button}`, padding 8px 18px 10px (asymmetric vertical to optically center the type), rounded `{rounded.pill}`. No border.
+**`button-secondary`** — gray-cream alternative
+- Background `{colors.secondary-bg}` (`#e5e5e0`), text `{colors.on-secondary}`, type `{typography.button-md}`, padding `6px 14px`, height ~40px, rounded `{rounded.md}`.
+- "I already have an account", "Continue", "Cancel" — second-tier actions paired with the red primary.
+- Pressed state lives in `button-secondary-pressed` — background drops to `{colors.secondary-pressed}`.
 
-**`button-tertiary-text`** — Plain text link styled as a button hit target inside top nav and footer.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.link}`, rounded `{rounded.full}` (hit target only), padding `{spacing.xs}` `{spacing.sm}`.
+**`button-tertiary`** — ghost link
+- Background transparent, text `{colors.ink}`, type `{typography.button-md}`, rounded `{rounded.md}`.
+- Used for low-emphasis actions inside dialogs ("Read the docs", "Learn more →" with a small chevron).
 
-**`button-icon-circular`** — 40px circular icon button used for carousel controls, social links, and inline actions on light surfaces.
-- Background `{colors.surface-soft}`, text `{colors.ink}`, rounded `{rounded.full}`, size 40px.
+**`button-icon-circular`** — circular icon button
+- Background `{colors.surface-card}`, icon `{colors.ink}`, rounded `{rounded.full}`, size 40px.
+- Carousel paddles, modal close button, and small floating action buttons in pin imagery.
 
-**`button-icon-circular-inverse`** — Same shape, used on inverse-canvas / dark color blocks.
-- Background `{colors.on-inverse-soft}` (translucent white), text `{colors.inverse-ink}`, rounded `{rounded.full}`, size 40px.
+**`button-pill-on-image`** — small overlay pill on photography
+- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.button-md}`, rounded `{rounded.full}`, padding `8px 14px`.
+- The signature "Cherry red" / "Preppy look" / "Earthy space inspo" overlay pill that anchors the corner of category-tile pin imagery.
 
-**`button-magenta-promo`** — Saturated pink pill used only inside promotional surfaces such as the lilac "Save your spot" Release Notes banner. Reserved for moments where Figma's product team wants the CTA to pop against an already-colored panel.
-- Background `{colors.accent-magenta}`, text `{colors.on-primary}`, type `{typography.button}`, rounded `{rounded.pill}`, padding 10px 18px.
+**`button-disabled`**
+- Background `{colors.surface-card}`, text `{colors.ash}` — flat soft-cream.
 
-### Pricing Tabs
+### Filter & Tab Chips
 
-**`pricing-tab-default`** + **`pricing-tab-selected`** — The pill-toggle that switches between Starter / Professional / Organization / Enterprise on `/pricing/`.
-- Default: `{colors.canvas}` background, `{colors.ink}` text, rounded `{rounded.pill}`.
-- Selected: `{colors.primary}` background, `{colors.on-primary}` text — exactly the same surface as `button-primary`, which makes the selected tab feel like an active CTA, not a passive state.
+**`filter-chip`** + **`filter-chip-active`**
+- Default: background `{colors.surface-card}`, text `{colors.ink}`, type `{typography.button-md}`, rounded `{rounded.full}`, padding `8px 16px`.
+- Active: background `{colors.ink}`, text `{colors.on-dark}` — the chip flips fully inverted on selection.
+- Used across the search results page filter strip ("Beauty makeup", "Lipstick", "Editorial makeup"...).
 
 ### Inputs & Forms
 
-**`text-input`** + **`text-input-focused`** — Form fields on `/contact/` and pricing seat-count steppers.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.md}`, padding 12px 14px.
-- Focused state retains the same surface — focus is communicated via ring, not via fill change.
+**`text-input`** + **`text-input-focused`**
+- Default: background `{colors.canvas}`, text `{colors.ink}`, 1px solid `{colors.ash}`, type `{typography.body-md}`, padding `11px 15px`, height ~44px, rounded `{rounded.md}`.
+- Focused: 2px `{colors.ink}` inner border + 4px `{colors.focus-outer}` outer outline — the signature double-ring focus signal.
+- Used across the login/signup modal for email, password, birthdate, country fields.
+
+**`search-bar`** + **`search-bar-focused`**
+- Default: background `{colors.surface-card}`, text `{colors.ink}`, type `{typography.body-md}`, padding `11px 15px`, height ~48px, rounded `{rounded.full}`.
+- Focused: same dimensions, background flips to `{colors.canvas}` with a 1px `{colors.ash}` border.
+- Anchored in the center of the primary nav with a magnifier glyph at the left edge and "Search for ideas, fashion..." placeholder.
 
 ### Cards & Containers
 
-**`pricing-card`** — Each tier on `/pricing/`.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body}`, rounded `{rounded.lg}`, padding `{spacing.lg}`. Stroked with `{colors.hairline}` rather than shadowed.
+**`pin-card`** — the standard masonry pin tile
+- Container: background `{colors.surface-card}`, rounded `{rounded.md}` (16px), padding 0.
+- Layout: full-bleed image at the card's natural aspect ratio with no internal padding. Optional `{component.pin-overlay-pill}` anchored to one corner of the image, optional 32px circular avatar with profile name in `{typography.body-sm-strong}` overlaid at the bottom-left.
 
-**`pricing-card-feature-row`** — Single row inside the comparison table.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-sm}`. Row separator is `{colors.hairline-soft}`.
+**`pin-card-large`** — the home-page feature pin
+- Identical to `pin-card` but rounded `{rounded.lg}` (32px) — used for the large editorial pins that anchor home-page feature rows.
 
-**`template-card`** — Thumbnail tile in the home "Explore what people are making" grid and the FigJam template gallery.
-- Background `{colors.surface-soft}`, text `{colors.ink}`, type `{typography.body-sm}`, rounded `{rounded.md}`, padding `{spacing.md}`.
+**`pin-overlay-pill`** — anchored chip on pin imagery
+- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.button-sm}`, rounded `{rounded.full}`, padding `6px 12px`.
+- Floats over a pin's bottom-left or top-left corner with the search-term label that surfaces if the pin matches a search ("Cherry red", "Preppy look", "Earthy space inspo").
 
-**`feature-illustration-tile`** — Larger composition tile that holds a product UI mock or pastel illustration.
-- Background `{colors.surface-soft}`, text `{colors.ink}`, type `{typography.eyebrow}`, rounded `{rounded.md}`, padding `{spacing.lg}`.
+**`category-tile`**
+- Background `{colors.surface-card}`, rounded `{rounded.md}`, padding 16px.
+- 3- or 4-up grid of small category thumbnails inside the home-page "Bring your favorite ideas to life" section. Each tile contains a category icon or composition photograph + a short label in `{typography.body-strong}`.
 
-### Color-Block Sections (signature)
+**`feature-card`** + **`feature-card-soft`**
+- Standard: background `{colors.canvas}`, rounded `{rounded.md}`, padding 32px. Pairs a 4:5 portrait pin image (left or right) with a `{typography.heading-xl}` headline + body copy + `{component.button-primary}` red CTA.
+- Soft: background `{colors.surface-card}` for the alternating-row variant where the cream surface is needed to break up content.
 
-The defining surface of Figma's marketing. Each is a full-content-width panel with `{rounded.lg}` corners and `{spacing.xxl}` interior padding. Variants:
+**`modal-card`** — login/signup overlay
+- Background `{colors.canvas}`, rounded `{rounded.lg}` (32px), padding 32px.
+- Layout: title in `{typography.heading-lg}` ("Welcome to Pinterest"), subtitle in `{typography.body-md}`, stacked `{component.text-input}` fields (Email, Password, Birthdate, Country), primary `{component.button-primary}` "Continue", small "Already a member? Log in" link below.
+- Floats over a 50%-opacity scrim covering the entire page content with a 16px ambient shadow.
 
-**`color-block-section`** — lime ground for "systems" stories (home), pricing FAQ, and the contact form.
-- Background `{colors.block-lime}`, text `{colors.ink}`, type `{typography.subhead}`, rounded `{rounded.lg}`, padding `{spacing.xxl}`.
-
-**`color-block-section-lilac`** — lavender ground for `/design/` hero and FigJam highlight sections.
-- Background `{colors.block-lilac}`, otherwise identical structure.
-
-**`color-block-section-navy`** — deep indigo ground for the home "Ship products" story block. The only inverse color-block surface above the footer.
-- Background `{colors.block-navy}`, text `{colors.inverse-ink}`, otherwise identical structure.
-
-(Cream, mint, pink, and coral block variants follow the same shape with their respective `{colors.block-*}` surface.)
-
-### Promo Banner
-
-**`promo-banner-lilac`** — The Release Notes / "Save your spot" inline banner that floats above the contact form.
-- Background `{colors.block-lilac}`, text `{colors.ink}`, type `{typography.body-sm}`, rounded `{rounded.md}`, padding `{spacing.md}` `{spacing.lg}`. Carries a `button-magenta-promo` on the right edge.
+**`hero-cta-strip`** — dark CTA strip on `create.pinterest.com`
+- Background `{colors.surface-dark}`, text `{colors.on-dark}`, type `{typography.heading-xl}`, padding `48px 32px`, rounded `{rounded.none}`.
+- Sits at the top of the creator marketing page with a single `{component.button-primary}` red CTA on the right.
 
 ### Navigation
 
-**`top-nav`** — Sticky white bar with logo, primary nav links, sign-in link, and the right-anchored `button-secondary` ("Contact sales") + `button-primary` ("Get started for free") pair.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-sm}`, height 56px.
-- Mobile: collapses primary links into a hamburger that opens a full-canvas overlay; the two pill CTAs remain visible on the bar.
+**`primary-nav`**
+- Background `{colors.canvas}`, text `{colors.ink}`, height ~64px, type `{typography.body-strong}`, rounded `{rounded.none}`, with a 1px `{colors.hairline}` bottom rule on inner pages (no rule on the home hero).
+- Layout (desktop home): Pinterest red wordmark at left + "Explore" link, centered `{component.search-bar}`, right cluster ("About / Businesses / Create / Log in" + the always-red `{component.button-primary}` "Sign up" CTA).
+- Layout (search results): Pinterest red P-logo at left, centered search bar with the active query, right cluster ("Log in" + red Sign-up button).
 
-**`marquee-strip`** — Thin black ribbon directly under the nav that scrolls through customer logos in white.
-- Background `{colors.inverse-canvas}`, text `{colors.inverse-ink}`, type `{typography.body-sm}`, height 36px.
-
-### Comparison Glyphs
-
-**`comparison-checkmark`** — Green check used in the pricing comparison matrix.
-- Background `{colors.canvas}`, glyph color `{colors.semantic-success}`, rounded `{rounded.full}`, size 16px.
+**Top Nav (Mobile)**
+- Hamburger menu icon at left, P-logo at center, search-glyph + Sign-up CTA at right. Search bar collapses into the magnifier icon and expands to full-width when tapped.
 
 ### Footer
 
-**`footer`** — Dense link grid on white canvas with the wordmark "Figma" set in display weight at the top-left.
-- Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.caption}` for column headings and small links, padding `{spacing.section}` top/bottom · `{spacing.xl}` sides.
+**`footer-section`**
+- Background `{colors.canvas}`, text `{colors.mute}` in `{typography.body-sm}`, padding `32px 24px`, rounded `{rounded.none}`, with a 1px `{colors.hairline}` top rule.
+- Layout: 4-column link grid (Get the app — iOS / Android · Quick Links — Explore / Shop / Users / Collections / Shopping · Pinterest for · About — Privacy / Terms / Help Center) with column headers in `{typography.body-sm-strong}` and link lists in `{typography.body-sm}` `{colors.mute}`.
+- Bottom row: Pinterest red wordmark + "© 2026 Pinterest" in `{typography.caption-sm}` `{colors.mute}`.
+
+### Inline
+
+**`link-inline`** — body-prose anchor link
+- `{colors.ink-soft}` text with no underline by default. Pinterest's only "color" beyond brand red on chrome — a near-black warm tint used inline to differentiate links from body without color contrast.
 
 ## Do's and Don'ts
 
 ### Do
-
-- Reserve `{colors.primary}` for genuine primary CTAs and selected states (e.g., `pricing-tab-selected`). Don't use it as a decorative accent.
-- When introducing a story section, choose **one** color block from the `{colors.block-*}` family and let it span full content width with `{rounded.lg}` corners and `{spacing.xxl}` interior padding.
-- Keep type in `figmaSans` at variable weights — pick from 320, 330, 340, 480, 540, 700 to express hierarchy. Avoid intermediate weights outside this set.
-- Use `figmaMono` only for eyebrows and captions, always uppercase, with the documented positive letter-spacing.
-- Compose every CTA as a pill (`{rounded.pill}`) and every icon button as a circle (`{rounded.full}`).
-- Allow the page to **return to white canvas** between every two color blocks so each block reads as deliberate.
-- Pair `button-primary` and `button-secondary` whenever a section needs both a primary action and a sales / secondary action — the black-and-white pair is the brand signature.
+- Reserve `{colors.primary}` (Pinterest Red) for primary CTAs, the active-tab indicator, and the brand wordmark only. It is never decorative.
+- Use `{rounded.md}` (16px) on every interactive element and standard card; reserve `{rounded.lg}` (32px) for large pin cards and modals; reserve `{rounded.full}` for circular elements (search bar, chips, avatars).
+- Stage every pin image inside a `{component.pin-card}` with no internal padding — the photograph IS the card.
+- Stack content sections at `{spacing.section}` (64px) rhythm; tighten pin grids to `{spacing.sm}` (8px) gutters so imagery effectively touches.
+- Use `{component.pin-overlay-pill}` to anchor a search-term tag in the corner of a category-tile pin photograph — the system's signature decorative gesture.
+- Build hierarchy from font weight (400 → 600 → 700) and size, not from color tinting. Body stays `{colors.body}` regardless of section context.
+- Apply -1.2px letter-spacing on `{typography.display-xl}` and `{typography.heading-xl}`. The negative tracking is part of the brand voice.
 
 ### Don't
-
-- Don't introduce mid-gray text. Body hierarchy comes from `figmaSans` weight, not from opacity.
-- Don't add drop shadows to color-block sections — the color is the depth device.
-- Don't introduce new accent colors outside the documented `{colors.block-*}` palette and `{colors.accent-magenta}`. Adding, e.g., a saturated brand orange would break the system.
-- Don't combine more than one color block visible inside a single viewport — Figma's pacing always lets the white canvas separate them.
-- Don't square off CTAs. Square buttons read as a different brand.
-- Don't put `figmaMono` in body copy — it's a taxonomy tool, not a reading typeface.
-- Don't replace the `pricing-tab-selected` black fill with a colored tab; the brand pattern is "selected = primary surface".
+- Don't use sharp-cornered buttons or cards. There are no `{rounded.none}` interactive elements in the system.
+- Don't introduce drop shadows on cards. The only shadow in the system is the 16px ambient under `{component.modal-card}`.
+- Don't pad `{component.pin-card}` internally. The image is full-bleed; metadata sits over the image as an overlay pill, not below it.
+- Don't replace `{colors.primary}` with another red. The brand red is precise — `#e60023`.
+- Don't use `{colors.ink-soft}` (the body-prose link tint) outside of inline body anchor links. It is not a chrome color.
+- Don't introduce a third radius value between 16px and 32px. The system jumps directly from md to lg with nothing in between.
 
 ## Responsive Behavior
 
@@ -532,47 +550,48 @@ The defining surface of Figma's marketing. Each is a full-content-width panel wi
 
 | Name | Width | Key Changes |
 |---|---|---|
-| 4k | 1920px | Max content width holds at 1280px; gutters expand |
-| Desktop-XL | 1440px | Default desktop layout |
-| Desktop | 1400px | Comparison table column widths normalize |
-| Desktop-S | 1280px | Pricing 4-up tier grid maintained |
-| Tablet | 960px | Pricing collapses 4-up → 2-up; nav becomes hamburger |
-| Mobile-L | 768px | Color-block sections become full-bleed (no rounded corners on edges) |
-| Mobile | 560px | Display-xl reduces from 86px to ~48px; pill CTAs go full-width |
-| Mobile-XS | 559px | Two-column footer collapses to single column |
+| ultrawide | 1920px+ | Pin grid expands to 5–6 columns; content max-width holds at ~1280px |
+| desktop-large | 1440px | Default — 4-column pin grid, full primary nav |
+| desktop | 1280px | Same layout with narrower outer gutters |
+| desktop-small | 1024px | Pin grid collapses to 3 columns; sub-nav remains horizontal |
+| tablet | 768px | Pin grid collapses to 2 columns; primary nav becomes hamburger drawer; search bar becomes icon-only |
+| mobile | 480px | Single-column pin grid; hero `{typography.display-xl}` scales 70px → ~44px |
+| mobile-narrow | 320px | Hero further scales to ~36px; section padding tightens to 32px |
 
 ### Touch Targets
-
-- Pill buttons (`button-primary`, `button-secondary`) maintain a minimum 44px tap height across all viewports — achieved by combining `{typography.button}` 20px line-height with the documented vertical padding.
-- Circular icon buttons (`button-icon-circular`) are 40px on desktop and grow to 44px on touch viewports.
-- Form input minimum tap target on `/contact/` is 48px high.
+All interactive elements meet WCAG AA (≥ 44×44px). `{component.button-primary}` and `{component.button-secondary}` sit at ~40px height with 14px horizontal padding (effective ~40×80px tappable). `{component.search-bar}` sits at 48px. `{component.text-input}` sits at 44px. `{component.filter-chip}` is ~36–40px height with 16px padding — extends to 44px tappable via inline padding. `{component.button-icon-circular}` is exactly 40×40 with extended hit-target padding to 48×48 inside the parent.
 
 ### Collapsing Strategy
-
-- **Nav**: desktop horizontal nav with two right-anchored pills collapses to a hamburger overlay below 960px. The two pills (`Contact sales`, `Get started for free`) stay visible on the bar above 560px and stack in the overlay below.
-- **Pricing tier grid**: 4-up → 2-up at 960px → 1-up below 768px. The pill toggle stays horizontal and scrolls horizontally if needed below 560px.
-- **Color-block sections**: above 768px the section keeps `{spacing.xxl}` of canvas around it so the rounded corners read; below 768px the corners are removed and the block bleeds to viewport edge for a poster effect.
-- **Comparison table**: below 960px the matrix collapses into per-tier accordions to avoid horizontal scroll.
+- **Primary nav:** desktop horizontal cluster → tablet hamburger drawer at 768px. The red Sign-up CTA stays visible at every breakpoint.
+- **Search bar:** desktop centered (~480px wide) → tablet compressed (~320px) → mobile collapses to a magnifier icon that expands to a full-width overlay on tap.
+- **Pin masonry grid:** 5/6-up → 4-up → 3-up → 2-up → 1-up at 1920, 1024, 768, and 480px. Gutters drop from 8px to 6px on mobile.
+- **Home feature row:** desktop alternating left/right 2-column → tablet vertical stack with text above image → mobile single-column with full-bleed image.
+- **Modal:** desktop centered ~480px-wide card → mobile full-width sheet with rounded `{rounded.lg}` top-only and bottom-anchored CTA.
+- **Section padding:** `{spacing.section}` (64px) desktop → 48px tablet → 32px mobile.
+- **Hero headline:** `{typography.display-xl}` (70px) at desktop, scaling 56px / 44px / 36px down the breakpoint stack.
+- **Footer:** 4-up link columns → 2-up at tablet → full accordion at mobile (each header becomes a tap-to-expand row).
 
 ### Image Behavior
-
-- Product UI mocks inside color blocks scale proportionally and never crop. Below 768px they shrink rather than reflow.
-- Template thumbnails in the home grid use lazy loading and animate in on scroll.
-- Sticky-note style FigJam thumbnails maintain their slight off-axis rotation across breakpoints — the rotation is a brand signal, not a desktop-only flourish.
+- Pin imagery preserves natural aspect ratio at every breakpoint; the column count changes, not the aspect.
+- Category tile thumbnails maintain 1:1 across all sizes.
+- Hero feature imagery uses art-direction crops on mobile (4:5 portrait → square) so the subject stays centered when the layout collapses to single-column.
+- All non-critical imagery is lazy-loaded as the user scrolls into the next grid row.
 
 ## Iteration Guide
 
-1. Focus on ONE component at a time and reference it by its `components:` token name (e.g., `{components.button-primary}`, `{components.color-block-section}`).
-2. When introducing a new section, decide **first** which `{colors.block-*}` token it sits on; the surface choice is the most consequential decision.
-3. Default body type to `{typography.body}`; reach for `{typography.subhead}` or `{typography.headline}` only inside a color block.
-4. Run `npx @google/design.md lint DESIGN.md` after edits — `broken-ref`, `contrast-ratio`, and `orphaned-tokens` warnings flag issues automatically.
-5. Add new variants as separate component entries (`-pressed`, `-selected`) — do not bury them in prose.
-6. Keep `{colors.primary}` scarce. If two `button-primary` instances appear in the same viewport, the section is doing too much — neutralize one to `button-secondary`.
-7. Treat `{colors.accent-magenta}` as a single-shot color: one promo CTA per page, never two.
+1. Focus on ONE component at a time. Pull its YAML entry and verify every property resolves.
+2. Reference component names and tokens directly (`{colors.primary}`, `{component.button-primary-pressed}`, `{rounded.md}`) — do not paraphrase.
+3. Run `npx @google/design.md lint DESIGN.md` after edits — `broken-ref`, `contrast-ratio`, and `orphaned-tokens` warnings flag issues automatically.
+4. Add new variants as separate component entries (`-pressed`, `-disabled`, `-focused`) — do not bury them inside prose.
+5. Default body to `{typography.body-md}`; reach for `{typography.body-strong}` for emphasis; reserve `{typography.display-xl}` strictly for top-of-page hero headlines.
+6. Keep `{colors.primary}` scarce — at most one Pinterest-red CTA per fold (counting nav, hero, and feature-card CTAs together).
+7. When introducing a new component, ask whether it can be expressed with the existing pin-card + 16px-radius + cream-surface vocabulary before adding new tokens. The system's strength is that it almost never needs new ones.
 
 ## Known Gaps
 
-- The exact pastel hex values of `{colors.block-*}` are derived from screenshot pixels; the production source likely uses named tokens that aren't exposed via CSS variables. Treat the documented hex values as faithful approximations rather than exact brand specs.
-- Dark mode is not documented because the marketing site does not ship a dark theme — the closest analog is the navy color-block (`color-block-section-navy`) and the inverse-canvas footer.
-- Form-field error and validation styling is not visible on `/contact/` because no error states render in the static screenshot. Inputs have hairline borders and rounded `{rounded.md}` corners; error treatment is not documented.
-- The animated marquee-strip and color-block reveal animations are not documented (per the no-interaction policy).
+- **Mobile screenshots not captured** — responsive behavior synthesizes Pinterest's known mobile pattern (hamburger drawer, single-column grid, hero downscale) from desktop evidence and the documented breakpoint stack.
+- **Hover states not documented** by system policy.
+- **Pin-detail close-up (single pin overlay)** is not in the captured set — the in-product Pin detail view (with comments, related pins, save board picker) likely introduces components not documented here.
+- **Authenticated chrome** (logged-in home feed, board pages, profile pages) not in the captured pages — the captured surfaces are the logged-out marketing and search experience.
+- **Pinterest mobile app screens** not in the system documented here — this is the web-only chrome.
+- **Form validation states** (success / error inline messages) not documented; only the focused-state field is captured.
