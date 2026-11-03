@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { placeFrame, waterIndex, playIndex, reverseIndex, v11Enabled, pouring, WATER_TIMING, mainBand, trimRows } from '../src/world/room-art-v11.ts';
 
-const dir = new URL('../public/dev-art/room-v11/', import.meta.url);
+const dir = new URL('../public/room-v11/', import.meta.url);
 const have = existsSync(new URL('manifest.json', dir));
 const m = have ? JSON.parse(readFileSync(new URL('manifest.json', dir), 'utf8')) : null;
 const pngSize = (rel: string) => { const b = readFileSync(new URL(rel, dir)); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
 
-test('dev preview is off unless dev server AND ?roomart=v11', () => {
-  assert.equal(v11Enabled(false, '?roomart=v11'), false);
-  assert.equal(v11Enabled(true, ''), false);
-  assert.equal(v11Enabled(true, '?roomart=v11'), true);
+test('room-action art is on by default (public link too); ?roomart=off turns it off', () => {
+  assert.equal(v11Enabled(''), true);
+  assert.equal(v11Enabled('?roomart=v11'), true);
+  assert.equal(v11Enabled('?roomart=off'), false);
 });
 
 test('anchor math: sheet-absolute anchor lands on the world point, one uniform scale', () => {

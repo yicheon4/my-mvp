@@ -16,8 +16,8 @@ import type { V11Manifest, V11Frame } from './room-art-v11';
 import { V12_BASE, clipFrame, clipMs, placeV12, npcFrame, toRoomSpot, autoSpots, initNpcs, stepNpc, rememberNpc, BIKE_OFF, canRideAt, bikeTouches, rideStep, dismountSpot, nearBike, rideClip, drawWater, drawFlame } from './social-v12';
 import type { V12Manifest, V12Locations, V12Spot, V12Frame, NpcRun, Bike } from './social-v12';
 
-// DEV-ONLY draft art preview (?roomart=v11). Production builds never enable it.
-const ROOM_ART = typeof location !== 'undefined' && v11Enabled(!!import.meta.env.DEV, location.search);
+// Room-action pose art (v11), on unless ?roomart=off.
+const ROOM_ART = typeof location !== 'undefined' && v11Enabled(location.search);
 let v11Promise: Promise<V11Manifest> | null = null;
 const loadV11 = () => (v11Promise ??= fetch(V11_BASE + 'manifest.json').then(r => { if (!r.ok) throw new Error('v11 ' + r.status); return r.json(); }).catch(e => { v11Promise = null; throw e; }));
 // v12 social actions: manifest + locations once; sheets load lazily on first draw (current look, current map's NPCs only).
@@ -637,7 +637,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
     const roomT = performance.now();
     let playerBox: [number, number, number, number] | null = null;
     // v11 draft room layers (dev preview): chair layer only on top of the chair-free background (no double chair)
-    const v11m = v11.current, v11Room = !!v11m && map.id === 'bedroom' && bg.src.includes('/dev-art/');
+    const v11m = v11.current, v11Room = !!v11m && map.id === 'bedroom' && bg.src.includes(V11_BASE);
     const sitting = room.current.spot?.id === 'chair' && room.current.phase !== 'free' && room.current.phase !== 'waiting';
     const chairOut = v11Room ? image(V11_BASE + v11m!.room.chair_out[s.timeOfDay].src) : null;
     const chairLayer = v11Room ? (sitting && chairOut && ready(chairOut) ? chairOut : image(V11_BASE + v11m!.room.chair_in[s.timeOfDay].src)) : null; // the chair never disappears

@@ -1,11 +1,12 @@
-/** DEV-ONLY art preview for room actions (PersonaWorld_RoomActions_v11, review draft, productionReady=false).
- * Enabled only on the dev server with `?roomart=v11`; files live in git-ignored public/dev-art/room-v11 and are not exported.
+/** Room-action art (PersonaWorld_RoomActions_v11; the package marks it a review candidate, see the art QA notes).
+ * On by default in every build (the user asked for it on the public link); `?roomart=off` shows the plain v10 mini instead.
+ * Files live in public/room-v11 and are exported with the site.
  * Uses manifest rects and sheet-absolute anchors exactly as given: frame-local anchor = (ax-rx, ay-ry), one common scale per
  * draw (same perspective scale as the v10 walk), no stretching, rotation or body compositing. Anything missing → caller keeps
  * the normal v10 drawing.
  * Pure helpers only (plain types) so `node --test` can check them.
  */
-export const V11_BASE = '/dev-art/room-v11/';
+export const V11_BASE = '/room-v11/';
 export type Rect = [number, number, number, number];
 export type V11Frame = { rect: Rect; anchor: [number, number] };
 export type V11Action = { loop: boolean | 'pour'; fps: number; frames: V11Frame[]; pourRange?: [number, number] };
@@ -67,4 +68,4 @@ export const reverseIndex = (a: V11Action, elapsed: number) => Math.max(0, a.fra
 // so this preview uses an estimate on the mattress that must be confirmed against final art.
 export const BED_HIP_ESTIMATE: [number, number] = [705, 405];
 
-export function v11Enabled(dev: boolean, search: string) { return dev && new URLSearchParams(search).get('roomart') === 'v11'; }
+export function v11Enabled(search: string) { return new URLSearchParams(search).get('roomart') !== 'off'; }
