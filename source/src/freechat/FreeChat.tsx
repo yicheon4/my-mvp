@@ -15,6 +15,8 @@ function load(): Saved {
   return fresh();
 }
 
+const MAX = 500, WARN_AT = 450;   // same limit as the server (LIMITS.userChars)
+
 type Props = { background: string; portrait: string; timeOfDay: 'day' | 'night'; onBack: () => void };
 
 export default function FreeChat({ background, portrait, timeOfDay, onBack }: Props) {
@@ -27,6 +29,7 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
   const [error, setError] = useState<{ code: string; retry: 'opening' | 'send' } | null>(null);
   const [invite, setInvite] = useState(readInvite);
   const [openKo, setOpenKo] = useState<number | null>(null);
+  const [hint, setHint] = useState<string | null>(null);        // input guidance (empty / length); never sent to the server
   const live = useRef({ sessionId: state.sessionId, mounted: true });
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +55,10 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
 
   async function send() {
     const text = draft.trim();
-    if (!text || busy || text.length > 500) { if (text.length > 500) setError({ code: 'too_long', retry: 'send' }); return; }
+    if (busy) return;                                   // one request at a time
+    if (!text) { setHint(errorText('empty_input')); return; } // no server call for an empty line
+    if (text.length > MAX) { setHint(errorText('too_long')); return; }
+    setHint(null);
     if (!state.turns.length) return;
     keyboard.hide();
     const s = state;
@@ -70,12 +76,12 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
   function pickSuggestion(sg: Suggestion) {
     if (busy || !state.suggestions.includes(sg)) return; // stale or while waiting
     if (draft.trim() && draft.trim() !== sg.en && !window.confirm('입력 중인 문장을 추천 답변으로 바꿀까요?')) return;
-    setDraft(sg.en); // fill only; the player sends
+    setDraft(sg.en); setHint(null); // fill only; the player sends
   }
 
   function restart() {
     if (busy && !window.confirm('답을 기다리는 중이에요. 새 대화를 시작할까요?')) return;
-    keyboard.hide(); setBusy(null); setPending(null); setError(null); setDraft(''); setOpenKo(null);
+    keyboard.hide(); setBusy(null); setPending(null); setError(null); setDraft(''); setOpenKo(null); setHint(null);
     const next = { ...fresh(), noticeSeen: state.noticeSeen };
     live.current.sessionId = next.sessionId; setState(next);
   }
@@ -115,9 +121,10 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
           {state.suggestions.map(sg => <button key={sg.en} className="suggestion" onClick={() => pickSuggestion(sg)}><small>{sg.intent}</small><span>{sg.en}</span><em>{sg.ko}</em></button>)}
         </div>}
         <form onSubmit={e => { e.preventDefault(); void send(); }}>
-          <KeyboardInput aria-label="소피에게 영어로 말하기" placeholder="영어로 자유롭게 써 보세요" value={draft} maxLength={500} onChange={e => setDraft(e.target.value)} disabled={busy === 'opening'} />
-          <button className="send-button" aria-label="보내기" disabled={!draft.trim() || !!busy || !state.turns.length}><PaperPlaneTilt size={18} /></button>
+          <KeyboardInput aria-label="소피에게 영어로 말하기" placeholder="영어로 자유롭게 써 보세요" value={draft} maxLength={500} onChange={e => { setDraft(e.target.value.slice(0, MAX)); setHint(null); }} disabled={busy === 'opening'} />
+          <button className="send-button" aria-label="보내기" disabled={!!busy || !state.turns.length}><PaperPlaneTilt size={18} /></button>
         </form>
+        {(hint || draft.length >= WARN_AT) && <p className="freechat-hint" role="status">{hint ?? `${draft.length}/${MAX}자 · ${MAX - draft.length}자 남았어요`}</p>}
       </footer>
     </section>
   );

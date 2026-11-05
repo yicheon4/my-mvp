@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { createSophieHandler, validateOutput, trimTurns, buildContents, buildSystem, createLimiter } from '../server/sophie-chat-core.mjs';
+import { createSophieHandler, validateOutput, trimTurns, buildContents, buildSystem, createLimiter, tokenUsage, safeReason, recentQuestionEndings } from '../server/sophie-chat-core.mjs';
 import { loadSophiePrompts } from '../server/sophie-prompts.mjs';
 
 const prompts = loadSophiePrompts(new URL('../characters/', import.meta.url));
@@ -116,4 +116,66 @@ test('no key or Gemini call in the browser code; system text has no voice direct
     assert.ok(!/generativelanguage|x-goog-api-key|VITE_GEMINI|env\.GEMINI|AIza[0-9A-Za-z_-]{20}/.test(src), String(f));
   }
   assert.ok(!buildSystem(prompts, { timeOfDay: 'night' }).includes('Adult feminine'));
+});
+
+test('empty player line is refused before any Gemini call', async () => {
+  const { handle, calls } = setup();
+  const out = await handle({ body: body({ turns: [{ role: 'sophie', text: 'Hey!' }, { role: 'you', text: '   ' }] }), headers: {} });
+  assert.equal(out.status, 400); assert.equal(out.json.error, 'empty_input'); assert.equal(calls.length, 0);
+});
+
+test('model name comes only from GEMINI_MODEL; an unknown model is reported, never swapped', async () => {
+  const { handle, calls } = setup({ GEMINI_MODEL: 'gemini-3.5-flash-lite' }, () => ({ ok: false, status: 404, json: async () => ({ error: { status: 'NOT_FOUND', message: 'models/gemini-3.5-flash-lite is not found' } }) }));
+  const out = await handle({ body: body(), headers: {} });
+  assert.equal(out.json.error, 'model_not_found'); assert.equal(calls.length, 1, 'no retry with another model');
+  assert.match(calls[0].url, /models\/gemini-3\.5-flash-lite:generateContent$/);
+});
+
+test('token log: received = answer + thinking, checked against total', async () => {
+  assert.deepEqual(tokenUsage({ promptTokenCount: 900, candidatesTokenCount: 120, thoughtsTokenCount: 30, totalTokenCount: 1050 }), { sent: 900, received: 150, answer: 120, thinking: 30, total: 1050, check: 'ok' });
+  assert.equal(tokenUsage({ promptTokenCount: 900, candidatesTokenCount: 120, totalTokenCount: 1020 }).received, 120, 'no thinking tokens → 0');
+  assert.equal(tokenUsage({ promptTokenCount: 900, candidatesTokenCount: 120, thoughtsTokenCount: 30, totalTokenCount: 1020 }).check, 'mismatch', 'would reveal double counting');
+  const { handle, logs } = setup({}, () => gemini(good, { usageMetadata: { promptTokenCount: 900, candidatesTokenCount: 120, thoughtsTokenCount: 30, totalTokenCount: 1050 } }));
+  await handle({ body: body(), headers: {} });
+  assert.match(logs.join('\n'), /ok 200 model=test-model sent_tokens=900 received_tokens=150 \(answer 120 \+ thinking 30\) total=1050 check=ok/);
+});
+
+test('logs keep status and a short reason, never the key, invite code or conversation text', async () => {
+  const secretLine = 'my secret plans for tonight';
+  const runs: Array<[Record<string, unknown>, any, any]> = [
+    [{ SOPHIE_INVITE_CODE: 'invite-xyz-42' }, { 'x-invite-code': 'invite-xyz-42' }, () => ({ ok: false, status: 400, json: async () => ({ error: { status: 'INVALID_ARGUMENT', message: `bad key ${KEY} AIzaSyD0000000000000000000000000000 ` + 'x'.repeat(300) } }) })],
+    [{ SOPHIE_INVITE_CODE: 'invite-xyz-42' }, { 'x-invite-code': 'invite-xyz-42' }, () => gemini(good, { usageMetadata: { promptTokenCount: 1, candidatesTokenCount: 1, totalTokenCount: 2 } })],
+    [{ SOPHIE_INVITE_CODE: 'invite-xyz-42' }, { 'x-invite-code': 'wrong' }, () => gemini(good)],
+  ];
+  for (const [env, headers, respond] of runs) {
+    const { handle, logs } = setup(env, respond);
+    await handle({ body: body({ turns: [{ role: 'sophie', text: 'Hey!' }, { role: 'you', text: secretLine }] }), headers });
+    const all = logs.join('\n');
+    assert.ok(logs.length >= 1, 'something is logged');
+    for (const bad of [KEY, 'invite-xyz-42', secretLine, 'AIzaSy']) assert.ok(!all.includes(bad), bad);
+    for (const l of logs) assert.ok(l.length < 220, 'short');
+  }
+  const { handle, logs } = setup({}, () => ({ ok: false, status: 503, json: async () => ({ error: { status: 'UNAVAILABLE', message: 'overloaded' } }) }));
+  await handle({ body: body(), headers: {} });
+  assert.match(logs[0], /^fail 502 upstream gemini 503 UNAVAILABLE overloaded$/);
+  assert.equal(safeReason('k=AIzaSyAAAAAAAAAAAAAAAAAA tail', []), 'k=[key] tail');
+});
+
+test('conversation flow rules: no repeat greeting, question endings tracked, examples not scripted', () => {
+  const turns = [{ role: 'sophie', text: 'Hey, you!' }, { role: 'you', text: 'hi' }, { role: 'sophie', text: 'How was class?' }, { role: 'you', text: 'long' }];
+  assert.equal(recentQuestionEndings(turns), 1);
+  const later = buildSystem(prompts, { timeOfDay: 'night', turns, opening: false });
+  assert.match(later, /continuing conversation/); assert.match(later, /never greet again/); assert.match(later, /recent_replies_ending_with_question: 1/);
+  assert.match(later, /React first to what the player just said/); assert.match(later, /Time: evening/);
+  assert.match(buildSystem(prompts, { timeOfDay: 'day', turns: [], opening: true }), /this_turn: opening/);
+  assert.match(later, /Close friend since high school/);
+});
+
+test('browser calls only /api/ai; the old /api/sophie-chat address is gone from source', () => {
+  const api = readFileSync(new URL('../src/freechat/api.ts', import.meta.url), 'utf8');
+  assert.match(api, /fetch\('\/api\/ai'/);
+  for (const f of ['src/freechat/api.ts', 'src/freechat/FreeChat.tsx', 'vite.ai.config.ts', 'server/vercel-entry.mjs', 'scripts/export-github-static.py'])
+    assert.ok(!/fetch\(['"]\/api\/sophie-chat|use\(["']\/api\/sophie-chat|write_text\(fn\).*sophie-chat/.test(readFileSync(new URL('../' + f, import.meta.url), 'utf8')), f);
+  assert.match(readFileSync(new URL('../vite.ai.config.ts', import.meta.url), 'utf8'), /middlewares\.use\("\/api\/ai"/);
+  assert.match(readFileSync(new URL('../scripts/export-github-static.py', import.meta.url), 'utf8'), /api\/ai\.mjs'\)\.write_text\(fn\)/);
 });

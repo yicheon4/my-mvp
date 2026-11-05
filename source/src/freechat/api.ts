@@ -16,7 +16,7 @@ export function requestReply(key: string, body: { sessionId: string; timeOfDay: 
   if (existing) return existing;
   const p = (async (): Promise<ChatResult> => {
     try {
-      const res = await fetch('/api/sophie-chat', {
+      const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-invite-code': readInvite() },
         body: JSON.stringify({ character: 'sophie', place: 'living-room', sessionId: body.sessionId, timeOfDay: body.timeOfDay, opening: body.opening, turns: body.turns.map(t => ({ role: t.role, text: t.text })) }),
@@ -50,5 +50,6 @@ export const ERRORS: Record<string, string> = {
   invite_not_configured: '이 미리보기에는 아직 시험 참여 코드가 설정되지 않아 대화를 열 수 없어요.',
   no_server: '대화 서버를 찾지 못했어요. 이 주소에서는 AI 대화를 쓸 수 없어요.',
   too_long: '메시지가 너무 길어요(500자까지).',
+  empty_input: '보낼 문장을 영어로 써 주세요.',
 };
 export const errorText = (e: string) => ERRORS[e] ?? '대화를 이어가지 못했어요. 다시 시도해 주세요.';
