@@ -224,7 +224,9 @@ export function tokenUsage(meta) {
 
 /** Returns async ({ body, headers }) => { status, json }. env: GEMINI_API_KEY, GEMINI_MODEL, SOPHIE_INVITE_CODE, SOPHIE_DAILY_LIMIT, hosted */
 export function createSophieHandler({ env, prompts, fetchImpl = fetch, now, log = () => {} }) {
+  env = { ...env, GEMINI_MODEL: typeof env.GEMINI_MODEL === 'string' ? env.GEMINI_MODEL.trim() : env.GEMINI_MODEL };
   const limit = createLimiter(Number(env.SOPHIE_DAILY_LIMIT) || 150, now);
+  let catalogCache = null;
   const secrets = [env.GEMINI_API_KEY, env.SOPHIE_INVITE_CODE];
   const fail = (status, error, reason = '') => {
     log('fail', status, error + (reason ? ' ' + safeReason(reason, secrets) : ''));
@@ -264,7 +266,30 @@ export function createSophieHandler({ env, prompts, fetchImpl = fetch, now, log 
       const reason = `gemini ${res.status} ${String(g.status ?? '').replace(/[^A-Z_]/g, '').slice(0,50)}`;
       if (res.status === 429) return fail(429, 'quota', reason);
       if (res.status === 401 || res.status === 403 || /API_KEY|api key/i.test(`${g.status} ${msg}`)) return fail(502, 'auth', reason);
-      if (res.status === 404 || (res.status === 400 && /model/i.test(msg))) return fail(502, 'model_not_found', reason);
+      if (res.status === 404 || (res.status === 400 && /model/i.test(msg))) {
+        const failure = fail(502, 'model_not_found', reason);
+        // Diagnose with Google's actual catalog; never guess or silently switch models.
+        // This authenticated, rate-limited path does not send learner text to the catalog endpoint.
+        if (!catalogCache || Date.now() - catalogCache.at > 300000) {
+          let names = [];
+          try {
+            const listing = await fetchImpl('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', {
+              method: 'GET', headers: { 'x-goog-api-key': env.GEMINI_API_KEY }, signal: AbortSignal.timeout(5000),
+            });
+            if (listing.ok) {
+              const catalog = await listing.json();
+              names = (Array.isArray(catalog.models) ? catalog.models : [])
+                .filter(m => m.supportedGenerationMethods?.includes('generateContent') && /^models\/gemini-[a-zA-Z0-9.-]+$/.test(m.name))
+                .map(m => m.name.replace('models/', '')).slice(0, 60);
+            }
+          } catch { /* Keep the original error; no fabricated catalog. */ }
+          catalogCache = { at: Date.now(), names };
+        }
+        failure.json.availableModels = catalogCache.names;
+        failure.json.configuredModel = /^[a-zA-Z0-9.-]{1,100}$/.test(env.GEMINI_MODEL) ? env.GEMINI_MODEL : '(모델 이름 형식 확인 필요)';
+        log('model_catalog', catalogCache.names.join(','));
+        return failure;
+      }
       return fail(502, 'upstream', reason);
     }
     if (data?.promptFeedback?.blockReason) return fail(422, 'blocked', 'gemini prompt ' + data.promptFeedback.blockReason);
