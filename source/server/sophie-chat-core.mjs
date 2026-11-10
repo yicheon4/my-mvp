@@ -223,17 +223,20 @@ export function tokenUsage(meta) {
 
 /** Returns async ({ body, headers }) => { status, json }. env: GEMINI_API_KEY, GEMINI_MODEL, SOPHIE_INVITE_CODE, SOPHIE_DAILY_LIMIT, hosted */
 export function createSophieHandler({ env, prompts, fetchImpl = fetch, now, log = () => {} }) {
-  env = { ...env, GEMINI_MODEL: typeof env.GEMINI_MODEL === 'string' ? env.GEMINI_MODEL.trim() : env.GEMINI_MODEL };
+  const rawInvite = env.SOPHIE_INVITE_CODE;
+  env = { ...env, SOPHIE_INVITE_CODE: typeof rawInvite === 'string' ? rawInvite.trim() : rawInvite, GEMINI_MODEL: typeof env.GEMINI_MODEL === 'string' ? env.GEMINI_MODEL.trim() : env.GEMINI_MODEL };
   const limit = createLimiter(Number(env.SOPHIE_DAILY_LIMIT) || 150, now);
   let catalogCache = null;
-  const secrets = [env.GEMINI_API_KEY, env.SOPHIE_INVITE_CODE];
+  const secrets = [env.GEMINI_API_KEY, env.SOPHIE_INVITE_CODE, rawInvite];
   const fail = (status, error, reason = '') => {
     log('fail', status, error + (reason ? ' ' + safeReason(reason, secrets) : ''));
     return { status, json: { ok: false, error } };
   };
   return async ({ body, headers }) => {
     if (env.hosted && !env.SOPHIE_INVITE_CODE) return fail(503, 'invite_not_configured');
-    if (env.SOPHIE_INVITE_CODE && !safeEqual(headers['x-invite-code'] ?? '', env.SOPHIE_INVITE_CODE)) return fail(401, 'invite_required');
+    const providedInvite = typeof headers['x-invite-code'] === 'string' ? headers['x-invite-code'].trim() : '';
+    if (env.SOPHIE_INVITE_CODE && !providedInvite) return fail(401, 'invite_required');
+    if (env.SOPHIE_INVITE_CODE && !safeEqual(providedInvite, env.SOPHIE_INVITE_CODE)) return fail(401, 'invite_invalid');
     if (!env.GEMINI_API_KEY) return fail(503, 'key_missing');
     if (!env.GEMINI_MODEL) return fail(503, 'model_missing');
     const bad = validateRequest(body);
