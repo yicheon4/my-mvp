@@ -225,3 +225,13 @@ test('model error queries authenticated catalog, never switches models or sends 
  assert.equal(calls.length,2);assert.equal(calls[1].init.body,undefined);assert.equal(calls[1].init.headers['x-goog-api-key'],KEY);
  assert.ok(!JSON.stringify(out).includes(KEY));
 });
+
+ test('invite trims boundary whitespace, rejects empty configuration and preserves case/internal spaces', async () => {
+ const inv=setup({hosted:true,SOPHIE_INVITE_CODE:'  Test-Code \n'});
+ assert.equal((await inv.handle({body:body(),headers:{'x-invite-code':' Test-Code '}})).status,200);
+ assert.equal((await inv.handle({body:body(),headers:{}})).json.error,'invite_required');
+ for(const wrong of ['test-code','Test- Code']) assert.equal((await inv.handle({body:body(),headers:{'x-invite-code':wrong}})).json.error,'invite_invalid');
+ assert.equal((await setup({hosted:true,SOPHIE_INVITE_CODE:' \n '}).handle({body:body(),headers:{}})).json.error,'invite_not_configured');
+ assert.equal(inv.calls.length,1);
+ assert.ok(!inv.logs.join(' ').includes('Test-Code'));
+ });
