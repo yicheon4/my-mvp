@@ -137,3 +137,29 @@ button.world-notice{text-align:left;border:0;width:auto}
 .world-screen~.closet-panel{z-index:5}
 .closet-actions{display:flex;gap:10px;align-items:center;margin-top:6px}.closet-actions .text-button{width:auto;flex:1;margin:0}.closet-actions .gold-button{flex:1;min-height:42px}
 .room-art-badge{position:absolute;top:112px;right:12px;z-index:3;padding:4px 9px;border-radius:10px;background:#ffe7a8;color:#4a3a20!important;font-size:10px!important;pointer-events:none}
+
+/* Expression feedback reuses the existing plum/gold palette and mobile runtime. */
+.practice-content{padding:185px 24px 60px;color:var(--ink,#eee3d4);line-height:1.7}
+.practice-content h2{font-size:19px;line-height:1.5;margin:12px 0}
+.practice-scene{padding:20px;border:1px solid #b6a08055;border-radius:18px;background:#ffffff06;margin-bottom:24px}
+.practice-scene h2{font-family:'Cormorant Garamond',serif;font-size:27px}
+.practice-content small,.practice-compose>p{font-size:12px;color:#c2b5c4}
+.practice-options{border:0;padding:0;margin:0 0 24px;min-width:0}
+.practice-options legend{font-size:16px;margin-bottom:12px;font-weight:500}
+.practice-options button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:56px;padding:14px;margin:8px 0;text-align:left;border:1px solid #b6a08055;border-radius:12px;background:#ffffff08;color:inherit;font:inherit;font-size:14px}
+.practice-options button.selected{border-color:#e5cc98;background:#e5cc981c}
+.practice-compose textarea,.practice-invite input{width:100%;box-sizing:border-box;background:#fff9ef;color:#302333;border:1px solid #cdbb9d;border-radius:12px;padding:14px;font:inherit;font-size:16px;resize:vertical}
+.practice-compose>.gold-button{margin-top:16px;width:100%}
+.practice-invite{margin-top:18px}.practice-invite summary{cursor:pointer;padding:8px 0;font-size:14px}
+.practice-content .practice-privacy{font-size:11px;line-height:1.8;color:#b8acbc;margin:16px 0}
+.practice-error{border:1px solid #dc9b94;padding:12px;border-radius:10px;color:#ffd1c9;font-size:13px}
+.practice-result{margin-top:28px;border-top:1px solid #b6a08055;padding-top:24px;scroll-margin-top:175px}
+.practice-result blockquote{margin:12px 0;padding:12px;border-left:2px solid #e5cc98;overflow-wrap:anywhere;background:#ffffff08}
+.practice-result>p{font-size:14px}.practice-hint{background:#e5cc9819;padding:12px;border-radius:10px}
+.practice-expression{padding:20px;margin:16px 0;background:#fff6e8;color:#49334b;border-radius:14px;overflow-wrap:anywhere}
+.practice-expression h3{font-family:'Cormorant Garamond',serif;font-size:27px;line-height:1.25;margin:10px 0}
+.practice-expression small{color:#715d73}.practice-expression p{font-size:14px}.practice-expression .gold-button{margin-top:16px;width:100%;font-size:14px}
+.practice-content>.text-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:24px;min-height:44px}
+.practice-options button:focus-visible,.practice-content button:focus-visible{outline:2px solid #e5cc98;outline-offset:3px}
+
+.practice-compose p,.practice-result p{margin:12px 0}.practice-scene>p{color:#d6c7d9!important;margin:12px 0!important}.practice-invite small{display:block;margin-top:8px}

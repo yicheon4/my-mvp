@@ -1,0 +1,35 @@
+import { test, expect } from '@playwright/test';
+const feedback = {alignment:'matched',meaning_ko:'오늘은 어렵고 내일 도울 수 있다는 뜻이에요.',feedback_ko:'help 뒤에 목적어를 연결해 보세요.',expressions:[{en:'I can help tomorrow. Would that work?',ko:'내일 도와줄 수 있어. 괜찮을까?',context:'친구에게 시간을 제안할 때'},{en:'I am busy today, but I can help tomorrow.',ko:'오늘은 바쁘지만 내일 도와줄 수 있어.',context:'오늘의 사정을 설명할 때'}]};
+test('feedback saves only chosen expression, deduplicates and survives reload on mobile',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ const requests:any[]=[];
+ await page.route('**/api/ai',async route=>{requests.push(route.request().postDataJSON());await route.fulfill({json:{ok:true,mode:'gemini',feedback}});});
+ await page.goto('/#practice');
+ const submit=page.getByRole('button',{name:'Gemini로 표현 피드백 받기'});
+ await expect(submit).toBeDisabled();
+ await page.getByRole('textbox',{name:'영어로 표현하기'}).fill('I want help you tomorrow.');
+ await submit.click();
+ await expect(page.getByText('선택한 뜻이 전해졌어요')).toBeVisible();
+ expect(requests).toHaveLength(1);expect(requests[0].intent).toBe('tomorrow');
+ await page.getByRole('button',{name:'이 표현 저장',exact:true}).first().click();
+ await expect(page.getByRole('button',{name:'메모장에 저장됨'})).toBeDisabled();
+ await page.getByRole('button',{name:'내 메모장 보기',exact:true}).click();
+ await expect(page.getByRole('heading',{name:feedback.expressions[0].en,exact:true})).toBeVisible();
+ await page.reload();
+ await page.getByRole('button',{name:'내 메모장 보기',exact:true}).click();
+ await expect(page.getByRole('heading',{name:feedback.expressions[0].en,exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>localStorage.getItem('persona-world-v1'))).not.toContain('I want help you tomorrow.');
+});
+test('server failure preserves text and retry; changing intent clears old feedback',async({page})=>{
+ let attempt=0;
+ await page.route('**/api/ai',async route=>{attempt++;await route.fulfill(attempt===1?{status:429,json:{ok:false,error:'quota'}}:{json:{ok:true,mode:'gemini',feedback:{...feedback,alignment:'different'}}});});
+ await page.goto('/#practice');
+ const input=page.getByRole('textbox',{name:'영어로 표현하기'});
+ await input.fill('Yes, let us practice now.');
+ await page.getByRole('button',{name:'Gemini로 표현 피드백 받기'}).click();
+ await expect(page.getByRole('alert')).toContainText('429');await expect(input).toHaveValue('Yes, let us practice now.');
+ await page.getByRole('button',{name:'Gemini로 표현 피드백 받기'}).click();
+ await expect(page.getByText('선택한 마음과 다른 뜻으로 들려요')).toBeVisible();
+ await page.getByRole('button',{name:'지금 함께 방송 연습을 해 보자고 말하기'}).click();
+ await expect(page.getByText('실제 Gemini 피드백',{exact:true})).toHaveCount(0);
+});
