@@ -144,3 +144,9 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - PersonaWorld_RoomActions_v11 is a review draft (productionReady=false). Files are copied to git-ignored `public/dev-art/room-v11/` and excluded from export. Enabled only with `import.meta.env.DEV` + `?roomart=v11` (`src/world/room-art-v11.ts`, `npm run test:roomart`).
 - Uses manifest rects + sheet-absolute anchors (frame-local = anchor − rect origin) at the v10 perspective scale; chair-free background + chair_in/out layer; window_open frames; v11 cat. Missing/failed art → normal v10 drawing.
 - Bed hip point is not in the package; preview uses an estimate (705, 405). Review + art-fix list: workspace `아트_자료/RoomActions_v11_검토결과.md`. Do not ship v11 art until revised.
+
+## English expression feedback (2026-11-10)
+- Home → 영어 표현 연습, or /#practice. Existing world/avatar/demo conversations stay intact. This is one practice scene, not a completed story episode.
+- Two Korean intentions for Sophie's radio-practice request. Learner types up to 500 characters; POST /api/ai mode=expression-feedback returns meaning, alignment, one coaching note and two alternative expressions. Server owns scene/intent strings, validates input/output, uses existing invite and rate limits. No score or story branching from language quality.
+- Only selected suggestions enter the existing notebook. Learner input and feedback are transient; no new conversation persistence. Errors retain the input and are not replaced with fake analysis.
+- Tests: npm run test:sophie; npx playwright test tests/expression-feedback.spec.ts (mock API only; live Gemini must be verified separately after deployment).

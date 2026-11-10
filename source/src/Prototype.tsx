@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Microphone, Stop, SpeakerHigh, Keyboard, ArrowLeft, ArrowRight, BookOpen, Sparkle, Check, X, PencilSimple, Trash, LockSimple, Chats, PaperPlaneTilt, House, TShirt, Scissors, Flower, BookmarkSimple, Heart, MapPin, Crown, CreditCard, Sun, MoonStars, Footprints } from '@phosphor-icons/react';
-import { BottomSheet, Carousel, KeyboardInput, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
+import { BottomSheet, Carousel, KeyboardInput, KeyboardTextarea, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
 import { people, stories, withAnd } from './story-data';
 import type { StoryScene } from './story-data';
 import WorldMap from './world/WorldMap';
@@ -8,6 +8,7 @@ import { mapArt, worldMaps, MAP_IDS } from './world/world-data';
 import CharacterFrame from './presets/CharacterFrame';
 import ExpressivePortrait from './expressions/ExpressivePortrait';
 import FreeChat from './freechat/FreeChat';
+import { readInvite, saveInvite, errorText } from './freechat/api';
 import { chloeDemo, chloeHubChoices, chloeOpening, expressionArt, normalizeExpression, normalizeMotion } from './expressions/expressions';
 import type { Choice, Motion } from './expressions/expressions';
 import { DEFAULT_SELECTION, loadPresetData, readSelection, saveSelection, lookThumb, headThumb } from './presets/presets';
@@ -20,7 +21,7 @@ import '@fontsource/noto-sans-kr/400.css';
 import '@fontsource/noto-sans-kr/500.css';
 import '@fontsource/noto-serif-kr/500.css';
 
-type Page = 'world' | 'home' | 'prepare' | 'profile' | 'scenes' | 'paywall' | 'checkout' | 'voice' | 'feedback' | 'notebook' | 'freechat';
+type Page = 'world' | 'home' | 'prepare' | 'profile' | 'scenes' | 'paywall' | 'checkout' | 'voice' | 'feedback' | 'notebook' | 'freechat' | 'practice';
 type Phrase = { id:string; en:string; ko:string; context:string };
 type Turn = { role:'you'|'friend'; text:string; ko?:string; expression?:string };
 type Session = { version?:2; sceneDetails?:StoryScene; character:number; scene:number; avatar:string; turns:Turn[]; phrases:Phrase[]; reply:string; translation:string; tip?:Phrase; expression?:string; node?:string };
@@ -87,7 +88,7 @@ function demoReply(text:string,count:number,character=0){
 }
 export default function Prototype(){
  const [initial]=useState(readSaved);
- const [page,setPage]=useState<Page>('home');
+ const [page,setPage]=useState<Page>(()=>window.location.hash==='#practice'?'practice':'home');
  const [look,setLook]=useState<Look>(readLook);
  // v7 world state (separate versioned key): look, map, feet position, day/night. The old look key above is kept untouched.
  const [world,setWorld]=useState<WorldState>(()=>loadWorld(localStorage));
@@ -209,9 +210,10 @@ export default function Prototype(){
   <CharacterFrame className="player-avatar" selection={presetSel} manifest={presetData?.manifest??null} label={characterLabel} dataError={presetError} onRetryData={loadPresets}/>
   <nav className="home-left" aria-label="나의 기록"><button className="home-menu diary-shortcut" onClick={()=>go('notebook')}><BookOpen size={25} weight="thin"/><span>나의 메모장</span>{notes.length>0&&<small>{notes.length}</small>}</button></nav>
   <nav className="home-right" aria-label="나의 캐릭터 꾸미기"><span className="rail-label">MY STYLE</span><button className={`home-menu ${closet?'active':''}`} aria-label="꾸미기 열기" aria-expanded={!!closet} onClick={()=>{keyboard.hide();setClosetFrom('home');setCloset(closet?null:'head');}}><TShirt size={24} weight="thin"/><span>꾸미기</span></button><button className="home-menu" aria-label={world.timeOfDay==='day'?'밤으로 바꾸기':'낮으로 바꾸기'} onClick={()=>setWorld(w=>({...w,timeOfDay:w.timeOfDay==='day'?'night':'day'}))}>{world.timeOfDay==='day'?<Sun size={24} weight="thin"/>:<MoonStars size={24} weight="thin"/>}<span>{world.timeOfDay==='day'?'낮':'밤'}</span></button></nav>
-  {!closet||closetFrom!=='home'?<footer className="home-footer"><button className="gold-button story-start" onClick={()=>go('world')}><Footprints size={19}/>나의 세계로 나가기<ArrowRight size={20}/></button><button className="home-resume" onClick={startFromHome}>바로 이야기 시작하기</button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}</footer>:closetPanel}
+  {!closet||closetFrom!=='home'?<footer className="home-footer"><button className="gold-button story-start" onClick={()=>go('world')}><Footprints size={19}/>나의 세계로 나가기<ArrowRight size={20}/></button><button className="home-resume" onClick={()=>go('practice')}>영어 표현 연습 · AI 피드백</button><button className="home-resume" onClick={startFromHome}>바로 이야기 시작하기</button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}</footer>:closetPanel}
   {error&&<div role="alert" className="home-error">{error}</div>}
  </section>}
+ {page==='practice'&&<ExpressionPractice onBack={()=>go('home')} onNotebook={()=>go('notebook')} notes={notes} onSave={p=>{setNotes(n=>n.some(x=>x.en.toLowerCase()===p.en.toLowerCase())?n:[...n,p]);setToast('표현을 메모장에 남겼어요');}}/>}
  {page==='world'&&<><WorldMap initial={world} people={people} look={presetSel.look} lookName={lookName||presetSel.look} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);go('home');}} paused={!!closet} onWardrobe={()=>{keyboard.hide();closetSnap.current=presetSel;setClosetFrom('world');setCloset('look');}}/>{closetFrom==='world'&&closetPanel}</>}
  {page==='prepare'&&<>
   {heading('누구와 이야기할까?','서로 다른 여섯 사람, 너와 이어질 이야기.')}
@@ -256,4 +258,66 @@ export default function Prototype(){
  <BottomSheet open={sheet==='history'} onOpenChange={open=>{if(!open)setSheet(null);}} title="우리의 대화" description={session?.sceneDetails?.title??"함께 나눈 이야기"} snap={.8}><div className="history-list">{session?.turns.map((t,i)=><div key={i} className={`history-turn ${t.role}`}><small>{t.role==='you'?'나':person.name}</small><p>{t.text}</p>{t.ko&&<small>{t.ko}</small>}</div>)}</div></BottomSheet>
  <BottomSheet open={sheet==='edit'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="나만의 뜻으로 기록하기" description={edit?.en} snap={.6}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}><form onSubmit={e=>{e.preventDefault();if(!draft.trim()||!edit)return;setNotes(n=>n.map(p=>p.id===edit.id?{...p,ko:draft.trim()}:p));keyboard.hide();setSheet(null);setToast('나만의 뜻을 저장했어요');}}><KeyboardInput aria-label="나만의 한국어 뜻" value={draft} maxLength={200} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" disabled={!draft.trim()}>뜻 저장하기 <Check size={18}/></button></form><button className="delete-note" onClick={()=>{const index=notes.findIndex(p=>p.id===edit?.id);if(index>=0)setUndo({note:notes[index],index});setNotes(n=>n.filter(p=>p.id!==edit?.id));keyboard.hide();setSheet(null);setToast('표현을 메모장에서 지웠어요');}}><Trash size={16}/> 이 표현 지우기</button></div></BottomSheet>
  </div>;
+}
+
+
+type ExpressionFeedback = { alignment:'matched'|'partial'|'different'|'unclear'; meaning_ko:string; feedback_ko:string; expressions:{en:string;ko:string;context:string}[] };
+const practiceIntents = [
+ {id:'tomorrow',label:'오늘은 어렵지만, 내일 도와주겠다고 말하기'},
+ {id:'now',label:'지금 함께 방송 연습을 해 보자고 말하기'},
+];
+function ExpressionPractice({onBack,onNotebook,onSave,notes}:{onBack:()=>void;onNotebook:()=>void;onSave:(p:Phrase)=>void;notes:Phrase[]}) {
+ const keyboard=useKeyboard();
+ const [intent,setIntent]=useState('tomorrow');
+ const [text,setText]=useState('');
+ const [invite,setInvite]=useState(readInvite);
+ const [busy,setBusy]=useState(false);
+ const [error,setError]=useState('');
+ const [result,setResult]=useState<ExpressionFeedback|null>(null);
+ const [submitted,setSubmitted]=useState('');
+ const [status,setStatus]=useState('');
+ const [sessionId]=useState(()=>crypto.randomUUID());
+ const active=useRef<AbortController|null>(null);
+ const resultEl=useRef<HTMLElement|null>(null);
+ useEffect(()=>()=>{active.current?.abort();active.current=null;},[]);
+ useEffect(()=>{if(result)resultEl.current?.scrollIntoView({block:'start',behavior:'smooth'});},[result]);
+ const clear=()=>{setResult(null);setError('');setStatus('');};
+ async function submit(){
+  if(active.current)return;
+  if(!text.trim()){setError('먼저 영어 문장을 적어 주세요.');return;}
+  keyboard.hide();saveInvite(invite.trim());setBusy(true);clear();
+  const ctrl=new AbortController();active.current=ctrl;
+  const timer=setTimeout(()=>ctrl.abort(),35000);
+  try {
+   const response=await fetch('/api/ai',{method:'POST',headers:{'content-type':'application/json','x-invite-code':invite.trim()},signal:ctrl.signal,body:JSON.stringify({mode:'expression-feedback',sessionId,intent,text:text.trim()})});
+   const data=await response.json().catch(()=>null);
+   if(active.current!==ctrl)return;
+   if(!response.ok||!data?.ok){setError(errorText(data?.error??(response.status===404?'no_server':'upstream')));return;}
+   const f=data.feedback;
+   if(data.mode!=='gemini'||!f||!['matched','partial','different','unclear'].includes(f.alignment)||typeof f.meaning_ko!=='string'||typeof f.feedback_ko!=='string'||!Array.isArray(f.expressions)||f.expressions.length!==2||f.expressions.some((x:any)=>typeof x.en!=='string'||typeof x.ko!=='string'||typeof x.context!=='string')){setError(errorText('bad_output'));return;}
+   setSubmitted(text.trim());setResult(f);
+  }catch(e){if(active.current===ctrl)setError(errorText(e instanceof Error&&e.name==='AbortError'?'timeout':'network'));}
+  finally{clearTimeout(timer);if(active.current===ctrl){active.current=null;setBusy(false);}}
+ }
+ const alignmentLabels={matched:'선택한 뜻이 전해졌어요',partial:'뜻을 조금 더 분명하게 해 볼까요?',different:'선택한 마음과 다른 뜻으로 들려요',unclear:'뜻을 한 번 더 확인해 주세요'};
+ return <>
+  <header className="page-header"><button className="icon-button" aria-label="홈으로 돌아가기" onClick={()=>{active.current?.abort();active.current=null;onBack();}}><ArrowLeft size={22}/></button><div><h1>영어 표현 연습</h1><p>내가 고른 마음을, 나의 영어로.</p></div></header>
+  <MobileScroll className="pw-scroll practice-scroll"><main className="practice-content">
+   <section className="practice-scene"><span className="eyebrow">소피 · 방송 연습을 부탁받았을 때</span><h2>“Would you help me practice for my radio show tonight?”</h2><p>오늘 저녁에 라디오 방송 연습하는 것 좀 도와줄래?</p><small>고등학교 때부터 친한 소피와 거실에서 나누는 가상 상황이에요. 장편 에피소드는 준비 중이에요.</small></section>
+   <fieldset disabled={busy} className="practice-options"><legend>1. 어떤 마음을 전하고 싶나요?</legend>{practiceIntents.map(i=><button type="button" key={i.id} aria-pressed={intent===i.id} className={intent===i.id?'selected':''} onClick={()=>{keyboard.hide();setIntent(i.id);clear();}}>{i.label}{intent===i.id&&<Check size={18}/>}</button>)}</fieldset>
+   <section className="practice-compose"><h2>2. 영어로 직접 표현해 보세요</h2><p>완벽하지 않아도 괜찮아요. 문장의 뜻과 자연스러운 표현을 확인해 드려요.</p>
+    <KeyboardTextarea aria-label="영어로 표현하기" value={text} maxLength={500} disabled={busy} placeholder="내가 하고 싶은 말을 영어로 적어 보세요." onChange={e=>{setText(e.target.value);clear();}} rows={4}/><small>{text.length}/500자 · 발음이나 관계를 평가하지 않아요.</small>
+    <details className="practice-invite" open={!invite}><summary>시험 참여 코드</summary><KeyboardInput aria-label="시험 참여 코드" type="password" autoComplete="off" value={invite} disabled={busy} onChange={e=>setInvite(e.target.value)} placeholder="안내받은 참여 코드"/><small>API 키가 아닌 시험 참여 코드를 입력해 주세요.</small></details>
+    <p className="practice-privacy">피드백을 누르면 입력 문장·선택한 의도·가상 상황이 Google Gemini로 전달돼요. 무료 등급에서는 서비스 개선에 쓰일 수 있어요. 이름·연락처 같은 개인정보는 적지 마세요. 입력 원문은 앱에 저장하지 않아요.</p>
+    <button className="gold-button" disabled={busy||!text.trim()} onClick={submit}>{busy?'내 표현을 살펴보고 있어요…':'Gemini로 표현 피드백 받기'}<Sparkle size={18}/></button>
+    {busy&&<p role="status">잠시만 기다려 주세요. 화면을 나가면 요청을 취소해요.</p>}
+    {error&&<p role="alert" className="practice-error">{error} 입력한 문장은 그대로 남아 있어요.</p>}
+   </section>
+   {result&&<section ref={resultEl} className="practice-result" aria-live="polite"><span className="eyebrow">실제 Gemini 피드백</span><h2>{alignmentLabels[result.alignment]}</h2><blockquote>{submitted}</blockquote><p><strong>전달된 뜻</strong><br/>{result.meaning_ko}</p><p>{result.feedback_ko}</p>{result.alignment!=='matched'&&<p className="practice-hint">위에서 선택을 바꾸거나 문장을 다시 적어 보세요. 아래 표현은 선택한 한국어 의도를 기준으로 제안했어요.</p>}
+    {result.expressions.map((x,i)=>{const saved=notes.some(n=>n.en.toLowerCase()===x.en.toLowerCase());return <article className="practice-expression" key={x.en}><small>{i===0?'자연스럽게 말하면':'다르게 말하면'}</small><h3>{x.en}</h3><p>{x.ko}</p><small>{x.context}</small><button className="gold-button" disabled={saved} onClick={()=>{onSave({id:'practice-'+crypto.randomUUID(),en:x.en,ko:x.ko,context:'소피의 방송 연습 부탁 · '+x.context});setStatus('선택한 표현을 메모장에 남겼어요.');}}>{saved?'메모장에 저장됨':'이 표현 저장'}<BookOpen size={17}/></button></article>;})}
+    {status&&<p role="status">{status}</p>}<p className="practice-privacy">AI의 제안은 정답 하나를 뜻하지 않아요. 저장한 표현과 뜻·사용 상황만 이 브라우저의 메모장에 남아요.</p>
+   </section>}
+   <button className="text-button" onClick={onNotebook}>내 메모장 보기 <ArrowRight size={16}/></button>
+  </main></MobileScroll>
+ </>;
 }
