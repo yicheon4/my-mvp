@@ -292,7 +292,7 @@ function ExpressionPractice({onBack,onNotebook,onSave,notes}:{onBack:()=>void;on
    const response=await fetch('/api/ai',{method:'POST',headers:{'content-type':'application/json','x-invite-code':invite.trim()},signal:ctrl.signal,body:JSON.stringify({mode:'expression-feedback',sessionId,intent,text:text.trim()})});
    const data=await response.json().catch(()=>null);
    if(active.current!==ctrl)return;
-   if(!response.ok||!data?.ok){setError(errorText(data?.error??(response.status===404?'no_server':'upstream')));return;}
+   if(!response.ok||!data?.ok){const available=Array.isArray(data?.availableModels)?data.availableModels.filter((x:unknown)=>typeof x==='string'&&/^gemini-[a-zA-Z0-9.-]+$/.test(x)):[];setError(errorText(data?.error??(response.status===404?'no_server':'upstream'))+(data?.error==='model_not_found'?' 설정된 모델: '+String(data.configuredModel??'미확인')+(available.length?' · Google이 반환한 사용 가능 모델: '+available.join(', '):' · 사용 가능 모델 목록을 가져오지 못했어요.') : ''));return;}
    const f=data.feedback;
    if(data.mode!=='gemini'||!f||!['matched','partial','different','unclear'].includes(f.alignment)||typeof f.meaning_ko!=='string'||typeof f.feedback_ko!=='string'||!Array.isArray(f.expressions)||f.expressions.length!==2||f.expressions.some((x:any)=>typeof x.en!=='string'||typeof x.ko!=='string'||typeof x.context!=='string')){setError(errorText('bad_output'));return;}
    setSubmitted(text.trim());setResult(f);

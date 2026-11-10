@@ -211,3 +211,17 @@ test('feedback retains invite protection and never fabricates feedback on malfor
  const {handle}=setup({},()=>({ok:false,status:429,json:async()=>({error:{status:'RESOURCE_EXHAUSTED'}})}));
  assert.equal((await handle({body:feedbackBody(),headers:{}})).json.error,'quota');
 });
+
+
+test('model error queries authenticated catalog, never switches models or sends learner text', async()=>{
+ const calls:any[]=[];
+ const handle=createSophieHandler({env:{GEMINI_API_KEY:KEY,GEMINI_MODEL:' missing-model ',SOPHIE_INVITE_CODE:'test-code'},prompts,fetchImpl:async(url:any,init:any)=>{
+  calls.push({url,init});
+  if(init.method==='GET')return {ok:true,json:async()=>({models:[{name:'models/gemini-test-flash',supportedGenerationMethods:['generateContent']},{name:'models/embedding-test',supportedGenerationMethods:['embedContent']}]})};
+  return {ok:false,status:404,json:async()=>({error:{status:'NOT_FOUND'}})};
+ }});
+ const out=await handle({body:feedbackBody(),headers:{'x-invite-code':'test-code'}});
+ assert.equal(out.json.error,'model_not_found');assert.deepEqual(out.json.availableModels,['gemini-test-flash']);assert.equal(out.json.configuredModel,'missing-model');
+ assert.equal(calls.length,2);assert.equal(calls[1].init.body,undefined);assert.equal(calls[1].init.headers['x-goog-api-key'],KEY);
+ assert.ok(!JSON.stringify(out).includes(KEY));
+});
