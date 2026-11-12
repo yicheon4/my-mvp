@@ -8,7 +8,7 @@ release=root.parent  # my-mvp 저장소 최상단 = Vercel이 그대로 배포�
 out.mkdir(parents=True,exist_ok=True)
 images={}
 for p in build.rglob('*'):
- if p.is_file() and p.suffix in ('.png','.svg','.webp') and not {'persona-v9','persona-mini-v10','persona-v12','room-v11'} & set(p.relative_to(build).parts):
+ if p.is_file() and p.suffix in ('.png','.svg','.webp') and not {'persona-v9','persona-mini-v10','persona-v12','room-v11'} & set(p.relative_to(build).parts) and p.relative_to(build).as_posix() not in ('favicon.svg','og-image.png'):
   name=hashlib.sha256(str(p.relative_to(build)).encode()).hexdigest()[:8]+'-'+p.name
   images['/'+str(p.relative_to(build))]=name
   shutil.copy2(p,out/name)
@@ -38,6 +38,9 @@ html=html.replace('</head>','<meta name="persona-world-release" content="2026-10
 assert all(p.stat().st_size<25*1024*1024 for p in out.iterdir())
 print('Prepared',len(list(out.iterdir())),'files; largest',round(max(p.stat().st_size for p in out.iterdir())/1024/1024,1),'MiB')
 for p in out.iterdir(): shutil.copy2(p,release/p.name)
+# Link preview files are addressed by fixed names from index.html (tab icon, KakaoTalk/SNS preview image), so copy them unrenamed.
+for name in ('favicon.svg','og-image.png'):
+ shutil.copy2(build/name,release/name)
 # Folders whose files are addressed at runtime by relative paths (e.g. /persona-v9/ + manifest src) keep their structure.
 for folder in ('persona-v9','persona-mini-v10','persona-v12','room-v11'):
  if (build/folder).is_dir():
