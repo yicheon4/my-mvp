@@ -132,7 +132,7 @@ function InviteField() {
 // Shared across mounts so a StrictMode remount or a quick re-entry does not send the same feedback request twice.
 const inflight = new Map<string, Promise<{ ok: true; value: FeedbackItem[] } | { ok: false; error: string; message: string }>>();
 
-export default function RedIvy({ notes, onSaveNote, onExit }: { notes: NotePhrase[]; onSaveNote: (p: NotePhrase) => boolean; onExit: () => void }) {
+export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes: NotePhrase[]; onSaveNote: (p: NotePhrase) => boolean; onExit: () => void; autoStart?: string }) {
   const keyboard = useKeyboard();
   const { bottomInset } = useKeyboardInsets();
   const [view, setView] = useState<View>('list');
@@ -196,6 +196,10 @@ export default function RedIvy({ notes, onSaveNote, onExit }: { notes: NotePhras
   }, [ep, current?.id]);
   useEffect(() => { if (ep && current?.kind === 'choice') run(ep.episode_id).draft = { choice_id: current.choice_id, option, text: draft }; }, [ep, current?.id, option, draft]);
 
+  // Opened from the teaser's "1화 시작하기": go straight into that episode (continues saved progress if any).
+  const pendingStart = useRef(false);
+  useEffect(() => { const e = autoStart ? catalog.find(x => x.episode_id === autoStart) : undefined; if (e && isOpen(e)) { pendingStart.current = true; setEntry(e); } }, [autoStart]);
+  useEffect(() => { if (pendingStart.current && ep) { pendingStart.current = false; startEpisode('continue'); } }, [ep]); // eslint-disable-line react-hooks/exhaustive-deps
   function stopMic() { recognition.current?.abort(); recognition.current = null; setListening(false); }
   function openEpisode(e: CatalogEntry) {
     if (!isOpen(e)) return;
