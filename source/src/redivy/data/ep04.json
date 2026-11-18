@@ -1,0 +1,982 @@
+{
+ "story_id": "red_ivy_s1",
+ "episode_id": "red_ivy_s1_ep04",
+ "number": 4,
+ "title": "The Wrong Red Dress",
+ "access": "free",
+ "start": "ep04_s1_01",
+ "scenes": [
+  {
+   "index": 1,
+   "place_ko": "가면무도회 / 저녁",
+   "background": "bg_masquerade_hall_evening"
+  },
+  {
+   "index": 2,
+   "place_ko": "교수 연구실 복도",
+   "background": "bg_faculty_corridor_night"
+  },
+  {
+   "index": 3,
+   "place_ko": "복도 끝",
+   "background": "bg_faculty_corridor_night"
+  },
+  {
+   "index": 4,
+   "place_ko": "무도회 입구",
+   "background": "bg_masquerade_entrance_night"
+  }
+ ],
+ "nodes": [
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "Two weeks later, Crimson hosts its masquerade. You’re helping with check-in. Chloe has lent Sophie a red dress. Luna has received an invitation to meet a professor about Elena.",
+   "scene": 1,
+   "id": "ep04_s1_01",
+   "next": "ep04_s1_02",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "2주 뒤, 크림슨 클럽의 가면무도회. 당신은 입장 확인을 돕고 있다. 클로이는 소피에게 붉은 드레스를 빌려줬다. 루나는 엘레나에 대해 교수를 만나자는 초대를 받았다."
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "Masks stay on until ten. Regrets are available all evening.",
+   "scene": 1,
+   "id": "ep04_s1_02",
+   "next": "ep04_s1_03",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "가면은 10시까지 쓰고 계세요. 후회는 밤새 언제든 가능합니다.",
+   "portrait": "julian_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "You sound rehearsed.",
+   "scene": 1,
+   "id": "ep04_s1_03",
+   "next": "ep04_s1_04",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "연습한 티 나.",
+   "portrait": "sophie_standing_dry_smile"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "It’s a party. Nobody wants the first draft.",
+   "scene": 1,
+   "id": "ep04_s1_04",
+   "next": "ep04_s1_05",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "파티잖아. 초안을 듣고 싶은 사람은 없어.",
+   "portrait": "julian_standing_joke"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Professor Bell’s office. Nine fifteen. Walk Luna there.",
+   "scene": 1,
+   "directions": [
+    "클로이가 소피의 리본을 매만진다."
+   ],
+   "id": "ep04_s1_05",
+   "next": "ep04_s1_06",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "벨 교수 연구실. 9시 15분. 루나를 거기까지 데려가.",
+   "portrait": "chloe_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "You said we were done after tonight.",
+   "scene": 1,
+   "id": "ep04_s1_06",
+   "next": "ep04_s1_07",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "오늘 밤이 마지막이라고 했잖아.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Then finish.",
+   "scene": 1,
+   "id": "ep04_s1_07",
+   "next": "ep04_s1_08",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "그럼 끝내.",
+   "portrait": "chloe_standing_guarded"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "You can stop pretending with me.",
+   "scene": 1,
+   "directions": [
+    "클로이가 떠난다. 줄리언은 붉은 드레스의 소피를 클로이로 착각해 다가온다."
+   ],
+   "id": "ep04_s1_08",
+   "next": "ep04_s1_09",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "나한텐 그만 연기해도 돼.",
+   "portrait": "julian_standing_jealous"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Pretending what?",
+   "scene": 1,
+   "id": "ep04_s1_09",
+   "next": "ep04_s1_10",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "뭘 연기해?",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "That Oliver makes you happy. That Ethan will ever stay.",
+   "scene": 1,
+   "id": "ep04_s1_10",
+   "next": "ep04_s1_11",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "올리버랑 있어서 행복한 척. 이든이 언젠가 곁에 남을 거라는 척.",
+   "portrait": "julian_standing_jealous"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "I’ve been right here, Chloe. This whole time.",
+   "scene": 1,
+   "id": "ep04_s1_11",
+   "next": "ep04_s1_12",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "난 계속 여기 있었어, 클로이. 처음부터 쭉.",
+   "portrait": "julian_standing_jealous"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Wrong audience.",
+   "scene": 1,
+   "directions": [
+    "소피가 가면을 벗는다."
+   ],
+   "id": "ep04_s1_12",
+   "next": "ep04_s1_13",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "사람 잘못 봤어.",
+   "portrait": "sophie_standing_dry_smile"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "Sophie. God. I’m sorry.",
+   "scene": 1,
+   "id": "ep04_s1_13",
+   "next": "ep04_s1_14",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "소피. 세상에. 미안해.",
+   "portrait": "julian_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "For saying it, or for saying it to me?",
+   "scene": 1,
+   "id": "ep04_s1_14",
+   "next": "ep04_c01",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "그 말을 한 게 미안해, 아니면 나한테 한 게 미안해?",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep04_c01",
+   "title_ko": "어색한 고백 뒤 개입",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "줄리언에게 소피에게 제대로 사과하라고 말한다.",
+     "hint_en": "Julian, you owe Sophie a real apology."
+    },
+    {
+     "id": "B",
+     "intent_ko": "소피에게 잠깐 바람을 쐬러 가겠냐고 묻는다.",
+     "hint_en": "Sophie, do you want to get some air?"
+    }
+   ],
+   "scene": 1,
+   "directions": [
+    "사용자가 가까이 온다."
+   ],
+   "id": "ep04_c01",
+   "branch": {
+    "A": "ep04_c01_A_1",
+    "B": "ep04_c01_B_1"
+   },
+   "rejoin": "ep04_s1_15",
+   "next": null,
+   "background": "bg_masquerade_hall_evening"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "You’re right. Sophie, I treated you like a costume. You didn’t deserve that.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep04_c01",
+    "option": "A"
+   },
+   "id": "ep04_c01_A_1",
+   "next": "ep04_c01_A_2",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "맞아. 소피, 널 의상 취급했어. 넌 그런 대접 받을 사람이 아니야.",
+   "portrait": "julian_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "No. I didn’t.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep04_c01",
+    "option": "A"
+   },
+   "id": "ep04_c01_A_2",
+   "next": "ep04_s1_15",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "그래. 아니었지.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Yes. Before someone else mistakes me for a better investment.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep04_c01",
+    "option": "B"
+   },
+   "id": "ep04_c01_B_1",
+   "next": "ep04_c01_B_2",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "응. 누가 또 날 더 나은 투자처로 착각하기 전에.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "That’s not what I meant. But I heard how it sounded.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep04_c01",
+    "option": "B"
+   },
+   "id": "ep04_c01_B_2",
+   "next": "ep04_s1_15",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "그런 뜻은 아니었어. 그래도 어떻게 들렸는지는 알아.",
+   "portrait": "julian_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "I have to find Luna. Something’s wrong.",
+   "scene": 1,
+   "id": "ep04_s1_15",
+   "next": "ep04_s2_01",
+   "background": "bg_masquerade_hall_evening",
+   "ko": "루나를 찾아야 해. 뭔가 잘못됐어.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "Luna is waiting outside Professor Bell’s office. You follow Sophie into the quiet hallway.",
+   "scene": 2,
+   "id": "ep04_s2_01",
+   "next": "ep04_s2_02",
+   "background": "bg_faculty_corridor_night",
+   "ko": "루나가 벨 교수 연구실 앞에서 기다리고 있다. 당신은 소피를 따라 조용한 복도로 들어선다."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "His office is dark. Are you sure he’s expecting me?",
+   "scene": 2,
+   "id": "ep04_s2_02",
+   "next": "ep04_s2_03",
+   "background": "bg_faculty_corridor_night",
+   "ko": "연구실 불이 꺼져 있어. 교수님이 날 기다리는 거 맞아?",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Don’t go in.",
+   "scene": 2,
+   "id": "ep04_s2_03",
+   "next": "ep04_s2_04",
+   "background": "bg_faculty_corridor_night",
+   "ko": "들어가지 마.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "You brought me here.",
+   "scene": 2,
+   "id": "ep04_s2_04",
+   "next": "ep04_s2_05",
+   "background": "bg_faculty_corridor_night",
+   "ko": "네가 날 여기 데려왔잖아.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "I know. I’m trying to undo it.",
+   "scene": 2,
+   "id": "ep04_s2_05",
+   "next": "ep04_s2_06",
+   "background": "bg_faculty_corridor_night",
+   "ko": "알아. 그걸 되돌리려는 거야.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "dean",
+   "channel": "speech",
+   "text": "Luna? We received a report about missing examination materials.",
+   "scene": 2,
+   "directions": [
+    "보안 직원과 학장이 다가온다."
+   ],
+   "id": "ep04_s2_06",
+   "next": "ep04_s2_07",
+   "background": "bg_faculty_corridor_night",
+   "ko": "루나 학생? 시험 자료가 없어졌다는 신고가 들어왔어요."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "From whom?",
+   "scene": 2,
+   "id": "ep04_s2_07",
+   "next": "ep04_s2_08",
+   "background": "bg_faculty_corridor_night",
+   "ko": "누가요?",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "dean",
+   "channel": "speech",
+   "text": "We need to ask you some questions.",
+   "scene": 2,
+   "id": "ep04_s2_08",
+   "next": "ep04_s2_09",
+   "background": "bg_faculty_corridor_night",
+   "ko": "몇 가지 물어볼 게 있어요."
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "She was invited here. By me.",
+   "scene": 2,
+   "id": "ep04_s2_09",
+   "next": "ep04_s2_10",
+   "background": "bg_faculty_corridor_night",
+   "ko": "루나는 초대받아서 온 거예요. 제가 불렀어요.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "dean",
+   "channel": "speech",
+   "text": "We’ll speak to you separately.",
+   "scene": 2,
+   "id": "ep04_s2_10",
+   "next": "ep04_s2_11",
+   "background": "bg_faculty_corridor_night",
+   "ko": "학생과는 따로 이야기하죠."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "This isn’t mine.",
+   "scene": 2,
+   "directions": [
+    "루나는 가방을 열어 보이다 낯선 봉투를 발견한다."
+   ],
+   "id": "ep04_s2_11",
+   "next": "ep04_s2_12",
+   "background": "bg_faculty_corridor_night",
+   "ko": "이건 제 게 아니에요.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "security",
+   "channel": "speech",
+   "text": "Please leave it where it is.",
+   "scene": 2,
+   "id": "ep04_s2_12",
+   "next": "ep04_c02",
+   "background": "bg_faculty_corridor_night",
+   "ko": "그대로 두세요."
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep04_c02",
+   "title_ko": "성급한 결론 막기",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "가방에서 나왔다는 것만으로 가져간 사람을 알 수는 없다고 말한다.",
+     "hint_en": "Finding it in her bag doesn’t tell us who put it there."
+    },
+    {
+     "id": "B",
+     "intent_ko": "현장에서 본 내용을 별도로 진술하겠다고 한다.",
+     "hint_en": "I’d like to give a separate statement about what I saw."
+    }
+   ],
+   "scene": 2,
+   "id": "ep04_c02",
+   "branch": {
+    "A": "ep04_c02_A_1",
+    "B": "ep04_c02_B_1"
+   },
+   "rejoin": "ep04_s2_13",
+   "next": null,
+   "background": "bg_faculty_corridor_night"
+  },
+  {
+   "kind": "line",
+   "speaker": "dean",
+   "channel": "speech",
+   "text": "No finding has been made. This will be reviewed.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep04_c02",
+    "option": "A"
+   },
+   "id": "ep04_c02_A_1",
+   "next": "ep04_c02_A_2",
+   "background": "bg_faculty_corridor_night",
+   "ko": "아직 결론 난 건 없어요. 검토할 겁니다."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Then please speak to me like that’s true.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep04_c02",
+    "option": "A"
+   },
+   "id": "ep04_c02_A_2",
+   "next": "ep04_s2_13",
+   "background": "bg_faculty_corridor_night",
+   "ko": "그럼 정말 그런 것처럼 말해 주세요.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "security",
+   "channel": "speech",
+   "text": "Give us your name. We’ll take your statement separately.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep04_c02",
+    "option": "B"
+   },
+   "id": "ep04_c02_B_1",
+   "next": "ep04_c02_B_2",
+   "background": "bg_faculty_corridor_night",
+   "ko": "이름을 알려 주세요. 진술은 따로 받겠습니다."
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Take mine, too. All of it.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep04_c02",
+    "option": "B"
+   },
+   "id": "ep04_c02_B_2",
+   "next": "ep04_s2_13",
+   "background": "bg_faculty_corridor_night",
+   "ko": "제 것도 받아 주세요. 전부 다.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Luna? What happened?",
+   "scene": 2,
+   "id": "ep04_s2_13",
+   "next": "ep04_s2_14",
+   "background": "bg_faculty_corridor_night",
+   "ko": "루나? 무슨 일이야?",
+   "portrait": "chloe_standing_guarded"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "You tell me.",
+   "scene": 2,
+   "id": "ep04_s2_14",
+   "next": "ep04_s2_15",
+   "background": "bg_faculty_corridor_night",
+   "ko": "네가 말해 봐.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Careful. Accusations need evidence.",
+   "scene": 2,
+   "id": "ep04_s2_15",
+   "next": "ep04_s3_01",
+   "background": "bg_faculty_corridor_night",
+   "ko": "조심해. 누굴 탓하려면 증거가 필요하거든.",
+   "portrait": "chloe_standing_guarded"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "What time were the papers taken?",
+   "scene": 3,
+   "directions": [
+    "올리버가 소란을 듣고 온다."
+   ],
+   "id": "ep04_s3_01",
+   "next": "ep04_s3_02",
+   "background": "bg_faculty_corridor_night",
+   "ko": "시험지가 없어진 게 몇 시예요?",
+   "portrait": "oliver_standing_weary"
+  },
+  {
+   "kind": "line",
+   "speaker": "dean",
+   "channel": "speech",
+   "text": "Between eight forty and nine, according to the initial report.",
+   "scene": 3,
+   "id": "ep04_s3_02",
+   "next": "ep04_s3_03",
+   "background": "bg_faculty_corridor_night",
+   "ko": "첫 신고에 따르면 8시 40분에서 9시 사이예요."
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "Luna was with me. Outside, by the courtyard.",
+   "scene": 3,
+   "id": "ep04_s3_03",
+   "next": "ep04_s3_04",
+   "background": "bg_faculty_corridor_night",
+   "ko": "루나는 저랑 있었어요. 밖에, 안뜰 옆에서요.",
+   "portrait": "oliver_standing_weary"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Oliver. Think carefully.",
+   "scene": 3,
+   "id": "ep04_s3_04",
+   "next": "ep04_s3_05",
+   "background": "bg_faculty_corridor_night",
+   "ko": "올리버. 잘 생각해.",
+   "portrait": "chloe_standing_guarded"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "I am.",
+   "scene": 3,
+   "id": "ep04_s3_05",
+   "next": "ep04_s3_06",
+   "background": "bg_faculty_corridor_night",
+   "ko": "하고 있어.",
+   "portrait": "oliver_standing_weary"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "We talked about Elena.",
+   "scene": 3,
+   "id": "ep04_s3_06",
+   "next": "ep04_s3_07",
+   "background": "bg_faculty_corridor_night",
+   "ko": "엘레나 얘기를 했어요.",
+   "portrait": "luna_standing_softened"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "And I should have done that sooner.",
+   "scene": 3,
+   "id": "ep04_s3_07",
+   "next": "ep04_s3_08",
+   "background": "bg_faculty_corridor_night",
+   "ko": "더 일찍 했어야 했던 얘기죠.",
+   "portrait": "oliver_standing_weary"
+  },
+  {
+   "kind": "line",
+   "speaker": "dean",
+   "channel": "speech",
+   "text": "We’ll check the timing. Both of you will need to give statements.",
+   "scene": 3,
+   "id": "ep04_s3_08",
+   "next": "ep04_s3_09",
+   "background": "bg_faculty_corridor_night",
+   "ko": "시간을 확인하겠습니다. 두 사람 다 진술해야 해요."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "I thought they were going to decide before I opened my mouth.",
+   "scene": 3,
+   "directions": [
+    "학장이 이동한다. 루나는 사용자를 향한다."
+   ],
+   "id": "ep04_s3_09",
+   "next": "ep04_c03",
+   "background": "bg_faculty_corridor_night",
+   "ko": "내가 입을 열기도 전에 결론 내릴 줄 알았어요.",
+   "portrait": "luna_standing_softened"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep04_c03",
+   "title_ko": "다음 행동 정하기",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "기억이 흐려지기 전에 시간 순서를 적자고 한다.",
+     "hint_en": "Let’s write down the timeline while it’s fresh."
+    },
+    {
+     "id": "B",
+     "intent_ko": "조사 절차를 함께 확인해 줄 사람을 찾자고 한다.",
+     "hint_en": "Let’s find someone who can help you understand the process."
+    }
+   ],
+   "scene": 3,
+   "id": "ep04_c03",
+   "branch": {
+    "A": "ep04_c03_A_1",
+    "B": "ep04_c03_B_1"
+   },
+   "rejoin": "ep04_s3_10",
+   "next": null,
+   "background": "bg_faculty_corridor_night"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Eight forty-five, courtyard. Just before nine, Sophie’s message.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep04_c03",
+    "option": "A"
+   },
+   "id": "ep04_c03_A_1",
+   "next": "ep04_c03_A_2",
+   "background": "bg_faculty_corridor_night",
+   "ko": "8시 45분, 안뜰. 9시 직전에 소피의 메시지.",
+   "portrait": "luna_standing_softened"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "I still have the photo I took of the clock outside. It helps place us there.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep04_c03",
+    "option": "A"
+   },
+   "id": "ep04_c03_A_2",
+   "next": "ep04_s3_10",
+   "background": "bg_faculty_corridor_night",
+   "ko": "밖에 있는 시계를 찍은 사진이 아직 있어. 우리가 거기 있었다는 걸 보여 줄 수 있어.",
+   "portrait": "oliver_standing_accept_water"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "The student adviser. I have her email.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep04_c03",
+    "option": "B"
+   },
+   "id": "ep04_c03_B_1",
+   "next": "ep04_c03_B_2",
+   "background": "bg_faculty_corridor_night",
+   "ko": "학생 상담 선생님이요. 이메일 주소가 있어요.",
+   "portrait": "luna_standing_softened"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "I’ll wait while you call. You shouldn’t have to explain this alone.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep04_c03",
+    "option": "B"
+   },
+   "id": "ep04_c03_B_2",
+   "next": "ep04_s3_10",
+   "background": "bg_faculty_corridor_night",
+   "ko": "전화하는 동안 기다릴게. 혼자서 이걸 설명할 필요는 없어.",
+   "portrait": "oliver_standing_accept_water"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "I’m not asking anyone to lie for me.",
+   "scene": 3,
+   "id": "ep04_s3_10",
+   "next": "ep04_s3_11",
+   "background": "bg_faculty_corridor_night",
+   "ko": "나 대신 거짓말해 달라는 게 아니에요.",
+   "portrait": "luna_standing_softened"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "You don’t have to. This time I’m telling the truth.",
+   "scene": 3,
+   "id": "ep04_s3_11",
+   "next": "ep04_s4_01",
+   "background": "bg_faculty_corridor_night",
+   "ko": "그럴 필요 없어. 이번엔 내가 진실을 말하는 거니까.",
+   "portrait": "oliver_standing_accept_water"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "I knew she was planning something. I told myself I could stop it later.",
+   "scene": 4,
+   "directions": [
+    "사용자와 소피가 남는다."
+   ],
+   "id": "ep04_s4_01",
+   "next": "ep04_s4_02",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "클로이가 뭔가 꾸미는 줄 알았어. 나중에 막을 수 있다고 스스로 말했지.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Later is a wonderful word when you’re a coward.",
+   "scene": 4,
+   "id": "ep04_s4_02",
+   "next": "ep04_c04",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "겁쟁이한테 ‘나중에’는 참 좋은 말이야.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep04_c04",
+   "title_ko": "책임 있는 도움 요청",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "자책보다 알고 있는 사실을 말하는 게 먼저라고 한다.",
+     "hint_en": "Start with what you know. Blaming yourself can wait."
+    },
+    {
+     "id": "B",
+     "intent_ko": "누구의 지시였는지 분명히 말해 달라고 한다.",
+     "hint_en": "Tell me clearly who asked you to do this."
+    }
+   ],
+   "scene": 4,
+   "id": "ep04_c04",
+   "branch": {
+    "A": "ep04_c04_A_1",
+    "B": "ep04_c04_B_1"
+   },
+   "rejoin": "ep04_s4_03",
+   "next": null,
+   "background": "bg_masquerade_entrance_night"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Right. I’ll write it down. Even the parts that make me look guilty.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep04_c04",
+    "option": "A"
+   },
+   "id": "ep04_c04_A_1",
+   "next": "ep04_c04_A_2",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "맞아. 적어 둘게. 내가 잘못한 것처럼 보이는 부분까지.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Especially those.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep04_c04",
+    "option": "A"
+   },
+   "id": "ep04_c04_A_2",
+   "next": "ep04_s4_03",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "특히 그 부분은.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Chloe. She threatened me, but I still agreed to bring Luna here.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep04_c04",
+    "option": "B"
+   },
+   "id": "ep04_c04_B_1",
+   "next": "ep04_c04_B_2",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "클로이야. 협박받았지만, 루나를 여기 데려오겠다고 한 건 나야.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "I won’t pretend I had no choice.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep04_c04",
+    "option": "B"
+   },
+   "id": "ep04_c04_B_2",
+   "next": "ep04_s4_03",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "선택지가 없었던 척은 안 할게.",
+   "portrait": "sophie_standing_watch"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "You chose her over me.",
+   "scene": 4,
+   "audience": true,
+   "directions": [
+    "관객 전용: 클로이와 올리버."
+   ],
+   "id": "ep04_s4_03",
+   "next": "ep04_s4_04",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "날 두고 걔를 택했네.",
+   "portrait": "chloe_standing_vulnerable"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "I chose something that actually happened.",
+   "scene": 4,
+   "audience": true,
+   "id": "ep04_s4_04",
+   "next": "ep04_s4_05",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "실제로 있었던 일을 택한 거야.",
+   "portrait": "oliver_standing_weary"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Since when does that matter to you?",
+   "scene": 4,
+   "audience": true,
+   "id": "ep04_s4_05",
+   "next": "ep04_s4_06",
+   "background": "bg_masquerade_entrance_night",
+   "ko": "언제부터 그게 너한테 중요했는데?",
+   "portrait": "chloe_standing_guarded"
+  },
+  {
+   "kind": "line",
+   "speaker": "end_card",
+   "channel": "end_card",
+   "text": "One true alibi. One old lie.",
+   "scene": 4,
+   "audience": true,
+   "directions": [
+    "올리버가 굳는다."
+   ],
+   "id": "ep04_s4_06",
+   "next": null,
+   "background": "bg_masquerade_entrance_night",
+   "ko": "하나의 진짜 알리바이. 하나의 오래된 거짓말."
+  }
+ ]
+}

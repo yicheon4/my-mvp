@@ -8,6 +8,7 @@ import { mapArt, worldMaps, MAP_IDS } from './world/world-data';
 import CharacterFrame from './presets/CharacterFrame';
 import ExpressivePortrait from './expressions/ExpressivePortrait';
 import FreeChat from './freechat/FreeChat';
+import RedIvy from './redivy/RedIvy';
 import { readInvite, saveInvite, errorText } from './freechat/api';
 import { chloeDemo, chloeHubChoices, chloeOpening, expressionArt, normalizeExpression, normalizeMotion } from './expressions/expressions';
 import type { Choice, Motion } from './expressions/expressions';
@@ -21,7 +22,7 @@ import '@fontsource/noto-sans-kr/400.css';
 import '@fontsource/noto-sans-kr/500.css';
 import '@fontsource/noto-serif-kr/500.css';
 
-type Page = 'world' | 'home' | 'prepare' | 'profile' | 'scenes' | 'paywall' | 'checkout' | 'voice' | 'feedback' | 'notebook' | 'freechat' | 'practice';
+type Page = 'world' | 'home' | 'prepare' | 'profile' | 'scenes' | 'paywall' | 'checkout' | 'voice' | 'feedback' | 'notebook' | 'freechat' | 'practice' | 'redivy';
 type Phrase = { id:string; en:string; ko:string; context:string };
 type Turn = { role:'you'|'friend'; text:string; ko?:string; expression?:string };
 type Session = { version?:2; sceneDetails?:StoryScene; character:number; scene:number; avatar:string; turns:Turn[]; phrases:Phrase[]; reply:string; translation:string; tip?:Phrase; expression?:string; node?:string };
@@ -88,7 +89,7 @@ function demoReply(text:string,count:number,character=0){
 }
 export default function Prototype(){
  const [initial]=useState(readSaved);
- const [page,setPage]=useState<Page>(()=>window.location.hash==='#practice'?'practice':'home');
+ const [page,setPage]=useState<Page>(()=>window.location.hash==='#practice'?'practice':window.location.hash==='#red-ivy'?'redivy':'home');
  const [look,setLook]=useState<Look>(readLook);
  // v7 world state (separate versioned key): look, map, feet position, day/night. The old look key above is kept untouched.
  const [world,setWorld]=useState<WorldState>(()=>loadWorld(localStorage));
@@ -210,11 +211,12 @@ export default function Prototype(){
   <CharacterFrame className="player-avatar" selection={presetSel} manifest={presetData?.manifest??null} label={characterLabel} dataError={presetError} onRetryData={loadPresets}/>
   <nav className="home-left" aria-label="나의 기록"><button className="home-menu diary-shortcut" onClick={()=>go('notebook')}><BookOpen size={25} weight="thin"/><span>나의 메모장</span>{notes.length>0&&<small>{notes.length}</small>}</button></nav>
   <nav className="home-right" aria-label="나의 캐릭터 꾸미기"><span className="rail-label">MY STYLE</span><button className={`home-menu ${closet?'active':''}`} aria-label="꾸미기 열기" aria-expanded={!!closet} onClick={()=>{keyboard.hide();setClosetFrom('home');setCloset(closet?null:'head');}}><TShirt size={24} weight="thin"/><span>꾸미기</span></button><button className="home-menu" aria-label={world.timeOfDay==='day'?'밤으로 바꾸기':'낮으로 바꾸기'} onClick={()=>setWorld(w=>({...w,timeOfDay:w.timeOfDay==='day'?'night':'day'}))}>{world.timeOfDay==='day'?<Sun size={24} weight="thin"/>:<MoonStars size={24} weight="thin"/>}<span>{world.timeOfDay==='day'?'낮':'밤'}</span></button></nav>
-  {!closet||closetFrom!=='home'?<footer className="home-footer"><button className="gold-button story-start" onClick={()=>go('world')}><Footprints size={19}/>나의 세계로 나가기<ArrowRight size={20}/></button><button className="home-resume" onClick={()=>go('practice')}>영어 표현 연습 · AI 피드백</button><button className="home-resume" onClick={startFromHome}>바로 이야기 시작하기</button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}</footer>:closetPanel}
+  {!closet||closetFrom!=='home'?<footer className="home-footer"><button className="gold-button story-start" onClick={()=>go('world')}><Footprints size={19}/>나의 세계로 나가기<ArrowRight size={20}/></button><button className="home-resume" onClick={()=>go('redivy')}>Red Ivy · 스토리 에피소드 (시험)</button><button className="home-resume" onClick={()=>go('practice')}>영어 표현 연습 · AI 피드백</button><button className="home-resume" onClick={startFromHome}>바로 이야기 시작하기</button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}</footer>:closetPanel}
   {error&&<div role="alert" className="home-error">{error}</div>}
  </section>}
+ {page==='redivy'&&<RedIvy notes={notes} onExit={()=>go('home')} onSaveNote={p=>{if(notes.some(x=>x.en.trim().toLowerCase()===p.en.trim().toLowerCase()))return false;setNotes(n=>[...n,p]);return true;}}/>}
  {page==='practice'&&<ExpressionPractice onBack={()=>go('home')} onNotebook={()=>go('notebook')} notes={notes} onSave={p=>{setNotes(n=>n.some(x=>x.en.toLowerCase()===p.en.toLowerCase())?n:[...n,p]);setToast('표현을 메모장에 남겼어요');}}/>}
- {page==='world'&&<><WorldMap initial={world} people={people} look={presetSel.look} lookName={lookName||presetSel.look} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);go('home');}} paused={!!closet} onWardrobe={()=>{keyboard.hide();closetSnap.current=presetSel;setClosetFrom('world');setCloset('look');}}/>{closetFrom==='world'&&closetPanel}</>}
+ {page==='world'&&<><WorldMap initial={world} people={people} look={presetSel.look} lookName={lookName||presetSel.look} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);setOrigin('home');go('home');}} paused={!!closet} onWardrobe={()=>{keyboard.hide();closetSnap.current=presetSel;setClosetFrom('world');setCloset('look');}}/>{closetFrom==='world'&&closetPanel}</>}
  {page==='prepare'&&<>
   {heading('누구와 이야기할까?','서로 다른 여섯 사람, 너와 이어질 이야기.')}
   <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>지금 만날 수 있는 3명</span><span><LockSimple size={13}/>친밀도 쌓기 3명</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">친밀도 쌓기는 유료 콘텐츠 이름이에요.<br/>현재는 결제 흐름을 살펴볼 수 있는 체험 버전이에요.</p></main></MobileScroll>

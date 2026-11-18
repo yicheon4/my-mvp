@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { clipFrame, clipMs, placeV12, npcFrame, toRoomSpot, autoSpots, validPatrol, initNpcs, stepNpc, forgetNpcs, rememberNpc, canRideAt, rideStep, dismountSpot, nearBike } from '../src/world/social-v12.ts';
+import { clipFrame, clipMs, placeV12, npcFrame, inSight, endNpcWave, toRoomSpot, autoSpots, validPatrol, initNpcs, stepNpc, forgetNpcs, rememberNpc, canRideAt, rideStep, dismountSpot, nearBike } from '../src/world/social-v12.ts';
 import type { V12Manifest, V12Locations, NpcRun } from '../src/world/social-v12.ts';
 import { worldMaps } from '../src/world/world-data.ts';
 import { canOccupy, nearestNpc, portalAt } from '../src/world/world-engine.ts';
@@ -45,12 +45,15 @@ test('clips: one-shot wave plays once and holds; loops repeat; reduced motion ke
 });
 
 test('NPC frames: idle frame of the facing when still (no walking in place), walk only while moving', () => {
-  const e = m.npcs.sophie;
-  assert.equal(npcFrame(e, 'left', false, 900, null), e.frames[5]);
-  assert.equal(npcFrame(e, 'up', true, 0, null), e.frames[12]);
-  assert.equal(npcFrame(e, 'up', true, 180, null), e.frames[13]);
-  assert.equal(npcFrame(e, 'right', true, 180, null, true), e.frames[9]);
-  assert.equal(npcFrame(e, 'right', false, 0, 0), e.frames[16]); // wave is the front clip
+  for (const e of Object.values(m.npcs)) {
+    const idle = e.idleByDirection!;
+    assert.equal(npcFrame(e, 'left', false, 900, null), e.frames[idle.left]);
+    assert.equal(npcFrame(e, 'up', true, 0, null), e.frames[e.clips.walk_up.frames[0]]);
+    assert.equal(npcFrame(e, 'up', true, 180, null), e.frames[e.clips.walk_up.frames[1]]);
+    assert.equal(npcFrame(e, 'right', true, 180, null, true), e.frames[idle.right]); // reduced motion: no walking frames
+    assert.equal(npcFrame(e, 'right', false, 0, 0), e.frames[e.clips.wave.frames[0]]); // wave is the front clip
+    assert.equal(npcFrame(e, 'right', false, 0, 0, true), e.frames[e.clips.wave.frames[1]]); // reduced: hand-raised still
+  }
 });
 
 test('every NPC def matches the map person and every kept patrol segment stays on clear floor', () => {
@@ -140,4 +143,33 @@ test('bicycle: campus only, wider footprint, never through an exit, sub-stepped,
   assert.equal(canRideAt(campus, 600, 700, r, [{ x: 600, y: 670 }]), false);
   assert.equal(canRideAt(campus, 600, 700, r, [{ x: 600, y: 640 }]), true);
   assert.deepEqual(dismountSpot([600, 700], (x, y) => x === 600 && y === 735), [600, 735]);
+});
+
+test('NPC v2 (귀여운비율): six current sheets, same feet anchor and scale basis; previous minis kept only as stand-ins', () => {
+  const ids = ['chloe', 'ethan', 'julian', 'luna', 'oliver', 'sophie'];
+  assert.deepEqual(Object.keys(m.npcs).sort(), ids);
+  assert.deepEqual(Object.keys(m.npcsFallback ?? {}).sort(), ids);
+  for (const id of ids) {
+    const e = m.npcs[id];
+    assert.equal(e.src, `assets/npcs-v2/${id}.png`);
+    assert.equal(e.frames.length, 20);
+    for (const f of e.frames) assert.deepEqual(f.anchor, [128, 304]);
+    for (const d of ['walk_down', 'walk_left', 'walk_right', 'walk_up', 'wave']) assert.ok(e.clips[d], id + d);
+    const fb = m.npcsFallback![id];
+    assert.deepEqual(pngSize(fb.src), fb.imageSize, fb.src);
+  }
+  // locations stay as they were: people, maps and paid locks
+  assert.deepEqual(loc.npcs.map(d => [d.id, d.person, d.locked]), [['sophie', 1, false], ['chloe', 0, false], ['luna', 3, true], ['julian', 4, true], ['ethan', 2, false], ['oliver', 5, true]]);
+});
+
+test('greeting: someone behind a wall is out of sight; the reply wave ends facing the old way', () => {
+  for (const d of loc.npcs) {
+    const map = worldMaps[d.map];
+    assert.ok(inSight(map, d.spawn, d.spawn), d.id);
+  }
+  const map = worldMaps['living-room'];
+  assert.equal(inSight(map, [-500, -500], map.npcs[0] ? [map.npcs[0].x, map.npcs[0].y] : [0, 0]), false); // off the floor
+  const n = { waveMs: 1200, dir: 'down', restoreDir: 'left', wait: 0 } as unknown as NpcRun;
+  const done = endNpcWave(n);
+  assert.equal(done.waveMs, null); assert.equal(done.dir, 'left'); assert.equal(done.restoreDir, undefined); assert.equal(done.wait, 900);
 });

@@ -13,7 +13,7 @@ import type { RoomState, Spot, Cat, RoomConfig, RoomSave } from './room-actions'
 import type { Pt } from './world-data';
 import { V11_BASE, placeFrame, waterIndex, playIndex, reverseIndex, BED_HIP_ESTIMATE, v11Enabled, pouring, WATER_TIMING, trimRows } from './room-art-v11';
 import type { V11Manifest, V11Frame } from './room-art-v11';
-import { V12_BASE, clipFrame, clipMs, placeV12, npcFrame, toRoomSpot, autoSpots, initNpcs, stepNpc, rememberNpc, BIKE_OFF, canRideAt, bikeTouches, rideStep, dismountSpot, nearBike, rideClip, drawWater, drawFlame } from './social-v12';
+import { V12_BASE, clipFrame, clipMs, placeV12, npcFrame, inSight, endNpcWave, WAVE_COOLDOWN_MS, toRoomSpot, autoSpots, initNpcs, stepNpc, rememberNpc, BIKE_OFF, canRideAt, bikeTouches, rideStep, dismountSpot, nearBike, rideClip, drawWater, drawFlame } from './social-v12';
 import type { V12Manifest, V12Locations, V12Spot, V12Frame, NpcRun, Bike } from './social-v12';
 
 // Room-action pose art (v11), on unless ?roomart=off.
@@ -44,10 +44,12 @@ const KEYS: Record<string, [number, number]> = {
   ArrowUp: [0, -1], KeyW: [0, -1], ArrowDown: [0, 1], KeyS: [0, 1],
   ArrowLeft: [-1, 0], KeyA: [-1, 0], ArrowRight: [1, 0], KeyD: [1, 0],
 };
-const images = new Map<string, HTMLImageElement>();
+const images = new Map<string, HTMLImageElement>(), imageAt = new Map<string, number>();
+/** Cached image; a file that failed to load is requested again after a few seconds (missing → retry, never a blank click target). */
 function image(src: string) {
   let img = images.get(src);
-  if (!img) { img = new Image(); img.decoding = 'async'; img.src = src; images.set(src, img); }
+  const failed = img && img.complete && img.naturalWidth === 0 && performance.now() - (imageAt.get(src) ?? 0) > 5000;
+  if (!img || failed) { img = new Image(); img.decoding = 'async'; img.src = src; images.set(src, img); imageAt.set(src, performance.now()); }
   return img;
 }
 const ready = (img: HTMLImageElement) => img.complete && img.naturalWidth > 0;
@@ -120,6 +122,7 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   useEffect(() => { loadV12().then(([m, l]) => { v12.current = m; loc.current = l; npcs.current = null; roomMap.current = null; setV12State('ready'); }, () => setV12State('error')); }, []);
   const npcs = useRef<NpcRun[] | null>(null);       // where the people of this map really are now (null → set up on next frame)
   const wave = useRef<{ t0: number; person: number } | null>(null);
+  const waveRest = useRef(0); // performance.now() until which a new wave is ignored (after the reply ends)
   const [waving, setWaving] = useState(false), wavingRef = useRef(false);
   const bike = useRef<Bike>(BIKE_OFF);
   const [bikeUi, setBikeUi] = useState<{ can: boolean; riding: boolean; hint: string }>({ can: false, riding: false, hint: '' });
@@ -196,7 +199,11 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
       if (isPaused) { ix = 0; iy = 0; }
       const input = Math.hypot(ix, iy) > .2, push: Pt = [ix, iy];
       // people of this map: set up on arrival (remembered positions survive a talk), then patrol every frame
-      if (!npcs.current || npcMap !== s.mapId) { npcs.current = initNpcs(map, loc.current, (x, y) => canOccupy(map, x, y, [])); npcMap = s.mapId; wave.current = null; }
+      if (!npcs.current || npcMap !== s.mapId) {
+        npcs.current = initNpcs(map, loc.current, (x, y) => canOccupy(map, x, y, [])); npcMap = s.mapId; wave.current = null;
+        // start decoding this map's people now; the previous mini is fetched only if a current sheet fails
+        for (const n of npcs.current) { const e = v12.current?.npcs[n.id]; if (e) image(V12_BASE + e.src); }
+      }
       const people = npcs.current;
       // someone already touching the player never traps her; everyone else blocks her
       const b = bike.current, bc = loc.current?.bicycle;
@@ -227,18 +234,18 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
         const others = people.filter((_, j) => j !== i);
         const ok = (x: number, y: number) => canOccupy(map, x, y, others) && !portalAt(map, x, y) && (riding ? !bikeTouches({ x, y }, cur.x, cur.y) : Math.hypot(x - cur.x, (y - cur.y) * 1.6) >= 46);
         let m = stepNpc(n, dt * 1000, isPaused, ok, Math.random);
-        if (m.waveMs !== null && m.waveMs >= npcWaveDur(m)) m = { ...m, waveMs: null, dir: 'down', wait: 900 };
+        if (m.waveMs !== null && m.waveMs >= npcWaveDur(m)) { m = endNpcWave(m); waveRest.current = now + WAVE_COOLDOWN_MS; }
         rememberNpc(map.id, m);
         return m;
       });
-      const w = !!wave.current || npcs.current.some(n => n.waveMs !== null);
+      const w = !!wave.current || npcs.current.some(n => n.waveMs !== null) || now < waveRest.current;
       if (w !== wavingRef.current) { wavingRef.current = w; setWaving(w); }
       // portals (never on the bike: riding stops before exits)
       const portal = portalAt(map, cur.x, cur.y);
       if (!portal) lock.current = false;
       else if (!lock.current && !busy.current && bike.current.phase === 'off') travel(portal);
       setDoor(portalLabel(map, cur.x, cur.y));
-      const npc = bike.current.phase === 'off' ? nearestNpc(map, cur.x, cur.y, npcs.current) : null;
+      const npc = bike.current.phase === 'off' ? nearestNpc(map, cur.x, cur.y, npcs.current.filter(n => inSight(map, [cur.x, cur.y], [n.x, n.y]))) : null;
       if (npc?.person !== nearRef.current?.person) setNear(npc);
       nearRef.current = npc;
       if (now - lastSave > 1500) { lastSave = now; cb.current.onSave(cur); }
@@ -343,11 +350,11 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   /** Wave once at the friend nearby; the friend waves back once. Never opens a talk, payment or unlock. */
   function waveAt() {
     const n = nearRef.current;
-    if (!n || wave.current || bike.current.phase !== 'off' || busy.current || lockMove.current || npcs.current?.some(m => m.waveMs !== null)) return;
     const now = performance.now();
+    if (!n || wave.current || now < waveRest.current || bike.current.phase !== 'off' || busy.current || lockMove.current || npcs.current?.some(m => m.waveMs !== null)) return;
     wave.current = { t0: now, person: n.person };
     stateRef.current = { ...stateRef.current, direction: 'down' }; // the wave frames face the front
-    npcs.current = (npcs.current ?? []).map(m => m.person === n.person ? { ...m, waveMs: -NPC_WAVE_DELAY, dir: 'down', moving: false } : m);
+    npcs.current = (npcs.current ?? []).map(m => m.person === n.person ? { ...m, waveMs: -NPC_WAVE_DELAY, restoreDir: m.dir, dir: 'down', moving: false, walkMs: 0 } : m);
     wavingRef.current = true; setWaving(true);
   }
 
@@ -478,36 +485,32 @@ export default function WorldMap({ initial, look, lookName, people, onSave, onTa
   }
   /** Full-body friend: walk frames only while moving, idle frame of the facing when still, front wave once. Name + lock tag above. */
   function drawNpc(ctx: CanvasRenderingContext2D, map: WorldMapDef, n: NpcRun, reduced: boolean, tags: (() => void)[]) {
-    const p = people[n.person], e = v12.current?.npcs[n.id], img = e ? image(V12_BASE + e.src) : null;
-    const h = miniHeight(map, n.y), near = n.person === nearRef.current?.person;
-    const label = p.locked ? `${p.name} 🔒` : p.name;
+    const p = people[n.person], h = miniHeight(map, n.y), near = n.person === nearRef.current?.person;
+    const greeting = n.waveMs !== null && n.waveMs >= 0;
+    // reduced motion: no hand animation, so the tag says hello next to the still raised-hand frame
+    const label = `${reduced && greeting ? '👋 ' : ''}${p.locked ? `${p.name} 🔒` : p.name}`;
     const pill = (cx: number, y: number) => {
       ctx.font = '600 22px "Noto Sans KR", sans-serif'; ctx.textAlign = 'center';
       const tw = ctx.measureText(label).width + 24;
       ctx.fillStyle = near ? '#6d4f96' : '#3b2d4bd9'; ctx.beginPath(); ctx.roundRect(cx - tw / 2, y - 34, tw, 34, 17); ctx.fill();
       ctx.fillStyle = '#fff'; ctx.fillText(label, cx, y - 9);
     };
-    const f = e && img && ready(img) ? npcFrame(e, n.dir, n.moving, n.walkMs, n.waveMs !== null && n.waveMs >= 0 ? n.waveMs : null, reduced) : null;
-    if (e && img && f) {
-      const { dx, dy, dw, dh } = placeV12(f, [n.x, n.y], h / e.referenceHeight);
+    // Current sheet once decoded. If it failed to load, the previous full-body mini stands in (and image() keeps
+    // retrying the current one). While it is still loading: name tag only. Never a floating face.
+    const cur = v12.current?.npcs[n.id], curImg = cur ? image(V12_BASE + cur.src) : null;
+    const failed = !cur || (!!curImg && curImg.complete && curImg.naturalWidth === 0);
+    const prev = failed ? v12.current?.npcsFallback?.[n.id] : undefined, prevImg = prev ? image(V12_BASE + prev.src) : null;
+    const pick = cur && curImg && ready(curImg) ? { e: cur, img: curImg } : prev && prevImg && ready(prevImg) ? { e: prev, img: prevImg } : null;
+    const f = pick ? npcFrame(pick.e, n.dir, n.moving, n.walkMs, greeting ? n.waveMs : null, reduced) : null;
+    if (pick && f) {
+      const { dx, dy, dw, dh } = placeV12(f, [n.x, n.y], h / pick.e.referenceHeight);
       ctx.fillStyle = '#3a2a4a38'; ctx.beginPath(); ctx.ellipse(n.x, n.y, h * .2, h * .055, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.drawImage(img, f.rect[0], f.rect[1], f.rect[2], f.rect[3], dx, dy, dw, dh);
+      ctx.drawImage(pick.img, f.rect[0], f.rect[1], f.rect[2], f.rect[3], dx, dy, dw, dh);
       tags.push(() => pill(n.x, n.y - h - 10));
       return;
     }
-    // sheet not loaded (or failed): the previous portrait badge
-    tags.push(() => {
-      const art = image(p.art), cx = n.x, cy = n.y - 118, r = 46;
-      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(cx, cy, r + 5, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(cx - 12, cy + r); ctx.lineTo(cx, cy + r + 20); ctx.lineTo(cx + 12, cy + r); ctx.fill();
-      if (ready(art)) {
-        ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
-        ctx.fillStyle = '#ece3f4'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
-        const [fx, fy, fs] = n.face;
-        ctx.drawImage(art, fx - fs / 2, fy - fs / 2, fs, fs, cx - r, cy - r, r * 2, r * 2); ctx.restore();
-      }
-      pill(cx, cy - r - 10);
-    });
+    // no full-body image yet: a small name tag at head height only (image() retries the file meanwhile)
+    tags.push(() => pill(n.x, n.y - h * .6));
   }
 
   // Soft highlight on the object the player is about to use, and the open-window light/breeze.
