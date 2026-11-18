@@ -1,0 +1,153 @@
+/* Red Ivy story player. Scoped under .ri-root; uses the app's existing tokens (.persona-app --ink/--gold). */
+.ri-root{position:relative;height:100%;overflow:hidden;background:#1d1520;color:var(--ink)}
+/* play/intro are size containers: stage, portrait and dialogue are sized in cqh/cqw of the app screen */
+.ri-play,.ri-intro{container:ri / size}
+.ri-root .page-header{background:#1f1622}
+.ri-list{padding:196px 20px 60px;display:grid;gap:10px}
+.ri-ep{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border-radius:12px;background:#30223a;border:1px solid #5d4064!important;text-align:left}
+.ri-ep.is-locked{opacity:.55}
+.ri-ep-no{font:500 15px 'Cormorant Garamond',serif;letter-spacing:1.5px;color:#e7c08a;width:44px;flex-shrink:0}
+.ri-ep-body{flex:1;min-width:0}.ri-ep-body strong{display:block;font:500 17px/1.3 'Cormorant Garamond',serif;color:#fff1dd}
+.ri-ep-body small{font-size:10px;color:#bba5bd}
+.ri-foot{font-size:10px!important;color:#ad97ad;text-align:center;line-height:1.8;margin:18px 0 0!important}
+
+/* stage */
+.ri-stage{position:absolute;inset:0;z-index:0}
+.ri-blackout{background:#000}
+.ri-art{opacity:0;transition:opacity .25s ease}.ri-art.is-loaded{opacity:1}
+.ri-layer{position:absolute;inset:0}
+.ri-layer.is-top{animation:ri-fade .3s ease both}
+@keyframes ri-fade{from{opacity:0}to{opacity:1}}
+/* Background plate (9:16). On phones it covers the screen centred; when the screen is wider than 9:16 the
+   plate stays centred at full height and a blurred copy of the same plate fills the sides (never stretched). */
+.ri-bg{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);height:100%;width:max(100cqw,56.25cqh);object-fit:cover;object-position:center center}
+.ri-bg-blur{display:none}
+@container ri (min-aspect-ratio: 10/16){
+  .ri-bg{width:56.25cqh}
+  .ri-bg-blur{display:block;position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;filter:blur(28px) brightness(.55)}
+}
+.ri-stage:after{content:'';position:absolute;inset:0;box-shadow:inset 0 160px 110px -80px #140c18e6,inset 0 -300px 160px -90px #140c18;pointer-events:none}
+.ri-cg{position:absolute;inset:110px 14px 230px;border-radius:14px;overflow:hidden;border:1px solid #b99467;background:#2a1c2f}
+.ri-cg-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#e2c79c;font-size:12px}
+.ri-cg-placeholder small{font-size:10px;color:#a9929f}
+.ri-cg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Dialogue portrait, v2 guide (Red_Ivy_EP01_모바일배경_인물축소_v2): the 1024×1536 canvas is 68.08% of the screen
+   height (74% × 92%), its bottom edge at 87% of the screen, centred. Same box for every character/pose (seated
+   lines use the same upper-body framing, no fake chair placement). The dialogue band covers the hips/thighs.
+   --ri-lift raises it slightly when the panel grows. */
+.ri-portrait{position:absolute;left:50%;bottom:calc(13cqh + var(--ri-lift, 0px));height:68.08cqh;aspect-ratio:2/3;transform:translateX(-50%);z-index:1;pointer-events:none;display:flex;justify-content:center;align-items:flex-end;transition:bottom .25s ease}
+.ri-portrait-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.ri-silhouette{position:relative;width:62%;max-width:250px;height:80%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.ri-silhouette svg{width:100%;height:auto;max-height:100%;fill:var(--ri-tint);opacity:.82;filter:drop-shadow(0 0 18px #0008)}
+.ri-silhouette span{position:absolute;bottom:34%;font:500 22px 'Cormorant Garamond',serif;letter-spacing:4px;color:#fff3df;text-shadow:0 2px 10px #000}
+.ri-silhouette small{position:absolute;bottom:calc(34% - 20px);font-size:10px;color:#f1dfc8cc}
+
+/* chrome */
+.ri-tap{position:absolute;inset:0;z-index:2;cursor:pointer;outline:none}
+.ri-top{position:absolute;top:58px;left:10px;right:10px;z-index:4;display:flex;align-items:center;gap:2px;color:#f7e3bf}
+.ri-top>span{flex:1;font-size:11px;letter-spacing:.5px;text-shadow:0 1px 6px #000;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ri-top .icon-button{width:38px;height:38px;border-radius:50%;background:#20152799;color:#f7e3bf}
+.ri-top .icon-button.is-on{background:#e5c896;color:#30232b}
+.ri-place{padding-left:4px}
+.ri-audience{position:absolute;top:104px;left:16px;z-index:4;display:flex;align-items:center;gap:5px;font-size:10px;color:#f3d9ad;background:#1a1220cc;border:1px solid #8c6f58;padding:4px 9px;border-radius:20px}
+.is-audience .ri-stage:before{content:'';position:absolute;inset:0;z-index:1;background:#0a0f2033;pointer-events:none}
+.ri-bottom{position:absolute;left:12px;right:12px;bottom:calc(var(--mobile-safe-area-height, 0px) + 10px);z-index:3;display:flex;flex-direction:column;gap:8px;max-height:calc(100% - 120px);overflow:auto}
+/* Dialogue band starts at ~28% of the screen (incl. bottom safe area) and grows with longer text / Korean / larger fonts. */
+.ri-bottom>.ri-box:only-child{box-sizing:border-box;min-height:calc(28cqh - var(--mobile-safe-area-height, 0px) - 10px);display:flex;flex-direction:column}
+.ri-bottom>.ri-box .ri-next{margin-top:auto}
+.ri-box{background:rgba(32,22,38,.9);backdrop-filter:blur(12px);border:1px solid #b58f5f;border-radius:14px;padding:12px 16px 10px;cursor:pointer}
+.ri-box.is-narration{border-color:#6f5c72;background:rgba(24,18,30,.88)}
+.ri-box.is-narration .ri-en{font-style:italic;font-size:19px;color:#efe4d6}
+.ri-box.is-me{border-color:#e5c896;background:rgba(62,44,52,.92)}
+.ri-name{font-size:11px;letter-spacing:1.5px;color:#e9c88f;margin-bottom:3px}
+.ri-en{font:500 22px/1.22 'Cormorant Garamond',serif;color:#fff5e4}
+.ri-ko{font-size:12.5px;line-height:1.7;color:#ecdccb;margin-top:6px!important}
+.ri-sound{display:inline-flex;vertical-align:middle;background:transparent;color:#e9c88f!important;padding:2px 6px}
+.ri-next{display:block;text-align:right;font-size:9px;color:#a99aa6;margin-top:4px}
+.ri-endcard{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px;background:#0b070dee;text-align:center;pointer-events:none}
+.ri-endcard p{font:500 25px/1.35 'Cormorant Garamond',serif;color:#f5e2bf}
+.ri-endcard small{font-size:10px;color:#a3929f}
+.ri-beat-hint{position:absolute;bottom:calc(var(--mobile-safe-area-height, 0px) + 24px);left:0;right:0;text-align:center;font-size:10px;color:#c9b6c4;z-index:3;pointer-events:none}
+
+/* phone */
+.ri-phone{position:absolute;top:110px;left:28px;right:28px;z-index:3;background:#f5efe7;color:#2c2230;border-radius:22px;padding:10px 12px 12px;box-shadow:0 10px 30px #0009;border:5px solid #1b1420;max-height:52%;overflow:auto;cursor:pointer}
+.ri-phone-bar{display:flex;align-items:center;gap:5px;font-size:10px;color:#7d6c7a;padding-bottom:6px;border-bottom:1px solid #e1d6cb;margin-bottom:8px}
+.ri-msg{margin:6px 0;padding:8px 10px;border-radius:12px;background:#fff;max-width:88%;box-shadow:0 1px 0 #e3d7c9}
+.ri-msg small{font-size:9px;color:#8a6f80;letter-spacing:.5px}
+.ri-msg p{font:500 16px/1.3 'Cormorant Garamond',serif;color:#2c2230}
+.ri-msg .ri-ko{font:12px/1.6 'Noto Sans KR',sans-serif;color:#5f4c5c;margin-top:3px!important}
+.ri-msg.is-mine{margin-left:auto;background:#5f3c58;color:#fff}.ri-msg.is-mine p,.ri-msg.is-mine small{color:#fff3e2}
+.ri-msg.is-post{max-width:100%;background:#2b1e30}.ri-msg.is-post p{color:#ffe7c4;font-size:15px;letter-spacing:.3px}.ri-msg.is-post small{color:#e0b77e}.ri-msg.is-post .ri-ko{color:#e4d2db}
+.ri-msg-photo{position:relative;height:110px;margin:6px 0;border-radius:8px;background:#3b2b40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#d9bf98;font-size:10px;overflow:hidden}
+.ri-msg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ri-phone .ri-next{color:#8b7b88}
+
+/* choice */
+.ri-choice{background:rgba(36,25,42,.95);backdrop-filter:blur(12px);border:1px solid #d3b07a;border-radius:16px;padding:13px 14px 12px;display:grid;gap:8px}
+.ri-choice-title{display:flex;align-items:center;gap:6px;font-size:11px;color:#efcf98}
+.ri-option{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:12px;border-radius:11px;background:#3e2c45;border:1px solid #7b5f7c!important;font-size:13px!important;line-height:1.55;color:#fff0dc!important}
+.ri-option>span{flex-shrink:0;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:#e5c896;color:#30232b;font-size:11px;font-weight:600}
+.ri-picked{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#3e2c45}
+.ri-picked>span{flex-shrink:0;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#e5c896;color:#30232b;font-size:10px;font-weight:600}
+.ri-picked p{flex:1;font-size:12px;line-height:1.5}
+.ri-picked .text-button{width:auto;min-height:28px;margin:0;padding:0 4px;color:#e7c591!important}
+.ri-mic-row{display:flex;align-items:center;gap:14px;padding:4px 2px}
+.ri-mic{width:62px!important;height:62px!important;flex-shrink:0}
+.ri-mic-row strong{display:block;font-size:13px;font-weight:500;color:#ffeccb}
+.ri-mic-row small{display:flex;align-items:center;gap:4px;font-size:10px;color:#bba9b9;margin-top:2px}
+.ri-input textarea{width:100%;border:1px solid #8a6d84;background:#fbf6ef;color:#2f2433;border-radius:10px;padding:10px;font:14px/1.5 'Noto Sans KR',sans-serif;resize:none}
+.ri-notice{font-size:11px;color:#f6deb4;line-height:1.6}
+.ri-hint{display:flex;gap:6px;font-size:12px;line-height:1.6;color:#f5e4c8;background:#2b1f31;border:1px dashed #8d7458;border-radius:10px;padding:8px 10px}
+.ri-hint>svg{flex-shrink:0;margin-top:3px;color:#e8c58e}.ri-hint b{font-weight:500;color:#e8c58e;margin-right:4px}.ri-hint small{display:block;font-size:10px;color:#b9a6b5}
+.ri-hint-btn{min-height:30px!important;margin:0!important;color:#d9bf98!important}
+.ri-checking{flex:1;font-size:12px;color:#f3dcb3}
+.ri-row{display:flex;gap:8px;align-items:center}.ri-row>.text-button{width:auto;flex:1;margin:0}.ri-row>.gold-button{flex:1.4;min-height:44px;font-size:13px!important}
+.ri-alert{border-color:#e7b27c}
+.ri-alert-title{font-size:14px;line-height:1.6;color:#fff0d6}
+.ri-alert small{font-size:11px;color:#cdb9c8;line-height:1.6}
+.ri-alert blockquote{margin:0;padding:8px 10px;border-left:2px solid #b58f5f;background:#2d2033;font:500 17px/1.3 'Cormorant Garamond',serif;color:#fff3e2;overflow-wrap:anywhere}
+
+/* intro */
+.ri-intro-card{position:absolute;left:0;right:0;bottom:0;z-index:3;max-height:78%;overflow:auto;padding:22px 22px 30px;background:#261b2ef5;border-top:1px solid #b79566;border-radius:24px 24px 0 0;display:grid;gap:10px}
+.ri-intro-card h1{font:500 32px/1.15 'Cormorant Garamond',serif;color:#fff0d8}
+.ri-intro-copy{font-size:12.5px;line-height:1.85;color:#e5d6e1}
+.ri-intro .ri-top{color:#f6dfb8}.ri-intro .ri-top>span{font:12px 'Cormorant Garamond',serif;letter-spacing:2.5px}
+.ri-invite{font-size:11px;color:#cdb9c8}.ri-invite summary{cursor:pointer;padding:4px 0}
+.ri-invite input{width:100%;border:1px solid #8a6d84;background:#fbf6ef;color:#2f2433;border-radius:8px;padding:10px;margin:6px 0;font-size:13px}
+.ri-invite small{display:block;font-size:10px;color:#a996a6}
+.ri-privacy{font-size:10px!important;line-height:1.75;color:#a996a6}
+.ri-confirm{background:#3a2a40;border-radius:12px;padding:12px;display:grid;gap:8px}.ri-confirm p{font-size:12px;line-height:1.6}
+.ri-confirm>div{display:flex;gap:8px}.ri-confirm .text-button{flex:1;margin:0}.ri-confirm .gold-button{flex:1.4;min-height:42px}
+.ri-error{background:#4a2a33;border:1px solid #c27b7b;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.7;color:#ffe9e2;display:grid;gap:6px}
+.ri-error.ri-floating{position:absolute;top:110px;left:16px;right:16px;z-index:5}
+
+/* feedback */
+.ri-fb{padding:212px 18px 50px;display:grid;gap:14px}
+.ri-status{display:flex;align-items:center;gap:6px;font-size:12px;color:#f0d6a8}
+.ri-fb-item{background:#2c2033;border:1px solid #5d4466;border-radius:14px;padding:14px}
+.ri-fb-item dl{margin:8px 0 0;display:grid;grid-template-columns:70px 1fr;gap:7px 10px;font-size:12px;line-height:1.65}
+.ri-fb-item dt{color:#d6b885;font-size:11px}.ri-fb-item dd{margin:0;color:#f1e3d7;overflow-wrap:anywhere}
+.ri-fb-item dd small{display:block;color:#b6a3b5;font-size:11px}
+.ri-said{font:500 17px/1.3 'Cormorant Garamond',serif!important;color:#fff3df!important}.ri-said small{font-family:'Noto Sans KR',sans-serif}
+.ri-alt{margin-top:12px;padding-top:12px;border-top:1px solid #4d3a55}
+.ri-alt>small{display:block;font-size:10px;color:#c9b2c4;line-height:1.6}
+.ri-alt h3{font:500 21px/1.2 'Cormorant Garamond',serif;color:#fff1da;margin:3px 0!important}
+.ri-alt p{font-size:12.5px;color:#eadbd0}
+.ri-alt .gold-button{margin-top:9px;min-height:40px;font-size:13px!important}
+.ri-save-fb{margin-top:10px!important}
+.ri-fb-actions{display:grid;gap:2px;margin-top:6px}
+.ri-notes .ri-note{padding:12px 0;border-bottom:1px solid #e3d8cd}
+.ri-note>div{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ri-note h3{font:500 21px/1.2 'Cormorant Garamond',serif;color:#3e2f43}
+.ri-note p{font-size:13px;color:#56465a}.ri-note small{font-size:11px;color:#8b7a86}
+.ri-notes .ri-sound{color:#8b6c49!important}
+.ri-history{color:#3a2d40}
+.ri-choice p,.ri-confirm p,.ri-error p{color:#fff0dc}
+
+.ri-privacy summary{cursor:pointer;color:#a996a6;font-size:10px}
+.ri-privacy p{margin:6px 0 0;font-size:10px;line-height:1.75;color:#a996a6}
+
+@media (prefers-reduced-motion: reduce){
+  .ri-layer.is-top{animation:none}
+  .ri-portrait,.ri-art{transition:none}
+}

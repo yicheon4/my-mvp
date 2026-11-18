@@ -5,7 +5,7 @@ let handle;
 export default async function handler(req, res) {
   res.setHeader('cache-control', 'no-store');
   if (req.method !== 'POST') { res.status(405).json({ ok: false, error: 'method' }); return; }
-  handle ??= createSophieHandler({ env: { ...process.env, hosted: true }, prompts: PROMPTS, log: (...a) => console.log('[ai]', ...a) });
+  handle ??= createSophieHandler({ env: { ...process.env, hosted: true }, prompts: PROMPTS, redIvy: RED_IVY, log: (...a) => console.log('[ai]', ...a) });
   let body = req.body; if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
   const out = await handle({ body, headers: req.headers });
   res.status(out.status).json(out.json);

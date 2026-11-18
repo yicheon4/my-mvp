@@ -7,352 +7,272 @@
   ],
   "npcs": {
     "sophie": {
-      "src": "assets/npcs/sophie.png",
+      "src": "assets/npcs-v2/sophie.png",
       "imageSize": [
-        1254,
-        1254
+        1024,
+        1600
       ],
-      "referenceHeight": 241,
+      "referenceHeight": 280,
       "frames": [
         {
           "rect": [
-            142,
-            16,
-            141,
-            241
-          ],
-          "anchor": [
-            70,
-            240
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            0
-          ]
-        },
-        {
-          "rect": [
-            428,
-            16,
-            142,
-            239
-          ],
-          "anchor": [
-            71,
-            238
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            1
-          ]
-        },
-        {
-          "rect": [
-            716,
-            16,
-            141,
-            241
+            256,
+            320
           ],
           "anchor": [
-            70,
-            240
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1003,
-            16,
-            141,
-            239
-          ],
-          "anchor": [
-            70,
-            238
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            3
-          ]
-        },
-        {
-          "rect": [
-            139,
-            272,
-            140,
-            225
-          ],
-          "anchor": [
-            70,
-            224
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            0
-          ]
-        },
-        {
-          "rect": [
-            437,
-            272,
-            130,
-            225
-          ],
-          "anchor": [
-            65,
-            224
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            1
-          ]
-        },
-        {
-          "rect": [
-            709,
-            272,
-            141,
-            225
-          ],
-          "anchor": [
-            70,
-            224
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1008,
-            271,
-            130,
-            226
-          ],
-          "anchor": [
-            65,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            3
-          ]
-        },
-        {
-          "rect": [
-            142,
-            509,
-            145,
-            226
-          ],
-          "anchor": [
-            72,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            0
-          ]
-        },
-        {
-          "rect": [
-            431,
-            509,
             128,
-            226
+            304
           ],
-          "anchor": [
-            64,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            717,
-            509,
-            146,
-            226
+            256,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            73,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1005,
-            509,
-            129,
-            226
-          ],
-          "anchor": [
-            64,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            3
-          ]
-        },
-        {
-          "rect": [
-            140,
-            749,
-            133,
-            232
-          ],
-          "anchor": [
-            66,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            0
-          ]
-        },
-        {
-          "rect": [
-            427,
-            749,
-            133,
-            230
-          ],
-          "anchor": [
-            66,
-            229
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            1
-          ]
-        },
-        {
-          "rect": [
-            714,
-            750,
-            133,
-            231
-          ],
-          "anchor": [
-            66,
-            230
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1002,
-            749,
-            132,
-            230
-          ],
-          "anchor": [
-            66,
-            229
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            3
-          ]
-        },
-        {
-          "rect": [
             128,
-            997,
-            142,
-            243
+            304
           ],
-          "anchor": [
-            71,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            418,
-            997,
-            142,
-            243
+            512,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            71,
-            242
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            708,
-            996,
-            142,
-            244
+            768,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            71,
-            243
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            998,
-            997,
-            143,
-            243
+            0,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            72,
-            242
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            3
-          ]
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         }
       ],
       "clips": {
@@ -401,370 +321,289 @@
             16,
             17,
             18,
-            19,
+            17,
             18,
             19,
-            17,
-            16
+            0
           ],
-          "fps": 8,
+          "fps": 7,
           "loop": false
         }
       },
       "idleByDirection": {
-        "down": 1,
-        "left": 5,
-        "right": 9,
-        "up": 13
+        "down": 0,
+        "left": 4,
+        "right": 8,
+        "up": 12
       }
     },
     "chloe": {
-      "src": "assets/npcs/chloe.png",
+      "src": "assets/npcs-v2/chloe.png",
       "imageSize": [
-        1254,
-        1254
+        1024,
+        1600
       ],
-      "referenceHeight": 244,
+      "referenceHeight": 280,
       "frames": [
         {
           "rect": [
-            142,
-            14,
-            122,
-            244
-          ],
-          "anchor": [
-            61,
-            243
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            0
-          ]
-        },
-        {
-          "rect": [
-            423,
-            14,
-            122,
-            243
-          ],
-          "anchor": [
-            61,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            1
-          ]
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            707,
-            14,
-            122,
-            244
-          ],
-          "anchor": [
-            61,
-            243
-          ],
-          "anchorKind": "feet",
-          "cell": [
+            256,
             0,
-            2
-          ]
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            989,
-            14,
-            122,
-            243
-          ],
-          "anchor": [
-            61,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
+            512,
             0,
-            3
-          ]
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            124,
-            266,
-            140,
-            231
+            768,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            70,
-            230
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            421,
-            266,
-            125,
-            232
+            0,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            62,
-            231
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            694,
-            266,
-            140,
-            231
+            256,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            70,
-            230
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            992,
-            266,
-            123,
-            232
+            512,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            62,
-            231
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            3
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            133,
-            505,
-            147,
-            231
+            768,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            74,
-            230
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            422,
-            505,
-            121,
-            232
+            0,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            60,
-            231
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            704,
-            504,
-            146,
-            232
+            256,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            73,
-            231
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            992,
-            505,
-            121,
-            232
+            512,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            60,
-            231
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            3
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            139,
-            742,
-            119,
-            239
+            768,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            60,
-            238
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            427,
-            742,
-            119,
-            236
+            0,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            60,
-            235
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            709,
-            742,
-            120,
-            239
+            256,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            60,
-            238
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            998,
-            742,
-            120,
-            236
+            512,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            60,
-            235
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            3
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            134,
-            989,
-            122,
-            252
+            768,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            61,
-            251
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            421,
-            989,
-            123,
-            252
+            0,
+            1280,
+            256,
+            320
           ],
           "anchor": [
-            62,
-            251
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            702,
-            989,
-            123,
-            252
+            256,
+            1280,
+            256,
+            320
           ],
           "anchor": [
-            62,
-            251
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            989,
-            989,
-            125,
-            252
+            512,
+            1280,
+            256,
+            320
           ],
           "anchor": [
-            62,
-            251
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            3
-          ]
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         }
       ],
       "clips": {
@@ -813,370 +652,289 @@
             16,
             17,
             18,
-            19,
+            17,
             18,
             19,
-            17,
-            16
+            0
           ],
-          "fps": 8,
+          "fps": 7,
           "loop": false
         }
       },
       "idleByDirection": {
-        "down": 1,
-        "left": 5,
-        "right": 9,
-        "up": 13
+        "down": 0,
+        "left": 4,
+        "right": 8,
+        "up": 12
       }
     },
     "luna": {
-      "src": "assets/npcs/luna.png",
+      "src": "assets/npcs-v2/luna.png",
       "imageSize": [
-        1254,
-        1254
+        1024,
+        1600
       ],
-      "referenceHeight": 245,
+      "referenceHeight": 280,
       "frames": [
         {
           "rect": [
-            119,
-            3,
-            127,
-            245
-          ],
-          "anchor": [
-            64,
-            244
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            0
-          ]
-        },
-        {
-          "rect": [
-            419,
-            3,
-            127,
-            243
-          ],
-          "anchor": [
-            64,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            1
-          ]
-        },
-        {
-          "rect": [
-            717,
-            3,
-            129,
-            245
+            256,
+            320
           ],
           "anchor": [
-            64,
-            244
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1017,
-            3,
-            126,
-            243
-          ],
-          "anchor": [
-            63,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            3
-          ]
-        },
-        {
-          "rect": [
-            103,
-            252,
-            158,
-            233
-          ],
-          "anchor": [
-            79,
-            232
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            0
-          ]
-        },
-        {
-          "rect": [
-            419,
-            252,
-            143,
-            232
-          ],
-          "anchor": [
-            72,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            1
-          ]
-        },
-        {
-          "rect": [
-            711,
-            252,
-            153,
-            233
-          ],
-          "anchor": [
-            76,
-            232
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1022,
-            252,
-            143,
-            233
-          ],
-          "anchor": [
-            72,
-            232
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            3
-          ]
-        },
-        {
-          "rect": [
-            96,
-            495,
-            158,
-            235
-          ],
-          "anchor": [
-            79,
-            234
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            0
-          ]
-        },
-        {
-          "rect": [
-            398,
-            495,
-            143,
-            234
-          ],
-          "anchor": [
-            72,
-            233
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            1
-          ]
-        },
-        {
-          "rect": [
-            700,
-            497,
-            156,
-            233
-          ],
-          "anchor": [
-            78,
-            232
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1005,
-            495,
-            139,
-            234
-          ],
-          "anchor": [
-            70,
-            233
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            3
-          ]
-        },
-        {
-          "rect": [
-            119,
-            738,
-            113,
-            230
-          ],
-          "anchor": [
-            56,
-            229
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            0
-          ]
-        },
-        {
-          "rect": [
-            418,
-            738,
-            112,
-            229
-          ],
-          "anchor": [
-            56,
-            228
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            1
-          ]
-        },
-        {
-          "rect": [
-            719,
-            738,
-            111,
-            230
-          ],
-          "anchor": [
-            56,
-            229
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1024,
-            738,
-            111,
-            229
-          ],
-          "anchor": [
-            56,
-            228
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            3
-          ]
-        },
-        {
-          "rect": [
-            109,
-            979,
             128,
-            264
+            304
           ],
-          "anchor": [
-            64,
-            263
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            411,
-            977,
-            127,
-            266
+            256,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            64,
-            265
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            712,
-            978,
-            126,
-            265
+            512,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            63,
-            264
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            1014,
-            978,
-            127,
-            265
+            768,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            64,
-            264
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            3
-          ]
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         }
       ],
       "clips": {
@@ -1225,370 +983,289 @@
             16,
             17,
             18,
-            19,
+            17,
             18,
             19,
-            17,
-            16
+            0
           ],
-          "fps": 8,
+          "fps": 7,
           "loop": false
         }
       },
       "idleByDirection": {
-        "down": 1,
-        "left": 5,
-        "right": 9,
-        "up": 13
+        "down": 0,
+        "left": 4,
+        "right": 8,
+        "up": 12
       }
     },
     "ethan": {
-      "src": "assets/npcs/ethan.png",
+      "src": "assets/npcs-v2/ethan.png",
       "imageSize": [
-        1254,
-        1254
+        1024,
+        1600
       ],
-      "referenceHeight": 245,
+      "referenceHeight": 280,
       "frames": [
         {
           "rect": [
-            139,
-            11,
+            0,
+            0,
+            256,
+            320
+          ],
+          "anchor": [
             128,
-            245
+            304
           ],
-          "anchor": [
-            64,
-            244
-          ],
-          "anchorKind": "feet",
-          "cell": [
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
             0,
-            0
-          ]
-        },
-        {
-          "rect": [
-            426,
-            11,
-            127,
-            243
+            256,
+            320
           ],
           "anchor": [
-            64,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            1
-          ]
-        },
-        {
-          "rect": [
-            714,
-            11,
-            127,
-            245
-          ],
-          "anchor": [
-            64,
-            244
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1001,
-            11,
-            127,
-            243
-          ],
-          "anchor": [
-            64,
-            242
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            3
-          ]
-        },
-        {
-          "rect": [
-            132,
-            269,
-            134,
-            229
-          ],
-          "anchor": [
-            67,
-            228
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            0
-          ]
-        },
-        {
-          "rect": [
-            430,
-            269,
-            119,
-            229
-          ],
-          "anchor": [
-            60,
-            228
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            1
-          ]
-        },
-        {
-          "rect": [
-            708,
-            269,
-            132,
-            228
-          ],
-          "anchor": [
-            66,
-            227
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1005,
-            269,
-            119,
-            228
-          ],
-          "anchor": [
-            60,
-            227
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            3
-          ]
-        },
-        {
-          "rect": [
-            141,
-            510,
-            138,
-            228
-          ],
-          "anchor": [
-            69,
-            227
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            0
-          ]
-        },
-        {
-          "rect": [
-            429,
-            510,
-            116,
-            228
-          ],
-          "anchor": [
-            58,
-            227
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            1
-          ]
-        },
-        {
-          "rect": [
-            716,
-            511,
-            137,
-            227
-          ],
-          "anchor": [
-            68,
-            226
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1004,
-            510,
-            116,
-            227
-          ],
-          "anchor": [
-            58,
-            226
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            3
-          ]
-        },
-        {
-          "rect": [
-            148,
-            751,
-            112,
-            228
-          ],
-          "anchor": [
-            56,
-            227
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            0
-          ]
-        },
-        {
-          "rect": [
-            436,
-            750,
-            111,
-            226
-          ],
-          "anchor": [
-            56,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            1
-          ]
-        },
-        {
-          "rect": [
-            724,
-            750,
-            111,
-            229
-          ],
-          "anchor": [
-            56,
-            228
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1011,
-            750,
-            111,
-            226
-          ],
-          "anchor": [
-            56,
-            225
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            3
-          ]
-        },
-        {
-          "rect": [
-            134,
-            993,
-            125,
-            246
-          ],
-          "anchor": [
-            62,
-            245
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            0
-          ]
-        },
-        {
-          "rect": [
-            422,
-            993,
-            125,
-            246
-          ],
-          "anchor": [
-            62,
-            245
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            1
-          ]
-        },
-        {
-          "rect": [
-            710,
-            993,
-            124,
-            246
-          ],
-          "anchor": [
-            62,
-            245
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            2
-          ]
-        },
-        {
-          "rect": [
-            994,
-            993,
             128,
-            246
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            64,
-            245
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            3
-          ]
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            0,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         }
       ],
       "clips": {
@@ -1637,370 +1314,289 @@
             16,
             17,
             18,
-            19,
+            17,
             18,
             19,
-            17,
-            16
+            0
           ],
-          "fps": 8,
+          "fps": 7,
           "loop": false
         }
       },
       "idleByDirection": {
-        "down": 1,
-        "left": 5,
-        "right": 9,
-        "up": 13
+        "down": 0,
+        "left": 4,
+        "right": 8,
+        "up": 12
       }
     },
     "julian": {
-      "src": "assets/npcs/julian.png",
+      "src": "assets/npcs-v2/julian.png",
       "imageSize": [
-        1254,
-        1254
+        1024,
+        1600
       ],
-      "referenceHeight": 246,
+      "referenceHeight": 280,
       "frames": [
         {
           "rect": [
-            146,
-            12,
-            113,
-            246
+            0,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            56,
-            245
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            0
-          ]
-        },
-        {
-          "rect": [
-            433,
-            12,
-            112,
-            241
-          ],
-          "anchor": [
-            56,
-            240
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            1
-          ]
-        },
-        {
-          "rect": [
-            717,
-            12,
-            113,
-            244
-          ],
-          "anchor": [
-            56,
-            243
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1000,
-            11,
-            114,
-            240
-          ],
-          "anchor": [
-            57,
-            239
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            3
-          ]
-        },
-        {
-          "rect": [
             128,
-            267,
-            137,
-            231
+            304
           ],
-          "anchor": [
-            68,
-            230
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            425,
-            267,
-            115,
-            230
+            256,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            58,
-            229
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            704,
-            268,
-            130,
-            229
+            512,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            65,
-            228
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            1000,
-            267,
-            114,
-            230
+            768,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            57,
-            229
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            3
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            135,
-            508,
-            137,
-            230
+            0,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            68,
-            229
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            429,
-            508,
-            114,
-            230
+            256,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            57,
-            229
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            711,
-            508,
-            136,
-            230
+            512,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            68,
-            229
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            1003,
-            508,
-            114,
-            230
+            768,
+            320,
+            256,
+            320
           ],
           "anchor": [
-            57,
-            229
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            3
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            148,
-            748,
-            101,
-            231
+            0,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            50,
-            230
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            434,
-            748,
-            100,
-            226
+            256,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            50,
-            225
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            720,
-            748,
-            101,
-            231
+            512,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            50,
-            230
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            1009,
-            748,
-            100,
-            227
+            768,
+            640,
+            256,
+            320
           ],
           "anchor": [
-            50,
-            226
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            3
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            141,
-            987,
-            114,
-            253
+            0,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            57,
-            252
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            0
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            428,
-            987,
-            115,
-            253
+            256,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            58,
-            252
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            1
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            710,
-            987,
-            117,
-            252
+            512,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            58,
-            251
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            2
-          ]
+          "anchorKind": "feet"
         },
         {
           "rect": [
-            993,
-            987,
-            124,
-            253
+            768,
+            960,
+            256,
+            320
           ],
           "anchor": [
-            62,
-            252
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            3
-          ]
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         }
       ],
       "clips": {
@@ -2049,370 +1645,289 @@
             16,
             17,
             18,
-            19,
+            17,
             18,
             19,
-            17,
-            16
+            0
           ],
-          "fps": 8,
+          "fps": 7,
           "loop": false
         }
       },
       "idleByDirection": {
-        "down": 1,
-        "left": 5,
-        "right": 9,
-        "up": 13
+        "down": 0,
+        "left": 4,
+        "right": 8,
+        "up": 12
       }
     },
     "oliver": {
-      "src": "assets/npcs/oliver.png",
+      "src": "assets/npcs-v2/oliver.png",
       "imageSize": [
-        1254,
-        1254
+        1024,
+        1600
       ],
-      "referenceHeight": 242,
+      "referenceHeight": 280,
       "frames": [
         {
           "rect": [
-            140,
-            9,
-            123,
-            242
-          ],
-          "anchor": [
-            62,
-            241
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            0
-          ]
-        },
-        {
-          "rect": [
-            427,
-            9,
-            122,
-            242
-          ],
-          "anchor": [
-            61,
-            241
-          ],
-          "anchorKind": "feet",
-          "cell": [
             0,
-            1
-          ]
-        },
-        {
-          "rect": [
-            711,
-            9,
-            122,
-            242
+            256,
+            320
           ],
           "anchor": [
-            61,
-            241
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            2
-          ]
-        },
-        {
-          "rect": [
-            992,
-            9,
-            122,
-            242
-          ],
-          "anchor": [
-            61,
-            241
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            0,
-            3
-          ]
-        },
-        {
-          "rect": [
-            129,
-            261,
-            132,
-            232
-          ],
-          "anchor": [
-            66,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            0
-          ]
-        },
-        {
-          "rect": [
-            422,
-            261,
-            122,
-            232
-          ],
-          "anchor": [
-            61,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            1
-          ]
-        },
-        {
-          "rect": [
-            704,
-            261,
-            132,
-            232
-          ],
-          "anchor": [
-            66,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            2
-          ]
-        },
-        {
-          "rect": [
-            997,
-            261,
-            123,
-            232
-          ],
-          "anchor": [
-            62,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            1,
-            3
-          ]
-        },
-        {
-          "rect": [
-            135,
-            502,
-            135,
-            232
-          ],
-          "anchor": [
-            68,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            0
-          ]
-        },
-        {
-          "rect": [
-            423,
-            502,
-            122,
-            232
-          ],
-          "anchor": [
-            61,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            1
-          ]
-        },
-        {
-          "rect": [
-            710,
-            503,
-            135,
-            231
-          ],
-          "anchor": [
-            68,
-            230
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            2
-          ]
-        },
-        {
-          "rect": [
-            997,
-            502,
-            122,
-            232
-          ],
-          "anchor": [
-            61,
-            231
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            2,
-            3
-          ]
-        },
-        {
-          "rect": [
-            137,
-            743,
-            117,
-            231
-          ],
-          "anchor": [
-            58,
-            230
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            0
-          ]
-        },
-        {
-          "rect": [
-            425,
-            743,
-            118,
-            228
-          ],
-          "anchor": [
-            59,
-            227
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            1
-          ]
-        },
-        {
-          "rect": [
-            711,
-            743,
-            117,
-            231
-          ],
-          "anchor": [
-            58,
-            230
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            2
-          ]
-        },
-        {
-          "rect": [
-            1001,
-            744,
-            116,
-            227
-          ],
-          "anchor": [
-            58,
-            226
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            3,
-            3
-          ]
-        },
-        {
-          "rect": [
-            134,
-            984,
-            122,
-            256
-          ],
-          "anchor": [
-            61,
-            255
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            0
-          ]
-        },
-        {
-          "rect": [
-            419,
-            984,
-            121,
-            256
-          ],
-          "anchor": [
-            60,
-            255
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            1
-          ]
-        },
-        {
-          "rect": [
-            704,
-            985,
-            121,
-            255
-          ],
-          "anchor": [
-            60,
-            254
-          ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            2
-          ]
-        },
-        {
-          "rect": [
-            984,
-            985,
             128,
-            255
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            0,
+            256,
+            320
           ],
           "anchor": [
-            64,
-            254
+            128,
+            304
           ],
-          "anchorKind": "feet",
-          "cell": [
-            4,
-            3
-          ]
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            0,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            0,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            320,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            640,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            960,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            0,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            256,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            512,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
+        },
+        {
+          "rect": [
+            768,
+            1280,
+            256,
+            320
+          ],
+          "anchor": [
+            128,
+            304
+          ],
+          "anchorKind": "feet"
         }
       ],
       "clips": {
@@ -2461,21 +1976,20 @@
             16,
             17,
             18,
-            19,
+            17,
             18,
             19,
-            17,
-            16
+            0
           ],
-          "fps": 8,
+          "fps": 7,
           "loop": false
         }
       },
       "idleByDirection": {
-        "down": 1,
-        "left": 5,
-        "right": 9,
-        "up": 13
+        "down": 0,
+        "left": 4,
+        "right": 8,
+        "up": 12
       }
     }
   },
@@ -7651,5 +7165,2480 @@
       }
     }
   },
-  "status": "integration-assets-not-deployed"
+  "status": "integration-assets-not-deployed",
+  "npcsFallback": {
+    "chloe": {
+      "src": "assets/npcs/chloe.png",
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "referenceHeight": 244,
+      "frames": [
+        {
+          "rect": [
+            142,
+            14,
+            122,
+            244
+          ],
+          "anchor": [
+            61,
+            243
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            423,
+            14,
+            122,
+            243
+          ],
+          "anchor": [
+            61,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            707,
+            14,
+            122,
+            244
+          ],
+          "anchor": [
+            61,
+            243
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            989,
+            14,
+            122,
+            243
+          ],
+          "anchor": [
+            61,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            3
+          ]
+        },
+        {
+          "rect": [
+            124,
+            266,
+            140,
+            231
+          ],
+          "anchor": [
+            70,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            421,
+            266,
+            125,
+            232
+          ],
+          "anchor": [
+            62,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            694,
+            266,
+            140,
+            231
+          ],
+          "anchor": [
+            70,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            992,
+            266,
+            123,
+            232
+          ],
+          "anchor": [
+            62,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            3
+          ]
+        },
+        {
+          "rect": [
+            133,
+            505,
+            147,
+            231
+          ],
+          "anchor": [
+            74,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            422,
+            505,
+            121,
+            232
+          ],
+          "anchor": [
+            60,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            704,
+            504,
+            146,
+            232
+          ],
+          "anchor": [
+            73,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            992,
+            505,
+            121,
+            232
+          ],
+          "anchor": [
+            60,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            3
+          ]
+        },
+        {
+          "rect": [
+            139,
+            742,
+            119,
+            239
+          ],
+          "anchor": [
+            60,
+            238
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            427,
+            742,
+            119,
+            236
+          ],
+          "anchor": [
+            60,
+            235
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            709,
+            742,
+            120,
+            239
+          ],
+          "anchor": [
+            60,
+            238
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            998,
+            742,
+            120,
+            236
+          ],
+          "anchor": [
+            60,
+            235
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            3
+          ]
+        },
+        {
+          "rect": [
+            134,
+            989,
+            122,
+            252
+          ],
+          "anchor": [
+            61,
+            251
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            0
+          ]
+        },
+        {
+          "rect": [
+            421,
+            989,
+            123,
+            252
+          ],
+          "anchor": [
+            62,
+            251
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            1
+          ]
+        },
+        {
+          "rect": [
+            702,
+            989,
+            123,
+            252
+          ],
+          "anchor": [
+            62,
+            251
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            2
+          ]
+        },
+        {
+          "rect": [
+            989,
+            989,
+            125,
+            252
+          ],
+          "anchor": [
+            62,
+            251
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            3
+          ]
+        }
+      ],
+      "clips": {
+        "walk_down": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "wave": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            19,
+            17,
+            16
+          ],
+          "fps": 8,
+          "loop": false
+        }
+      },
+      "idleByDirection": {
+        "down": 1,
+        "left": 5,
+        "right": 9,
+        "up": 13
+      }
+    },
+    "sophie": {
+      "src": "assets/npcs/sophie.png",
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "referenceHeight": 241,
+      "frames": [
+        {
+          "rect": [
+            142,
+            16,
+            141,
+            241
+          ],
+          "anchor": [
+            70,
+            240
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            428,
+            16,
+            142,
+            239
+          ],
+          "anchor": [
+            71,
+            238
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            716,
+            16,
+            141,
+            241
+          ],
+          "anchor": [
+            70,
+            240
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1003,
+            16,
+            141,
+            239
+          ],
+          "anchor": [
+            70,
+            238
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            3
+          ]
+        },
+        {
+          "rect": [
+            139,
+            272,
+            140,
+            225
+          ],
+          "anchor": [
+            70,
+            224
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            437,
+            272,
+            130,
+            225
+          ],
+          "anchor": [
+            65,
+            224
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            709,
+            272,
+            141,
+            225
+          ],
+          "anchor": [
+            70,
+            224
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1008,
+            271,
+            130,
+            226
+          ],
+          "anchor": [
+            65,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            3
+          ]
+        },
+        {
+          "rect": [
+            142,
+            509,
+            145,
+            226
+          ],
+          "anchor": [
+            72,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            431,
+            509,
+            128,
+            226
+          ],
+          "anchor": [
+            64,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            717,
+            509,
+            146,
+            226
+          ],
+          "anchor": [
+            73,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1005,
+            509,
+            129,
+            226
+          ],
+          "anchor": [
+            64,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            3
+          ]
+        },
+        {
+          "rect": [
+            140,
+            749,
+            133,
+            232
+          ],
+          "anchor": [
+            66,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            427,
+            749,
+            133,
+            230
+          ],
+          "anchor": [
+            66,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            714,
+            750,
+            133,
+            231
+          ],
+          "anchor": [
+            66,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1002,
+            749,
+            132,
+            230
+          ],
+          "anchor": [
+            66,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            3
+          ]
+        },
+        {
+          "rect": [
+            128,
+            997,
+            142,
+            243
+          ],
+          "anchor": [
+            71,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            0
+          ]
+        },
+        {
+          "rect": [
+            418,
+            997,
+            142,
+            243
+          ],
+          "anchor": [
+            71,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            1
+          ]
+        },
+        {
+          "rect": [
+            708,
+            996,
+            142,
+            244
+          ],
+          "anchor": [
+            71,
+            243
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            2
+          ]
+        },
+        {
+          "rect": [
+            998,
+            997,
+            143,
+            243
+          ],
+          "anchor": [
+            72,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            3
+          ]
+        }
+      ],
+      "clips": {
+        "walk_down": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "wave": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            19,
+            17,
+            16
+          ],
+          "fps": 8,
+          "loop": false
+        }
+      },
+      "idleByDirection": {
+        "down": 1,
+        "left": 5,
+        "right": 9,
+        "up": 13
+      }
+    },
+    "ethan": {
+      "src": "assets/npcs/ethan.png",
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "referenceHeight": 245,
+      "frames": [
+        {
+          "rect": [
+            139,
+            11,
+            128,
+            245
+          ],
+          "anchor": [
+            64,
+            244
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            426,
+            11,
+            127,
+            243
+          ],
+          "anchor": [
+            64,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            714,
+            11,
+            127,
+            245
+          ],
+          "anchor": [
+            64,
+            244
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1001,
+            11,
+            127,
+            243
+          ],
+          "anchor": [
+            64,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            3
+          ]
+        },
+        {
+          "rect": [
+            132,
+            269,
+            134,
+            229
+          ],
+          "anchor": [
+            67,
+            228
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            430,
+            269,
+            119,
+            229
+          ],
+          "anchor": [
+            60,
+            228
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            708,
+            269,
+            132,
+            228
+          ],
+          "anchor": [
+            66,
+            227
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1005,
+            269,
+            119,
+            228
+          ],
+          "anchor": [
+            60,
+            227
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            3
+          ]
+        },
+        {
+          "rect": [
+            141,
+            510,
+            138,
+            228
+          ],
+          "anchor": [
+            69,
+            227
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            429,
+            510,
+            116,
+            228
+          ],
+          "anchor": [
+            58,
+            227
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            716,
+            511,
+            137,
+            227
+          ],
+          "anchor": [
+            68,
+            226
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1004,
+            510,
+            116,
+            227
+          ],
+          "anchor": [
+            58,
+            226
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            3
+          ]
+        },
+        {
+          "rect": [
+            148,
+            751,
+            112,
+            228
+          ],
+          "anchor": [
+            56,
+            227
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            436,
+            750,
+            111,
+            226
+          ],
+          "anchor": [
+            56,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            724,
+            750,
+            111,
+            229
+          ],
+          "anchor": [
+            56,
+            228
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1011,
+            750,
+            111,
+            226
+          ],
+          "anchor": [
+            56,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            3
+          ]
+        },
+        {
+          "rect": [
+            134,
+            993,
+            125,
+            246
+          ],
+          "anchor": [
+            62,
+            245
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            0
+          ]
+        },
+        {
+          "rect": [
+            422,
+            993,
+            125,
+            246
+          ],
+          "anchor": [
+            62,
+            245
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            1
+          ]
+        },
+        {
+          "rect": [
+            710,
+            993,
+            124,
+            246
+          ],
+          "anchor": [
+            62,
+            245
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            2
+          ]
+        },
+        {
+          "rect": [
+            994,
+            993,
+            128,
+            246
+          ],
+          "anchor": [
+            64,
+            245
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            3
+          ]
+        }
+      ],
+      "clips": {
+        "walk_down": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "wave": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            19,
+            17,
+            16
+          ],
+          "fps": 8,
+          "loop": false
+        }
+      },
+      "idleByDirection": {
+        "down": 1,
+        "left": 5,
+        "right": 9,
+        "up": 13
+      }
+    },
+    "luna": {
+      "src": "assets/npcs/luna.png",
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "referenceHeight": 245,
+      "frames": [
+        {
+          "rect": [
+            119,
+            3,
+            127,
+            245
+          ],
+          "anchor": [
+            64,
+            244
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            419,
+            3,
+            127,
+            243
+          ],
+          "anchor": [
+            64,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            717,
+            3,
+            129,
+            245
+          ],
+          "anchor": [
+            64,
+            244
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1017,
+            3,
+            126,
+            243
+          ],
+          "anchor": [
+            63,
+            242
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            3
+          ]
+        },
+        {
+          "rect": [
+            103,
+            252,
+            158,
+            233
+          ],
+          "anchor": [
+            79,
+            232
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            419,
+            252,
+            143,
+            232
+          ],
+          "anchor": [
+            72,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            711,
+            252,
+            153,
+            233
+          ],
+          "anchor": [
+            76,
+            232
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1022,
+            252,
+            143,
+            233
+          ],
+          "anchor": [
+            72,
+            232
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            3
+          ]
+        },
+        {
+          "rect": [
+            96,
+            495,
+            158,
+            235
+          ],
+          "anchor": [
+            79,
+            234
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            398,
+            495,
+            143,
+            234
+          ],
+          "anchor": [
+            72,
+            233
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            700,
+            497,
+            156,
+            233
+          ],
+          "anchor": [
+            78,
+            232
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1005,
+            495,
+            139,
+            234
+          ],
+          "anchor": [
+            70,
+            233
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            3
+          ]
+        },
+        {
+          "rect": [
+            119,
+            738,
+            113,
+            230
+          ],
+          "anchor": [
+            56,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            418,
+            738,
+            112,
+            229
+          ],
+          "anchor": [
+            56,
+            228
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            719,
+            738,
+            111,
+            230
+          ],
+          "anchor": [
+            56,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1024,
+            738,
+            111,
+            229
+          ],
+          "anchor": [
+            56,
+            228
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            3
+          ]
+        },
+        {
+          "rect": [
+            109,
+            979,
+            128,
+            264
+          ],
+          "anchor": [
+            64,
+            263
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            0
+          ]
+        },
+        {
+          "rect": [
+            411,
+            977,
+            127,
+            266
+          ],
+          "anchor": [
+            64,
+            265
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            1
+          ]
+        },
+        {
+          "rect": [
+            712,
+            978,
+            126,
+            265
+          ],
+          "anchor": [
+            63,
+            264
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1014,
+            978,
+            127,
+            265
+          ],
+          "anchor": [
+            64,
+            264
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            3
+          ]
+        }
+      ],
+      "clips": {
+        "walk_down": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "wave": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            19,
+            17,
+            16
+          ],
+          "fps": 8,
+          "loop": false
+        }
+      },
+      "idleByDirection": {
+        "down": 1,
+        "left": 5,
+        "right": 9,
+        "up": 13
+      }
+    },
+    "julian": {
+      "src": "assets/npcs/julian.png",
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "referenceHeight": 246,
+      "frames": [
+        {
+          "rect": [
+            146,
+            12,
+            113,
+            246
+          ],
+          "anchor": [
+            56,
+            245
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            433,
+            12,
+            112,
+            241
+          ],
+          "anchor": [
+            56,
+            240
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            717,
+            12,
+            113,
+            244
+          ],
+          "anchor": [
+            56,
+            243
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1000,
+            11,
+            114,
+            240
+          ],
+          "anchor": [
+            57,
+            239
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            3
+          ]
+        },
+        {
+          "rect": [
+            128,
+            267,
+            137,
+            231
+          ],
+          "anchor": [
+            68,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            425,
+            267,
+            115,
+            230
+          ],
+          "anchor": [
+            58,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            704,
+            268,
+            130,
+            229
+          ],
+          "anchor": [
+            65,
+            228
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1000,
+            267,
+            114,
+            230
+          ],
+          "anchor": [
+            57,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            3
+          ]
+        },
+        {
+          "rect": [
+            135,
+            508,
+            137,
+            230
+          ],
+          "anchor": [
+            68,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            429,
+            508,
+            114,
+            230
+          ],
+          "anchor": [
+            57,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            711,
+            508,
+            136,
+            230
+          ],
+          "anchor": [
+            68,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1003,
+            508,
+            114,
+            230
+          ],
+          "anchor": [
+            57,
+            229
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            3
+          ]
+        },
+        {
+          "rect": [
+            148,
+            748,
+            101,
+            231
+          ],
+          "anchor": [
+            50,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            434,
+            748,
+            100,
+            226
+          ],
+          "anchor": [
+            50,
+            225
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            720,
+            748,
+            101,
+            231
+          ],
+          "anchor": [
+            50,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1009,
+            748,
+            100,
+            227
+          ],
+          "anchor": [
+            50,
+            226
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            3
+          ]
+        },
+        {
+          "rect": [
+            141,
+            987,
+            114,
+            253
+          ],
+          "anchor": [
+            57,
+            252
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            0
+          ]
+        },
+        {
+          "rect": [
+            428,
+            987,
+            115,
+            253
+          ],
+          "anchor": [
+            58,
+            252
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            1
+          ]
+        },
+        {
+          "rect": [
+            710,
+            987,
+            117,
+            252
+          ],
+          "anchor": [
+            58,
+            251
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            2
+          ]
+        },
+        {
+          "rect": [
+            993,
+            987,
+            124,
+            253
+          ],
+          "anchor": [
+            62,
+            252
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            3
+          ]
+        }
+      ],
+      "clips": {
+        "walk_down": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "wave": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            19,
+            17,
+            16
+          ],
+          "fps": 8,
+          "loop": false
+        }
+      },
+      "idleByDirection": {
+        "down": 1,
+        "left": 5,
+        "right": 9,
+        "up": 13
+      }
+    },
+    "oliver": {
+      "src": "assets/npcs/oliver.png",
+      "imageSize": [
+        1254,
+        1254
+      ],
+      "referenceHeight": 242,
+      "frames": [
+        {
+          "rect": [
+            140,
+            9,
+            123,
+            242
+          ],
+          "anchor": [
+            62,
+            241
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            0
+          ]
+        },
+        {
+          "rect": [
+            427,
+            9,
+            122,
+            242
+          ],
+          "anchor": [
+            61,
+            241
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            1
+          ]
+        },
+        {
+          "rect": [
+            711,
+            9,
+            122,
+            242
+          ],
+          "anchor": [
+            61,
+            241
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            2
+          ]
+        },
+        {
+          "rect": [
+            992,
+            9,
+            122,
+            242
+          ],
+          "anchor": [
+            61,
+            241
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            0,
+            3
+          ]
+        },
+        {
+          "rect": [
+            129,
+            261,
+            132,
+            232
+          ],
+          "anchor": [
+            66,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            0
+          ]
+        },
+        {
+          "rect": [
+            422,
+            261,
+            122,
+            232
+          ],
+          "anchor": [
+            61,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            1
+          ]
+        },
+        {
+          "rect": [
+            704,
+            261,
+            132,
+            232
+          ],
+          "anchor": [
+            66,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            2
+          ]
+        },
+        {
+          "rect": [
+            997,
+            261,
+            123,
+            232
+          ],
+          "anchor": [
+            62,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            1,
+            3
+          ]
+        },
+        {
+          "rect": [
+            135,
+            502,
+            135,
+            232
+          ],
+          "anchor": [
+            68,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            0
+          ]
+        },
+        {
+          "rect": [
+            423,
+            502,
+            122,
+            232
+          ],
+          "anchor": [
+            61,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            1
+          ]
+        },
+        {
+          "rect": [
+            710,
+            503,
+            135,
+            231
+          ],
+          "anchor": [
+            68,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            2
+          ]
+        },
+        {
+          "rect": [
+            997,
+            502,
+            122,
+            232
+          ],
+          "anchor": [
+            61,
+            231
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            2,
+            3
+          ]
+        },
+        {
+          "rect": [
+            137,
+            743,
+            117,
+            231
+          ],
+          "anchor": [
+            58,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            0
+          ]
+        },
+        {
+          "rect": [
+            425,
+            743,
+            118,
+            228
+          ],
+          "anchor": [
+            59,
+            227
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            1
+          ]
+        },
+        {
+          "rect": [
+            711,
+            743,
+            117,
+            231
+          ],
+          "anchor": [
+            58,
+            230
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            2
+          ]
+        },
+        {
+          "rect": [
+            1001,
+            744,
+            116,
+            227
+          ],
+          "anchor": [
+            58,
+            226
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            3,
+            3
+          ]
+        },
+        {
+          "rect": [
+            134,
+            984,
+            122,
+            256
+          ],
+          "anchor": [
+            61,
+            255
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            0
+          ]
+        },
+        {
+          "rect": [
+            419,
+            984,
+            121,
+            256
+          ],
+          "anchor": [
+            60,
+            255
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            1
+          ]
+        },
+        {
+          "rect": [
+            704,
+            985,
+            121,
+            255
+          ],
+          "anchor": [
+            60,
+            254
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            2
+          ]
+        },
+        {
+          "rect": [
+            984,
+            985,
+            128,
+            255
+          ],
+          "anchor": [
+            64,
+            254
+          ],
+          "anchorKind": "feet",
+          "cell": [
+            4,
+            3
+          ]
+        }
+      ],
+      "clips": {
+        "walk_down": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        },
+        "wave": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            19,
+            17,
+            16
+          ],
+          "fps": 8,
+          "loop": false
+        }
+      },
+      "idleByDirection": {
+        "down": 1,
+        "left": 5,
+        "right": 9,
+        "up": 13
+      }
+    }
+  },
+  "npcsSource": "Red_Ivy_NPC6_귀여운비율_v2_2026-11-19"
 }

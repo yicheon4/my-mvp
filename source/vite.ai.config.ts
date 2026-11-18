@@ -6,6 +6,7 @@ import type { Plugin, UserConfig } from "vite";
 import base from "./vite.config";
 import { createSophieHandler } from "./server/sophie-chat-core.mjs";
 import { loadSophiePrompts } from "./server/sophie-prompts.mjs";
+import { loadRedIvy } from "./server/red-ivy-data.mjs";
 
 function sophieChatDev(): Plugin {
   return {
@@ -15,6 +16,7 @@ function sophieChatDev(): Plugin {
       const handle = createSophieHandler({
         env: { GEMINI_API_KEY: env.GEMINI_API_KEY, GEMINI_MODEL: env.GEMINI_MODEL, SOPHIE_INVITE_CODE: env.SOPHIE_INVITE_CODE, SOPHIE_DAILY_LIMIT: env.SOPHIE_DAILY_LIMIT },
         prompts: loadSophiePrompts(new URL("./characters/", import.meta.url)),
+        redIvy: loadRedIvy(new URL("./src/redivy/data/", import.meta.url)),
         log: (...a: unknown[]) => console.log("[ai]", ...a),
       });
       console.log(`[ai] local AI chat: key ${env.GEMINI_API_KEY ? "set" : "MISSING"}, model ${env.GEMINI_MODEL || "MISSING"}`);

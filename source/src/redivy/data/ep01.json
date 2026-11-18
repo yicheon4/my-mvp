@@ -1,0 +1,1118 @@
+{
+ "story_id": "red_ivy_s1",
+ "episode_id": "red_ivy_s1_ep01",
+ "number": 1,
+ "title": "A Perfect Party",
+ "access": "free",
+ "start": "ep01_s1_01",
+ "scenes": [
+  {
+   "index": 1,
+   "place_ko": "환영 파티 / 저녁",
+   "background": "bg_crimson_hall_evening"
+  },
+  {
+   "index": 2,
+   "place_ko": "VIP 라운지",
+   "background": "bg_vip_lounge_night"
+  },
+  {
+   "index": 3,
+   "place_ko": "라운지 바깥 복도",
+   "background": "bg_lounge_corridor_night",
+   "audience_background": "bg_terrace_night"
+  },
+  {
+   "index": 4,
+   "place_ko": "다음 날 / 휴대폰",
+   "background": "bg_campus_morning"
+  }
+ ],
+ "nodes": [
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "St. Jude University. The Crimson Club’s first party of the semester. You’re a new member helping at the welcome desk. Everyone here knows someone. Nobody seems to trust them.",
+   "scene": 1,
+   "directions": [
+    "배경: 크림슨 홀. 표정: 클로이=여유 있는 미소, 올리버=지친 미소, 소피=관찰, 줄리언=장난."
+   ],
+   "id": "ep01_s1_01",
+   "next": "ep01_s1_02",
+   "background": "bg_crimson_hall_evening",
+   "ko": "세인트 주드 대학교. 크림슨 클럽의 이번 학기 첫 파티. 당신은 환영 데스크를 돕는 신입 멤버다. 이곳의 모두가 누군가를 알고 있다. 그런데 아무도 그 사람을 믿는 것 같지 않다."
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "To old friends, new faces, and a year worth remembering.",
+   "scene": 1,
+   "id": "ep01_s1_02",
+   "next": "ep01_s1_03",
+   "background": "bg_crimson_hall_evening",
+   "ko": "오랜 친구들과 새로운 얼굴들, 그리고 기억할 만한 한 해를 위하여.",
+   "portrait": "chloe_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "Ambitious. Most people here are trying to forget the last one.",
+   "scene": 1,
+   "id": "ep01_s1_03",
+   "next": "ep01_s1_04",
+   "background": "bg_crimson_hall_evening",
+   "ko": "야심 차네. 여기 있는 사람들 대부분은 지난 한 해를 잊으려고 애쓰는 중인데.",
+   "portrait": "ethan_standing_dry_amusement"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "And that’s why Ethan doesn’t get a microphone.",
+   "scene": 1,
+   "id": "ep01_s1_04",
+   "next": "ep01_s1_05",
+   "background": "bg_crimson_hall_evening",
+   "ko": "그래서 이든한테는 마이크를 안 주는 거야.",
+   "portrait": "julian_standing_joke"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "Can we finish the toast before we start a fight?",
+   "scene": 1,
+   "id": "ep01_s1_05",
+   "next": "ep01_s1_06",
+   "background": "bg_crimson_hall_evening",
+   "ko": "싸움은 건배부터 끝내고 하면 안 될까?",
+   "portrait": "oliver_standing_public_smile"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Of course, darling. Smile. My father’s office follows the club account.",
+   "scene": 1,
+   "id": "ep01_s1_06",
+   "next": "ep01_s1_07",
+   "background": "bg_crimson_hall_evening",
+   "ko": "물론이지, 자기야. 웃어. 우리 아버지 사무실이 클럽 계정을 팔로우하거든.",
+   "portrait": "chloe_standing_host"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "Does he want a son-in-law or a campaign poster?",
+   "scene": 1,
+   "id": "ep01_s1_07",
+   "next": "ep01_s1_08",
+   "background": "bg_crimson_hall_evening",
+   "ko": "아버님은 사위를 원하시는 거야, 선거 포스터를 원하시는 거야?",
+   "portrait": "oliver_standing_weary"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Tonight? Good lighting.",
+   "scene": 1,
+   "id": "ep01_s1_08",
+   "next": "ep01_s1_09",
+   "background": "bg_crimson_hall_evening",
+   "ko": "오늘 밤엔? 조명 잘 받는 사람.",
+   "portrait": "chloe_standing_guarded"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Oliver, have some water.",
+   "scene": 1,
+   "id": "ep01_s1_09",
+   "next": "ep01_s1_10",
+   "background": "bg_crimson_hall_evening",
+   "ko": "올리버, 물 좀 마셔.",
+   "portrait": "sophie_standing_offer_water"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "I’m fine.",
+   "scene": 1,
+   "id": "ep01_s1_10",
+   "next": "ep01_s1_11",
+   "background": "bg_crimson_hall_evening",
+   "ko": "괜찮아.",
+   "portrait": "oliver_standing_fine"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "You’ve been holding an empty glass for ten minutes.",
+   "scene": 1,
+   "id": "ep01_s1_11",
+   "next": "ep01_s1_12",
+   "background": "bg_crimson_hall_evening",
+   "ko": "빈 잔을 10분째 들고 있잖아.",
+   "portrait": "sophie_standing_attentive"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "She notices everything. It’s comforting until it’s about you.",
+   "scene": 1,
+   "id": "ep01_s1_12",
+   "next": "ep01_s1_13",
+   "background": "bg_crimson_hall_evening",
+   "ko": "소피는 뭐든 다 알아채. 그게 내 얘기가 되기 전까지는 든든하지.",
+   "portrait": "julian_standing_jealous"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "Your cuff is in the dip.",
+   "scene": 1,
+   "id": "ep01_s1_13",
+   "next": "ep01_s1_14",
+   "background": "bg_crimson_hall_evening",
+   "ko": "네 소매, 소스에 빠졌어.",
+   "portrait": "sophie_standing_dry_smile"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "Case in point.",
+   "scene": 1,
+   "id": "ep01_s1_14",
+   "next": "ep01_s1_15",
+   "background": "bg_crimson_hall_evening",
+   "ko": "봐, 내 말이 맞지.",
+   "portrait": "julian_standing_embarrassed"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Our new member. Tell me—are you here for the connections or the company?",
+   "scene": 1,
+   "directions": [
+    "올리버는 잔을 내려놓는다. 클로이는 사용자의 명찰을 읽는다."
+   ],
+   "id": "ep01_s1_15",
+   "next": "ep01_c01",
+   "background": "bg_crimson_hall_evening",
+   "ko": "우리 신입 멤버네. 말해 봐. 인맥 때문에 온 거야, 아니면 사람들이 좋아서 온 거야?",
+   "portrait": "chloe_standing_question"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep01_c01",
+   "title_ko": "첫인상 만들기",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "사람들을 알아가고 싶다고 편하게 답한다.",
+     "hint_en": "I’m here to get to know people."
+    },
+    {
+     "id": "B",
+     "intent_ko": "들어오기 힘든 모임이라 궁금했다고 솔직히 답한다.",
+     "hint_en": "I was curious about a club that’s so hard to get into."
+    }
+   ],
+   "scene": 1,
+   "id": "ep01_c01",
+   "branch": {
+    "A": "ep01_c01_A_1",
+    "B": "ep01_c01_B_1"
+   },
+   "rejoin": "ep01_s1_16",
+   "next": null,
+   "background": "bg_crimson_hall_evening"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "How refreshing. Someone who admits they like people.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep01_c01",
+    "option": "A"
+   },
+   "id": "ep01_c01_A_1",
+   "next": "ep01_c01_A_2",
+   "background": "bg_crimson_hall_evening",
+   "ko": "신선하네. 사람이 좋다고 인정하는 사람이라니.",
+   "portrait": "chloe_standing_question"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "Give it an hour.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep01_c01",
+    "option": "A"
+   },
+   "id": "ep01_c01_A_2",
+   "next": "ep01_s1_16",
+   "background": "bg_crimson_hall_evening",
+   "ko": "한 시간만 지나 봐.",
+   "portrait": "ethan_standing_dry_amusement"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Exclusivity does get people’s attention.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep01_c01",
+    "option": "B"
+   },
+   "id": "ep01_c01_B_1",
+   "next": "ep01_c01_B_2",
+   "background": "bg_crimson_hall_evening",
+   "ko": "아무나 못 들어온다는 게 사람들 관심을 끌긴 하지.",
+   "portrait": "chloe_standing_question"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "So does a fire alarm. We aim higher.",
+   "scene": 1,
+   "in_branch": {
+    "choice_id": "ep01_c01",
+    "option": "B"
+   },
+   "id": "ep01_c01_B_2",
+   "next": "ep01_s1_16",
+   "background": "bg_crimson_hall_evening",
+   "ko": "화재경보기도 관심은 끌어. 우린 목표가 더 높아.",
+   "portrait": "julian_standing_wry"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "Don’t let them scare you off. They rehearse this.",
+   "scene": 1,
+   "id": "ep01_s1_16",
+   "next": "ep01_s2_01",
+   "background": "bg_crimson_hall_evening",
+   "ko": "이 사람들 때문에 겁먹지 마. 이거 다 연습한 거야.",
+   "portrait": "oliver_standing_accept_water"
+  },
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "Later, the six of them gather in a private lounge. Julian asks you to stay and help with the party game. Luna, a transfer student, takes the last chair.",
+   "scene": 2,
+   "id": "ep01_s2_01",
+   "next": "ep01_s2_02",
+   "background": "bg_vip_lounge_night",
+   "ko": "잠시 후, 여섯 사람이 프라이빗 라운지에 모인다. 줄리언은 당신에게 남아서 파티 게임을 도와 달라고 한다. 편입생 루나가 마지막 남은 의자에 앉는다."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Is this seat taken?",
+   "scene": 2,
+   "id": "ep01_s2_02",
+   "next": "ep01_s2_03",
+   "background": "bg_vip_lounge_night",
+   "ko": "여기 자리 있어요?",
+   "portrait": "luna_standing_arrival"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Depends. Were you invited?",
+   "scene": 2,
+   "id": "ep01_s2_03",
+   "next": "ep01_s2_04",
+   "background": "bg_vip_lounge_night",
+   "ko": "글쎄. 초대는 받았어?",
+   "portrait": "chloe_seated_probe"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "By me. Try not to make that sound like a crime.",
+   "scene": 2,
+   "id": "ep01_s2_04",
+   "next": "ep01_s2_05",
+   "background": "bg_vip_lounge_night",
+   "ko": "내가 초대했어. 무슨 범죄처럼 들리게 말하지 좀 마.",
+   "portrait": "julian_seated_amused"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "The rules are simple. One question. One honest answer.",
+   "scene": 2,
+   "id": "ep01_s2_05",
+   "next": "ep01_s2_06",
+   "background": "bg_vip_lounge_night",
+   "ko": "규칙은 간단해. 질문 하나. 솔직한 대답 하나.",
+   "portrait": "sophie_seated_explain"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "And absolutely no way to verify either.",
+   "scene": 2,
+   "id": "ep01_s2_06",
+   "next": "ep01_s2_07",
+   "background": "bg_vip_lounge_night",
+   "ko": "그리고 둘 다 확인할 방법은 전혀 없고.",
+   "portrait": "ethan_seated_skeptical"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Luna. Why did you really leave your last school?",
+   "scene": 2,
+   "id": "ep01_s2_07",
+   "next": "ep01_s2_08",
+   "background": "bg_vip_lounge_night",
+   "ko": "루나. 전에 다니던 학교는 진짜 왜 떠난 거야?",
+   "portrait": "chloe_seated_probe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "I transferred.",
+   "scene": 2,
+   "id": "ep01_s2_08",
+   "next": "ep01_s2_09",
+   "background": "bg_vip_lounge_night",
+   "ko": "편입한 거예요.",
+   "portrait": "luna_seated_composed"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "People usually have a reason. Bad grades? Someone else’s boyfriend?",
+   "scene": 2,
+   "id": "ep01_s2_09",
+   "next": "ep01_s2_10",
+   "background": "bg_vip_lounge_night",
+   "ko": "보통은 이유가 있잖아. 성적이 나빴다든가? 남의 남자친구라든가?",
+   "portrait": "chloe_seated_probe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Do you always offer answers before you ask a question?",
+   "scene": 2,
+   "id": "ep01_s2_10",
+   "next": "ep01_s2_11",
+   "background": "bg_vip_lounge_night",
+   "ko": "원래 질문하기 전에 답부터 정해 주는 편이에요?",
+   "portrait": "luna_seated_challenge"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Only when the truth needs encouragement.",
+   "scene": 2,
+   "id": "ep01_s2_11",
+   "next": "ep01_s2_12",
+   "background": "bg_vip_lounge_night",
+   "ko": "진실한테 용기가 좀 필요할 때만.",
+   "portrait": "chloe_seated_probe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Is this how they welcomed you, too?",
+   "scene": 2,
+   "directions": [
+    "루나는 사용자 쪽을 본다."
+   ],
+   "id": "ep01_s2_12",
+   "next": "ep01_c02",
+   "background": "bg_vip_lounge_night",
+   "ko": "당신도 이런 식으로 환영받았어요?",
+   "portrait": "luna_seated_ask"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep01_c02",
+   "title_ko": "공격적인 질문에 개입하기",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "답하고 싶지 않으면 답하지 않아도 된다고 말한다.",
+     "hint_en": "You don’t have to answer that if you don’t want to."
+    },
+    {
+     "id": "B",
+     "intent_ko": "클로이에게 왜 그 질문이 중요한지 묻는다.",
+     "hint_en": "Why does that matter to you?"
+    }
+   ],
+   "scene": 2,
+   "id": "ep01_c02",
+   "branch": {
+    "A": "ep01_c02_A_1",
+    "B": "ep01_c02_B_1"
+   },
+   "rejoin": "ep01_s2_13",
+   "next": null,
+   "background": "bg_vip_lounge_night"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Thank you. I can answer. I just wanted to know the rules.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep01_c02",
+    "option": "A"
+   },
+   "id": "ep01_c02_A_1",
+   "next": "ep01_c02_A_2",
+   "background": "bg_vip_lounge_night",
+   "ko": "고마워요. 대답할 수 있어요. 그냥 규칙을 알고 싶었을 뿐이에요.",
+   "portrait": "luna_seated_trust"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Apparently we’re writing new ones.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep01_c02",
+    "option": "A"
+   },
+   "id": "ep01_c02_A_2",
+   "next": "ep01_s2_13",
+   "background": "bg_vip_lounge_night",
+   "ko": "보아하니 새 규칙을 만드는 중인가 보네.",
+   "portrait": "chloe_seated_offended"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "I like to know who’s in my house.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep01_c02",
+    "option": "B"
+   },
+   "id": "ep01_c02_B_1",
+   "next": "ep01_c02_B_2",
+   "background": "bg_vip_lounge_night",
+   "ko": "내 집에 누가 들어와 있는지는 알아야 하니까.",
+   "portrait": "chloe_seated_offended"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Then you should ask what brought me here.",
+   "scene": 2,
+   "in_branch": {
+    "choice_id": "ep01_c02",
+    "option": "B"
+   },
+   "id": "ep01_c02_B_2",
+   "next": "ep01_s2_13",
+   "background": "bg_vip_lounge_night",
+   "ko": "그럼 제가 왜 여기 왔는지를 물어봐야죠.",
+   "portrait": "luna_seated_challenge"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "I came to find out why someone died—and why everyone stopped asking about it.",
+   "scene": 2,
+   "id": "ep01_s2_13",
+   "next": "ep01_s2_14",
+   "background": "bg_vip_lounge_night",
+   "ko": "누군가가 왜 죽었는지 알아내려고 왔어요. 그리고 왜 다들 그 일을 더는 묻지 않게 됐는지도요.",
+   "portrait": "luna_seated_reveal"
+  },
+  {
+   "kind": "line",
+   "speaker": "oliver",
+   "channel": "speech",
+   "text": "Who?",
+   "scene": 2,
+   "id": "ep01_s2_14",
+   "next": "ep01_s2_15",
+   "background": "bg_vip_lounge_night",
+   "ko": "누구?",
+   "portrait": "oliver_seated_frozen"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Elena. Last year’s initiation.",
+   "scene": 2,
+   "id": "ep01_s2_15",
+   "next": "ep01_s2_16",
+   "background": "bg_vip_lounge_night",
+   "ko": "엘레나요. 작년 신입 입회식.",
+   "portrait": "luna_seated_reveal"
+  },
+  {
+   "kind": "line",
+   "speaker": "sophie",
+   "channel": "speech",
+   "text": "That was investigated.",
+   "scene": 2,
+   "directions": [
+    "올리버의 미소가 사라진다. 이든은 잔을 내려놓는다."
+   ],
+   "id": "ep01_s2_16",
+   "next": "ep01_s2_17",
+   "background": "bg_vip_lounge_night",
+   "ko": "그 일은 조사가 끝났어.",
+   "portrait": "sophie_seated_defensive"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "That’s not the same as explained.",
+   "scene": 2,
+   "id": "ep01_s2_17",
+   "next": "ep01_s2_18",
+   "background": "bg_vip_lounge_night",
+   "ko": "조사했다고 해서 설명이 된 건 아니죠.",
+   "portrait": "luna_seated_reveal"
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "speech",
+   "text": "Okay. We’re done with the game.",
+   "scene": 2,
+   "id": "ep01_s2_18",
+   "next": "ep01_s2_19",
+   "background": "bg_vip_lounge_night",
+   "ko": "좋아. 게임은 여기까지.",
+   "portrait": "julian_seated_stop"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "Funny. It was just getting honest.",
+   "scene": 2,
+   "id": "ep01_s2_19",
+   "next": "ep01_s3_01",
+   "background": "bg_vip_lounge_night",
+   "ko": "웃기네. 이제 막 솔직해지려던 참인데.",
+   "portrait": "ethan_seated_alert"
+  },
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "The room empties quickly. Luna stays behind. Through the glass doors, Chloe heads toward the terrace. Ethan follows.",
+   "scene": 3,
+   "id": "ep01_s3_01",
+   "next": "ep01_s3_02",
+   "background": "bg_lounge_corridor_night",
+   "ko": "방은 금세 텅 빈다. 루나는 남아 있다. 유리문 너머로 클로이가 테라스 쪽으로 향하고, 이든이 그 뒤를 따른다."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Say a name, and suddenly nobody’s thirsty.",
+   "scene": 3,
+   "id": "ep01_s3_02",
+   "next": "ep01_s3_03",
+   "background": "bg_lounge_corridor_night",
+   "ko": "이름 하나 꺼냈더니 갑자기 아무도 목이 안 마르네요.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "You saw them. Was I imagining that?",
+   "scene": 3,
+   "id": "ep01_s3_03",
+   "next": "ep01_c03",
+   "background": "bg_lounge_corridor_night",
+   "ko": "당신도 봤죠. 제가 잘못 본 거예요?",
+   "portrait": "luna_standing_ask"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep01_c03",
+   "title_ko": "관찰한 사실 말하기",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "올리버가 엘레나의 이름에 굳었다고 말한다.",
+     "hint_en": "Oliver went quiet when you mentioned Elena."
+    },
+    {
+     "id": "B",
+     "intent_ko": "이든이 놀라기보다 이미 알고 있는 것처럼 보였다고 말한다.",
+     "hint_en": "Ethan looked like he already knew something."
+    }
+   ],
+   "scene": 3,
+   "id": "ep01_c03",
+   "branch": {
+    "A": "ep01_c03_A_1",
+    "B": "ep01_c03_B_1"
+   },
+   "rejoin": "ep01_s3_04",
+   "next": null,
+   "background": "bg_lounge_corridor_night"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Oliver. Right. I noticed his hands.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep01_c03",
+    "option": "A"
+   },
+   "id": "ep01_c03_A_1",
+   "next": "ep01_c03_A_2",
+   "background": "bg_lounge_corridor_night",
+   "ko": "올리버. 맞아요. 저도 그 사람 손을 봤어요.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "I’ll ask him. I won’t decide what it means yet.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep01_c03",
+    "option": "A"
+   },
+   "id": "ep01_c03_A_2",
+   "next": "ep01_s3_04",
+   "background": "bg_lounge_corridor_night",
+   "ko": "그 사람한테 물어볼게요. 그게 무슨 뜻인지는 아직 단정하지 않을래요.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "That’s what I thought. He didn’t ask who she was.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep01_c03",
+    "option": "B"
+   },
+   "id": "ep01_c03_B_1",
+   "next": "ep01_c03_B_2",
+   "background": "bg_lounge_corridor_night",
+   "ko": "저도 그렇게 생각했어요. 그 사람은 엘레나가 누군지 묻지 않았어요.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Knowing her isn’t a crime. Pretending not to might matter.",
+   "scene": 3,
+   "in_branch": {
+    "choice_id": "ep01_c03",
+    "option": "B"
+   },
+   "id": "ep01_c03_B_2",
+   "next": "ep01_s3_04",
+   "background": "bg_lounge_corridor_night",
+   "ko": "그녀를 아는 건 죄가 아니에요. 하지만 모르는 척하는 건 의미가 있을 수 있죠.",
+   "portrait": "luna_standing_observe"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "speech",
+   "text": "Thanks for saying what you actually saw.",
+   "scene": 3,
+   "id": "ep01_s3_04",
+   "next": "ep01_s3_05",
+   "background": "bg_lounge_corridor_night",
+   "ko": "실제로 본 걸 말해 줘서 고마워요.",
+   "portrait": "luna_standing_softened"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "You enjoyed that.",
+   "scene": 3,
+   "audience": true,
+   "directions": [
+    "관객 전용 장면. 사용자는 이 대화를 듣지 못한다."
+   ],
+   "id": "ep01_s3_05",
+   "next": "ep01_s3_06",
+   "background": "bg_terrace_night",
+   "ko": "재밌었나 봐.",
+   "portrait": "chloe_standing_vulnerable"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "You mean the part where you cornered a stranger?",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_06",
+   "next": "ep01_s3_07",
+   "background": "bg_terrace_night",
+   "ko": "네가 처음 보는 사람을 몰아붙인 부분 말이야?",
+   "portrait": "ethan_standing_confront"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "You’ve been looking at me all night.",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_07",
+   "next": "ep01_s3_08",
+   "background": "bg_terrace_night",
+   "ko": "너 밤새 나만 보고 있었잖아.",
+   "portrait": "chloe_standing_vulnerable"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "You’ve been checking.",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_08",
+   "next": "ep01_s3_09",
+   "background": "bg_terrace_night",
+   "ko": "넌 그걸 계속 확인하고 있었고.",
+   "portrait": "ethan_standing_intimate"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Tell me to leave.",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_09",
+   "next": "ep01_s3_10",
+   "background": "bg_terrace_night",
+   "ko": "가라고 말해.",
+   "portrait": "chloe_standing_vulnerable"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "Do you want to?",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_10",
+   "next": "ep01_s3_11",
+   "background": "bg_terrace_night",
+   "ko": "가고 싶어?",
+   "portrait": "ethan_standing_intimate"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "No.",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_11",
+   "next": "ep01_s3_12_beat",
+   "background": "bg_terrace_night",
+   "ko": "아니.",
+   "portrait": "chloe_standing_vulnerable"
+  },
+  {
+   "kind": "beat",
+   "id": "ep01_s3_12_beat",
+   "scene": 3,
+   "background": "bg_terrace_night",
+   "audience": true,
+   "cg": "cg_terrace_kiss",
+   "next": "ep01_s3_12"
+  },
+  {
+   "kind": "line",
+   "speaker": "ethan",
+   "channel": "speech",
+   "text": "What about Oliver?",
+   "scene": 3,
+   "audience": true,
+   "directions": [
+    "두 사람은 잠시 서로를 보고 입을 맞춘다. 이든이 먼저 물러난다."
+   ],
+   "id": "ep01_s3_12",
+   "next": "ep01_s3_13",
+   "background": "bg_terrace_night",
+   "ko": "올리버는?",
+   "portrait": "ethan_standing_conflicted"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "speech",
+   "text": "Don’t say his name right now.",
+   "scene": 3,
+   "audience": true,
+   "id": "ep01_s3_13",
+   "next": "ep01_s4_01_beat",
+   "background": "bg_terrace_night",
+   "ko": "지금은 그 이름 꺼내지 마.",
+   "portrait": "chloe_standing_defensive"
+  },
+  {
+   "kind": "beat",
+   "id": "ep01_s4_01_beat",
+   "scene": 4,
+   "background": "bg_campus_morning",
+   "blackout": true,
+   "next": "ep01_s4_01"
+  },
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "By morning, an anonymous post on Ivy Talk has reached the whole campus.",
+   "scene": 4,
+   "directions": [
+    "화면 암전."
+   ],
+   "id": "ep01_s4_01",
+   "next": "ep01_s4_02",
+   "background": "bg_campus_morning",
+   "ko": "아침이 되자, 아이비 톡에 올라온 익명 게시물이 캠퍼스 전체에 퍼져 있다."
+  },
+  {
+   "kind": "line",
+   "speaker": "ivy_talk",
+   "channel": "post",
+   "text": "CRIMSON’S GOLDEN COUPLE? ASK CHLOE WHO SHE KISSED ON THE TERRACE.",
+   "scene": 4,
+   "id": "ep01_s4_02",
+   "next": "ep01_s4_03",
+   "background": "bg_campus_morning",
+   "ko": "크림슨의 황금 커플? 클로이에게 테라스에서 누구랑 키스했는지 물어보시길.",
+   "cg": "cg_ivy_talk_evidence"
+  },
+  {
+   "kind": "line",
+   "speaker": "chloe",
+   "channel": "group_chat",
+   "text": "Nobody forwards this. We meet in twenty minutes.",
+   "label": "GROUP CHAT — CHLOE",
+   "scene": 4,
+   "directions": [
+    "사진: 테라스의 클로이와 이든. 노골적인 묘사 없이 실루엣."
+   ],
+   "id": "ep01_s4_03",
+   "next": "ep01_s4_04",
+   "background": "bg_campus_morning",
+   "ko": "아무도 이거 퍼뜨리지 마. 20분 뒤에 모여."
+  },
+  {
+   "kind": "line",
+   "speaker": "julian",
+   "channel": "group_chat",
+   "text": "That should calm everyone down.",
+   "label": "GROUP CHAT — JULIAN",
+   "scene": 4,
+   "id": "ep01_s4_04",
+   "next": "ep01_s4_05",
+   "background": "bg_campus_morning",
+   "ko": "그러면 다들 진정되겠네."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "group_chat",
+   "text": "Someone wanted this seen.",
+   "label": "GROUP CHAT — LUNA",
+   "scene": 4,
+   "id": "ep01_s4_05",
+   "next": "ep01_s4_06",
+   "background": "bg_campus_morning",
+   "ko": "누군가 이걸 보여 주고 싶었던 거예요."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "private_message",
+   "text": "Are you coming?",
+   "label": "PRIVATE MESSAGE — LUNA",
+   "scene": 4,
+   "id": "ep01_s4_06",
+   "next": "ep01_c04",
+   "background": "bg_campus_morning",
+   "ko": "올 거예요?"
+  },
+  {
+   "kind": "choice",
+   "choice_id": "ep01_c04",
+   "title_ko": "소문을 대하는 태도",
+   "options": [
+    {
+     "id": "A",
+     "intent_ko": "사진을 더 퍼뜨리지 않고 직접 이야기를 듣겠다고 한다.",
+     "hint_en": "I won’t share the photo. I’d rather hear from them."
+    },
+    {
+     "id": "B",
+     "intent_ko": "비난부터 하기 전에 사진 출처를 확인하자고 한다.",
+     "hint_en": "Let’s find out where the photo came from first."
+    }
+   ],
+   "scene": 4,
+   "id": "ep01_c04",
+   "branch": {
+    "A": "ep01_c04_A_1",
+    "B": "ep01_c04_B_1"
+   },
+   "rejoin": "ep01_s4_07",
+   "next": null,
+   "background": "bg_campus_morning",
+   "medium": "text_message"
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "private_message",
+   "text": "Good. An audience is the last thing they need.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep01_c04",
+    "option": "A"
+   },
+   "id": "ep01_c04_A_1",
+   "next": "ep01_c04_A_2",
+   "background": "bg_campus_morning",
+   "ko": "좋아요. 지금 그 사람들한테 제일 필요 없는 게 구경꾼이니까요."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "private_message",
+   "text": "Meet me outside the club office.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep01_c04",
+    "option": "A"
+   },
+   "id": "ep01_c04_A_2",
+   "next": "ep01_s4_07",
+   "background": "bg_campus_morning",
+   "ko": "클럽 사무실 앞에서 만나요."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "private_message",
+   "text": "Exactly. Whoever posted it picked the timing.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep01_c04",
+    "option": "B"
+   },
+   "id": "ep01_c04_B_1",
+   "next": "ep01_c04_B_2",
+   "background": "bg_campus_morning",
+   "ko": "맞아요. 올린 사람이 타이밍을 고른 거예요."
+  },
+  {
+   "kind": "line",
+   "speaker": "luna",
+   "channel": "private_message",
+   "text": "Let’s find out why.",
+   "scene": 4,
+   "in_branch": {
+    "choice_id": "ep01_c04",
+    "option": "B"
+   },
+   "id": "ep01_c04_B_2",
+   "next": "ep01_s4_07",
+   "background": "bg_campus_morning",
+   "ko": "왜 그랬는지 알아봐요."
+  },
+  {
+   "kind": "line",
+   "speaker": "unknown",
+   "channel": "private_message",
+   "text": "You were in that room. Ask them what happened to Elena.",
+   "label": "PRIVATE MESSAGE — UNKNOWN",
+   "scene": 4,
+   "id": "ep01_s4_07",
+   "next": "ep01_s4_08",
+   "background": "bg_campus_morning",
+   "ko": "너는 그 방에 있었어. 그들에게 엘레나에게 무슨 일이 있었는지 물어봐."
+  },
+  {
+   "kind": "line",
+   "speaker": "narration",
+   "channel": "narration",
+   "text": "The message disappears before you can reply.",
+   "scene": 4,
+   "id": "ep01_s4_08",
+   "next": "ep01_s4_09",
+   "background": "bg_campus_morning",
+   "ko": "답장을 보내기도 전에 메시지가 사라진다."
+  },
+  {
+   "kind": "line",
+   "speaker": "end_card",
+   "channel": "end_card",
+   "text": "Someone is watching. Someone wants you to watch, too.",
+   "scene": 4,
+   "id": "ep01_s4_09",
+   "next": null,
+   "background": "bg_campus_morning",
+   "ko": "누군가 지켜보고 있다. 그리고 그 누군가는 당신도 지켜보길 바란다."
+  }
+ ]
+}

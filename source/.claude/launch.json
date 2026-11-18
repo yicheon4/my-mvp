@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "persona-world-ai", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev:ai"], "port": 5185 }
+  ]
+}

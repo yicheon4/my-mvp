@@ -15,7 +15,8 @@ export type V12Entry = {
   src: string; imageSize: [number, number]; referenceHeight: number; frames: V12Frame[]; clips: Record<string, V12Clip>;
   idleByDirection?: Record<Direction, number>; groupScale?: Record<string, number>;
 };
-export type V12Manifest = { version: number; anchorSpace: string; npcs: Record<string, V12Entry>; players: Record<string, V12Entry> };
+/** npcsFallback: the previous full-body minis, drawn only while a current NPC sheet is loading or failed to load. */
+export type V12Manifest = { version: number; anchorSpace: string; npcs: Record<string, V12Entry>; players: Record<string, V12Entry>; npcsFallback?: Record<string, V12Entry> };
 export type V12Spot = {
   id: string; map: MapId; label: string; auto: boolean; approach: Pt; render: Pt; facing: Direction; clip?: string;
   radius: number; dwellMs: number; height: number; mirrorX?: boolean; effect?: 'water' | 'flame'; effectPoint?: Pt;
@@ -43,7 +44,8 @@ export function placeV12(f: V12Frame, world: Pt, scale: number) {
 }
 /** NPC frame: walk clip only while really moving, the direction's idle frame when still, the (front) wave clip while waving. */
 export function npcFrame(e: V12Entry, dir: Direction, moving: boolean, walkMs: number, waveMs: number | null, reduced = false) {
-  if (waveMs !== null) return clipFrame(e, 'wave', waveMs, reduced);
+  // Reduced motion: hold the hand-raised frame (the clip's 2nd frame; its 1st is the hands-down front pose).
+  if (waveMs !== null) { const w = e.clips.wave?.frames; return reduced && w && w.length > 1 ? e.frames[w[1]] ?? null : clipFrame(e, 'wave', waveMs, reduced); }
   if (moving && !reduced) return clipFrame(e, 'walk_' + dir, walkMs);
   return e.frames[e.idleByDirection?.[dir] ?? 0] ?? null;
 }
@@ -61,7 +63,7 @@ export function toRoomSpot(s: V12Spot): Spot {
 export const autoSpots = (loc: V12Locations, map: MapId) => loc.spots.filter(s => s.auto && s.map === map);
 
 // ---- NPCs ----
-export type NpcRun = Npc & { id: string; locked: boolean; dir: Direction; moving: boolean; walkMs: number; patrol: Pt[]; target: number; wait: number; blocked: number; waveMs: number | null; speed: number };
+export type NpcRun = Npc & { id: string; locked: boolean; dir: Direction; moving: boolean; walkMs: number; patrol: Pt[]; target: number; wait: number; blocked: number; waveMs: number | null; speed: number; restoreDir?: Direction };
 const lineClear = (a: Pt, b: Pt, ok: (x: number, y: number) => boolean) => {
   const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 6));
   for (let i = 0; i <= n; i++) if (!ok(a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n)) return false;
@@ -75,6 +77,15 @@ export function validPatrol(points: Pt[], ok: (x: number, y: number) => boolean)
   while (kept.length > 1 && !lineClear(kept[kept.length - 1], kept[0], ok)) kept.pop();
   return kept;
 }
+/** Can the player see this person? The straight line between them must stay on the map's floor (walk polygons),
+ * so someone on the other side of a wall is never greeted or talked to. Furniture does not block the view. */
+export function inSight(map: WorldMapDef, a: Pt, b: Pt) {
+  return lineClear(a, b, (x, y) => map.walk.some(p => pointInPolygon(x, y, p)));
+}
+/** After a wave exchange the button rests this long before another wave can start. */
+export const WAVE_COOLDOWN_MS = 2000;
+/** The NPC's reply wave is over: face where they faced before the greeting and resume the patrol after a short pause. */
+export const endNpcWave = (n: NpcRun): NpcRun => ({ ...n, waveMs: null, dir: n.restoreDir ?? n.dir, restoreDir: undefined, wait: 900 });
 // Where each NPC really is, kept for the session so returning from a talk puts them back where they stood.
 const npcMemory = new Map<string, { x: number; y: number; dir: Direction; target: number }>();
 export function initNpcs(map: WorldMapDef, loc: V12Locations | null, ok: (x: number, y: number) => boolean): NpcRun[] {
