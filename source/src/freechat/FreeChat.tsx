@@ -28,6 +28,11 @@ const MOODS = ['neutral','warm','playful','curious','concerned','disappointed','
 function ChatPortrait({ base, character, emotion, name }: {base:string; character?:string; emotion:string; name:string}) {
   const [frame,setFrame] = useState({src:base, previous:base});
   const [failed,setFailed] = useState(false);
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timer = window.setTimeout(() => setFrame(f => ({...f,previous:f.src})), reduced ? 0 : 320);
+    return () => window.clearTimeout(timer);
+  }, [frame.src]);
   const index = Math.max(0, MOODS.indexOf(emotion));
   const pose = character && CHAT_POSES[character]?.[index];
   const wanted = pose ? `/red-ivy/characters/${character}/${pose}.webp` : base;
@@ -43,7 +48,7 @@ function ChatPortrait({ base, character, emotion, name }: {base:string; characte
     return () => { active=false; img.onload=null; img.onerror=null; };
   }, [wanted]);
   return <div className="freechat-portrait" data-emotion={emotion} data-image-error={failed || undefined}>
-    <img src={frame.previous} alt="" aria-hidden="true" draggable={false}/>
+    {frame.previous !== frame.src && <img src={frame.previous} alt="" aria-hidden="true" draggable={false}/>}
     <img key={frame.src} className="chat-portrait-current" src={frame.src} alt={name} draggable={false}/>
   </div>;
 }
