@@ -1,4 +1,5 @@
 // Browser side of Sophie's free chat. Talks ONLY to the same-origin server endpoint; no API key here.
+export type StoryChat = { character: 'chloe' | 'sophie' | 'ethan' | 'luna' | 'julian' | 'oliver'; episodeId: string; choices: Record<string, 'A' | 'B'> };
 export type ChatTurn = { role: 'you' | 'sophie'; text: string; ko?: string; emotion?: string };
 export type Suggestion = { en: string; ko: string; intent: string };
 export type LearningCard = { expression: string; meaning_ko: string; usage_note: string } | null;
@@ -11,20 +12,23 @@ export const saveInvite = (v: string) => { try { localStorage.setItem(INVITE_KEY
 
 // One request per (session, turn) even if the screen re-renders, remounts (StrictMode) or the button is tapped twice.
 const inflight = new Map<string, Promise<ChatResult>>();
-export function requestReply(key: string, body: { sessionId: string; timeOfDay: string; turns: ChatTurn[]; opening: boolean }): Promise<ChatResult> {
+export function requestReply(key: string, body: { sessionId: string; timeOfDay: string; turns: ChatTurn[]; opening: boolean; story?: StoryChat }): Promise<ChatResult> {
   const existing = inflight.get(key);
   if (existing) return existing;
   const p = (async (): Promise<ChatResult> => {
+    const ctrl = new AbortController(); const timeout = setTimeout(() => ctrl.abort(), 35000);
     try {
       const res = await fetch('/api/ai', {
-        method: 'POST',
+        method: 'POST', signal: ctrl.signal,
         headers: { 'content-type': 'application/json', 'x-invite-code': readInvite() },
-        body: JSON.stringify({ character: 'sophie', place: 'living-room', sessionId: body.sessionId, timeOfDay: body.timeOfDay, opening: body.opening, turns: body.turns.map(t => ({ role: t.role, text: t.text })) }),
+        body: JSON.stringify({ ...(body.story ? { mode: 'red-ivy-chat', ...body.story } : { character: 'sophie', place: 'living-room' }), sessionId: body.sessionId, timeOfDay: body.timeOfDay, opening: body.opening, turns: body.turns.slice(-16).map(t => ({ role: t.role, text: t.text })) }),
       });
       const data = await res.json().catch(() => null);
-      if (data && typeof data === 'object' && 'ok' in data) return data as ChatResult;
+      if (data?.ok === false && typeof data.error === 'string') return { ok: false, error: data.error };
+      if (res.ok && data?.ok === true && data.mode === 'gemini' && typeof data.reply?.speech_text === 'string' && typeof data.reply.translation_ko === 'string' && Array.isArray(data.reply.suggested_replies) && data.reply.suggested_replies.length === 3 && data.reply.suggested_replies.every((x: any) => typeof x?.en === 'string' && typeof x.ko === 'string' && typeof x.intent === 'string')) return data as ChatResult;
       return { ok: false, error: res.status === 404 ? 'no_server' : 'upstream' };
-    } catch { return { ok: false, error: 'network' }; }
+    } catch { return { ok: false, error: ctrl.signal.aborted ? 'timeout' : 'network' }; }
+    finally { clearTimeout(timeout); }
   })();
   inflight.set(key, p);
   p.finally(() => setTimeout(() => inflight.delete(key), 0));
