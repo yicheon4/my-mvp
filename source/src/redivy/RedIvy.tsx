@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Chats, Check, LockSimple, Microphone, PaperPlaneTilt, Sparkle, SpeakerHigh, Stop, Translate, X, ArrowCounterClockwise, Lightbulb, DeviceMobile, Eye } from '@phosphor-icons/react';
 import { BottomSheet, KeyboardInput, KeyboardTextarea, MobileScroll, useKeyboard, useKeyboardInsets } from '../mobile';
+import FreeChat from '../freechat/FreeChat';
+import type { StoryChat } from '../freechat/api';
 import { readInvite, saveInvite } from '../freechat/api';
 import { backgroundFile, backgrounds, cast, cgFile, cgs, portraitFile, splitPortrait, voices } from './art-manifest';
 import type { CastId } from './art-manifest';
@@ -19,6 +21,15 @@ import './redivy.css';
 export type NotePhrase = { id: string; en: string; ko: string; context: string };
 type View = 'list' | 'intro' | 'play' | 'feedback';
 type Phase = 'pick' | 'input' | 'checking' | 'opposite' | 'check_failed';
+
+const CHAT_CAST: { id: StoryChat['character']; slot: string; description: string }[] = [
+  { id: 'chloe', slot: 'chloe_standing_base', description: '우아한 말투, 체면 뒤에 숨긴 속마음' },
+  { id: 'sophie', slot: 'sophie_standing_attentive', description: '작은 변화를 놓치지 않는 차분한 관찰자' },
+  { id: 'ethan', slot: 'ethan_standing_detached', description: '짧고 건조한 농담 속 뜻밖의 진지함' },
+  { id: 'luna', slot: 'luna_seated_composed', description: '소문보다 사실을 찾는 신중한 질문' },
+  { id: 'julian', slot: 'julian_standing_host', description: '농담으로 분위기를 풀고 선을 지키는 친구' },
+  { id: 'oliver', slot: 'oliver_seated_polite', description: '다정한 환대와 쉽게 털어놓지 못하는 긴장' },
+];
 
 const PHONE: LineNode['channel'][] = ['post', 'group_chat', 'private_message'];
 const OPPOSITE_TEXT = '방금 문장은 선택한 뜻과 반대로 전달될 수 있어요. 다시 말해볼까요?';
@@ -135,6 +146,7 @@ const inflight = new Map<string, Promise<{ ok: true; value: FeedbackItem[] } | {
 export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes: NotePhrase[]; onSaveNote: (p: NotePhrase) => boolean; onExit: () => void; autoStart?: string }) {
   const keyboard = useKeyboard();
   const { bottomInset } = useKeyboardInsets();
+  const [chatCharacter, setChatCharacter] = useState<StoryChat['character'] | null>(null);
   const [view, setView] = useState<View>('list');
   const [entry, setEntry] = useState<CatalogEntry | null>(null);
   const ep = entry?.data ?? null;
@@ -258,6 +270,16 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
     try { rec.start(); setListening(true); } catch { setListening(false); setNotice('마이크를 시작하지 못했어요. 아래 칸에 입력해 주세요.'); }
   }
 
+  // The child is keyed per character; no history can leak into another persona.
+  if (chatCharacter && ep?.number === 1 && progress?.finished) {
+    const who = CHAT_CAST.find(x => x.id === chatCharacter)!;
+    return <FreeChat key={chatCharacter} characterName={cast[chatCharacter].ko}
+      story={{ character: chatCharacter, episodeId: ep.episode_id, choices: progress.choices }}
+      background={backgroundFile('bg_vip_lounge_night') ?? ''} portrait={portraitFile(who.slot) ?? ''} timeOfDay="day"
+      onBack={() => { keyboard.hide(); setChatCharacter(null); }} isCardSaved={saved}
+      onSaveCard={card => onSaveNote({ id: `redivy-chat-${crypto.randomUUID()}`, en: card.expression, ko: card.meaning_ko, context: `Red Ivy 1화 · ${cast[chatCharacter].ko}와 자유 대화 · ${card.usage_note}` })} />;
+  }
+
   // ---------- list ----------
   if (view === 'list') return <div className="ri-root">
     <header className="page-header"><button className="icon-button" aria-label="나의 방으로" onClick={onExit}><ArrowLeft size={22} /></button><div><p className="eyebrow">RED IVY · SEASON 1</p><h1>아이비의 붉은 덩굴</h1><p className="muted">크림슨 클럽의 신입 멤버가 되어, 영어로 직접 말해요.</p></div></header>
@@ -297,7 +319,7 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
 
   // ---------- feedback ----------
   if (view === 'feedback') return <FeedbackView ep={ep} utterances={utterances} picks={progress?.choices ?? {}} saved={saved} onSaveNote={onSaveNote}
-    onRestart={() => { setConfirmRestart(false); startEpisode('restart'); }} onList={() => setView('list')} onExit={onExit} />;
+    onChat={id => { keyboard.hide(); setChatCharacter(id); }} onRestart={() => { setConfirmRestart(false); startEpisode('restart'); }} onList={() => setView('list')} onExit={onExit} />;
 
   // ---------- play ----------
   if (!current || !progress) return null;
@@ -425,8 +447,8 @@ function ChoicePanel(p: {
   </section>;
 }
 
-function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onList, onExit }: {
-  ep: Episode; utterances: Utterance[]; picks: Record<string, Option>; saved: (en: string) => boolean; onSaveNote: (p: NotePhrase) => boolean; onRestart: () => void; onList: () => void; onExit: () => void;
+function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onList, onExit, onChat }: {
+  ep: Episode; utterances: Utterance[]; picks: Record<string, Option>; saved: (en: string) => boolean; onSaveNote: (p: NotePhrase) => boolean; onRestart: () => void; onList: () => void; onExit: () => void; onChat: (id: StoryChat['character']) => void;
 }) {
   const choices = choicesOf(ep);
   const items = choices.map(c => utterances.find(u => u.choice_id === c.choice_id)).filter((u): u is Utterance => !!u);
@@ -481,6 +503,14 @@ function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onL
         </article>;
       })}
       {status && <p className="ri-status" role="status"><Check size={14} />{status}</p>}
+      {ep.number === 1 && <section className="ri-chat-picker" aria-label="캐릭터와 일대일 대화">
+        <h2>파티가 끝난 뒤, 둘이서</h2>
+        <p>누구의 이야기가 더 궁금한가요? 1화에서 있었던 일을 바탕으로 영어로 자유롭게 대화해요. 본편의 선택과 결말은 바뀌지 않아요.</p>
+        <small>현재는 시험 기능으로 6명 모두 열려 있어요. 새 대화나 화면을 나가면 대화는 초기화돼요.</small>
+        {CHAT_CAST.map(who => <button className="ri-chat-person" key={who.id} onClick={() => onChat(who.id)} aria-label={`${cast[who.id].ko}와 일대일 대화`}>
+          <img src={portraitFile(who.slot) ?? ''} alt="" /><span><strong>{cast[who.id].ko}</strong><small>{who.description}</small></span><ArrowRight size={18} />
+        </button>)}
+      </section>}
       <div className="ri-fb-actions">
         {confirm ? <div className="ri-confirm"><p>처음부터 다시 시작할까요?</p><div><button className="text-button" onClick={() => setConfirm(false)}>취소</button><button className="gold-button" onClick={onRestart}>처음부터 시작</button></div></div>
           : <button className="text-button" onClick={() => setConfirm(true)}><ArrowCounterClockwise size={15} />처음부터 다시 하기</button>}

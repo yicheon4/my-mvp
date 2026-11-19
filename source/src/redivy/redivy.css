@@ -151,3 +151,12 @@
   .ri-layer.is-top{animation:none}
   .ri-portrait,.ri-art{transition:none}
 }
+
+/* EP01 side conversations: reuse the established plum/gold palette. */
+.ri-chat-picker { margin: 28px 0; }
+.ri-chat-picker > p, .ri-chat-picker > small { font-size: 12px; line-height: 1.7; opacity: .8; }
+.ri-chat-person { display: flex; align-items: center; gap: 12px; width: 100%; margin: 10px 0; padding: 10px 14px; color: inherit; background: #ffffff08; border: 1px solid #b99d6555; border-radius: 14px; text-align: left; }
+.ri-chat-person img { width: 56px; height: 72px; object-fit: contain; }
+.ri-chat-person span { flex: 1; }
+.ri-chat-person strong, .ri-chat-person small { display: block; }
+.ri-chat-person small { margin-top: 4px; font-size: 11px; line-height: 1.6; opacity: .75; }
