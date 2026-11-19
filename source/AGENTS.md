@@ -150,3 +150,9 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Two Korean intentions for Sophie's radio-practice request. Learner types up to 500 characters; POST /api/ai mode=expression-feedback returns meaning, alignment, one coaching note and two alternative expressions. Server owns scene/intent strings, validates input/output, uses existing invite and rate limits. No score or story branching from language quality.
 - Only selected suggestions enter the existing notebook. Learner input and feedback are transient; no new conversation persistence. Errors retain the input and are not replaced with fake analysis.
 - Tests: npm run test:sophie; npx playwright test tests/expression-feedback.spec.ts (mock API only; live Gemini must be verified separately after deployment).
+
+## Red Ivy episode expression feedback (2026-11-19)
+- Choice submission advances the selected A/B branch immediately, without an AI request. Learner utterances remain in memory; end-of-episode feedback batches the available four EP1 utterances into one request. Optional pre-continue meaning checking remains available.
+- Feedback distinguishes sentence naturalness from alignment with the chosen intention; action choices are coached as things the learner can say, phone choices as messages. Never infer pronunciation from transcripts or change story outcomes based on English quality.
+- Already-natural sentences are labelled. Missing utterances after refresh are explicitly unevaluated; progress remains, no invented feedback. Saving originals/feedback or alternatives is explicit and uses the existing notebook.
+- Browser regression: tests/expression-feedback.spec.ts includes EP1 A/B/A/B playthrough, one batch request, quota retry, cached revisit, selective notebook saving and refresh-without-input behavior. Mock responses only; live Gemini verification requires local server credentials or a configured deployment.

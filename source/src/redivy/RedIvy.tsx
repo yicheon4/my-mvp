@@ -226,7 +226,7 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
     setProgress(p => (p ? { ...p, node_id: next, updated_at: Date.now() } : p));
   }
   function commit(check: Utterance['check']) {
-    if (!ep || current?.kind !== 'choice' || !option) return;
+    if (!ep || current?.kind !== 'choice' || !option || !draft.trim() || draft.length > 500) return;
     const c = current, text = draft.trim(), o = c.options.find(x => x.id === option)!;
     recordUtterance(ep.episode_id, { choice_id: c.choice_id, option, title_ko: c.title_ko, intent_ko: o.intent_ko, text, check });
     keyboard.hide(); stopMic();
@@ -290,7 +290,7 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
       {saveState && (confirmRestart
         ? <div className="ri-confirm"><p>지금까지의 진행과 선택을 지우고 처음부터 시작할까요?</p><div><button className="text-button" onClick={() => setConfirmRestart(false)}>취소</button><button className="gold-button" onClick={() => startEpisode('restart')}>처음부터 시작</button></div></div>
         : <button className="text-button" onClick={() => setConfirmRestart(true)}><ArrowCounterClockwise size={15} />처음부터 다시 시작</button>)}
-      <details className="ri-privacy"><summary>AI·저장 안내</summary><p>말하기를 누르면 입력한 영어 문장, 선택한 뜻, 직전 장면 대사가 Google Gemini로 전달돼요. 이름·연락처 같은 개인정보는 말하지 마세요. 앱은 진행 위치와 선택(A/B)만 이 브라우저에 저장하고, 내가 한 말의 원문과 음성은 저장하지 않아요.</p></details>
+      <details className="ri-privacy"><summary>AI·저장 안내</summary><p>회차가 끝나면 입력한 영어 문장, 선택한 뜻, 직전 장면 대사를 Google Gemini에 보내 한 번에 피드백받아요. 선택 사항인 뜻 확인을 누르면 해당 문장도 전송돼요. 이름·연락처 같은 개인정보는 말하지 마세요. 앱은 진행 위치와 선택(A/B)만 이 브라우저에 저장하고, 내가 한 말은 새로고침 전까지만 임시로 보관하며, 직접 저장한 표현과 피드백만 메모장에 남아요. 앱은 음성을 저장하지 않아요.</p></details>
       {storageError && <p className="ri-error" role="alert">{storageError}</p>}
     </section>
   </div>;
@@ -338,7 +338,7 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
     <Portrait slot={phoneThread ? undefined : stagePortrait} lift={lift} />
     <div className="ri-tap" role="button" tabIndex={0} aria-label="다음 대사" onClick={advance} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); } }} aria-disabled={!!choice && !userLine} />
     <header className="ri-top">
-      <button className="icon-button" aria-label="에피소드 소개로 (진행 저장됨)" onClick={() => { stopMic(); keyboard.hide(); setView('intro'); }}><X size={20} /></button>
+      <button className="icon-button" aria-label="에피소드 소개로 (진행 저장됨)" onClick={() => { stopMic(); keyboard.hide(); checkCtrl.current?.abort(); checkCtrl.current = null; setView('intro'); }}><X size={20} /></button>
       <span className="ri-place">{placeLabel}</span>
       <button className={`icon-button ${showKo ? 'is-on' : ''}`} aria-pressed={showKo} aria-label="한국어 번역 보기" onClick={() => setShowKo(v => !v)}><Translate size={20} /></button>
       <button className="icon-button" aria-label="지난 대사" onClick={() => { keyboard.hide(); setSheet('history'); }}><Chats size={20} /></button>
@@ -369,7 +369,7 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
 
       {choice && !userLine && <ChoicePanel choice={choice} phase={phase} option={option} draft={draft} hint={hint} listening={listening} notice={notice} info={checkInfo}
         onPick={o => { setOption(o); setPhase('input'); setNotice(''); }} onRepick={() => { stopMic(); keyboard.hide(); setOption(null); setPhase('pick'); setHint(false); }}
-        onDraft={t => { setDraft(t); if (phase !== 'input') setPhase('input'); }} onHint={() => setHint(true)} onMic={mic} onSubmit={submit}
+        onDraft={t => { setDraft(t); if (phase !== 'input') setPhase('input'); }} onHint={() => setHint(true)} onMic={mic} onSubmit={() => commit('unchecked')}
         onRetrySpeak={() => { setPhase('input'); setCheckInfo(''); }} onRetryCheck={submit} onContinue={k => commit(k)}
         onCancelCheck={() => { checkCtrl.current?.abort(); checkCtrl.current = null; setPhase('input'); }} />}
     </div>
@@ -420,7 +420,8 @@ function ChoicePanel(p: {
     {p.hint ? <p className="ri-hint"><Lightbulb size={14} /><span>{picked.hint_en}</span></p>
       : <button className="text-button ri-hint-btn" disabled={checking} onClick={p.onHint}><Lightbulb size={14} />영어 힌트 보기</button>}
     {checking ? <div className="ri-row"><p className="ri-checking" role="status">뜻을 확인하고 있어요…</p><button className="text-button" onClick={p.onCancelCheck}>취소</button></div>
-      : <button className="gold-button" disabled={!p.draft.trim()} onClick={p.onSubmit}>이 문장으로 말하기<PaperPlaneTilt size={17} /></button>}
+      : <button className="gold-button" disabled={!p.draft.trim() || p.draft.length > 500 || p.listening} onClick={p.onSubmit}>{choice.medium === 'text_message' ? '이 문장 보내고 계속하기' : '이 문장으로 말하고 계속하기'}<PaperPlaneTilt size={17} /></button>}
+    {!checking && <><small className="ri-notice">이야기는 고른 선택대로 이어져요. 표현 피드백은 회차가 끝나면 함께 확인해요.</small><button className="text-button" disabled={!p.draft.trim() || p.draft.length > 500 || p.listening} onClick={p.onRetryCheck}>계속하기 전에 뜻 확인하기 (선택)</button></>}
   </section>;
 }
 
@@ -457,6 +458,8 @@ function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onL
   return <div className="ri-root ri-feedback">
     <header className="page-header"><button className="icon-button" aria-label="에피소드 목록" onClick={onList}><ArrowLeft size={22} /></button><div><p className="eyebrow">RED IVY · EP{String(ep.number).padStart(2, '0')} 완료</p><h1>{ep.title}</h1></div></header>
     <MobileScroll className="pw-scroll"><main className="ri-fb">
+      <p className="ri-notice">내가 고른 뜻과 장면에 맞춰 실제로 말한 문장을 돌아봐요. 영어 실력은 이야기의 결과에 영향을 주지 않아요.</p>
+      {items.length < choices.length && <p className="ri-notice" role="status">{items.length ? `${choices.length}개 선택 중 ${items.length}개의 문장만 피드백할 수 있어요.` : '피드백할 문장이 남아 있지 않아요.'} 새로고침하면 입력한 문장은 사라지고 선택 기록만 남아요. 처음부터 다시 플레이하면 새 문장으로 피드백받을 수 있어요.</p>}
       {busy && <p className="ri-status" role="status"><Sparkle size={15} />피드백을 불러오는 중…</p>}
       {error && <div className="ri-error" role="alert"><p>{error}</p><InviteField /><button className="gold-button" onClick={load}>피드백 다시 받기</button></div>}
       {choices.map(c => {
@@ -467,8 +470,8 @@ function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onL
           <dl>
             <dt>상황</dt><dd>{pl ? <>{speakerName(pl) && <b>{speakerName(pl)}: </b>}“{pl.text}”{pl.ko && <small>{pl.ko}</small>}</> : '—'}</dd>
             <dt>의도</dt><dd>{c.options.find(o => o.id === (u?.option ?? picks[c.choice_id]))?.intent_ko ?? '—'}</dd>
-            <dt>내 문장</dt><dd className="ri-said">{u ? u.text : '—'}</dd>
-            {f && <><dt>의미</dt><dd>{f.meaning_ko}</dd><dt>피드백</dt><dd>{f.coaching_ko}</dd></>}
+            <dt>내 문장</dt><dd className="ri-said">{u ? u.text : '입력 기록 없음 · 평가하지 않아요'}</dd>
+            {f && <><dt>의미</dt><dd>{f.meaning_ko}</dd><dt>피드백</dt><dd>{f.already_natural && <strong>이미 자연스러운 표현이에요. </strong>}{f.coaching_ko}</dd></>}
           </dl>
           {f && <>
             {f.alternatives.map((a, k) => <div key={a.en} className="ri-alt"><h3>{a.en}</h3><p>{a.ko}</p><small>{a.nuance_ko}</small>
