@@ -1,5 +1,5 @@
 // Browser side of Sophie's free chat. Talks ONLY to the same-origin server endpoint; no API key here.
-export type StoryChat = { character: 'chloe' | 'sophie' | 'ethan' | 'luna' | 'julian' | 'oliver'; episodeId: string; choices: Record<string, 'A' | 'B'> };
+export type StoryChat = { character: 'chloe' | 'sophie' | 'ethan' | 'luna' | 'julian' | 'oliver'; episodeId: string; choices: Record<string, 'A' | 'B'>; entry?: 'meet'; place?: 'bedroom' | 'living-room' | 'kitchen' | 'campus' | 'park' | 'bar' };
 export type ChatTurn = { role: 'you' | 'sophie'; text: string; ko?: string; emotion?: string };
 export type Suggestion = { en: string; ko: string; intent: string };
 export type LearningCard = { expression: string; meaning_ko: string; usage_note: string } | null;

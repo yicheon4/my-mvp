@@ -10,6 +10,9 @@ import ExpressivePortrait from './expressions/ExpressivePortrait';
 import FreeChat from './freechat/FreeChat';
 import RedIvy from './redivy/RedIvy';
 import Teaser from './redivy/Teaser';
+import type { StoryChat } from './freechat/api';
+import { readProgress } from './redivy/engine';
+import { catalog } from './redivy/episodes';
 import { readInvite, saveInvite, errorText } from './freechat/api';
 import { chloeDemo, chloeHubChoices, chloeOpening, expressionArt, normalizeExpression, normalizeMotion } from './expressions/expressions';
 import type { Choice, Motion } from './expressions/expressions';
@@ -90,7 +93,8 @@ function demoReply(text:string,count:number,character=0){
 }
 export default function Prototype(){
  const [initial]=useState(readSaved);
- const [page,setPage]=useState<Page>(()=>window.location.hash==='#practice'?'practice':window.location.hash==='#red-ivy'?'redivy':'home');
+ const [page,setPage]=useState<Page>(()=>window.location.hash==='#practice'?'practice':window.location.hash==='#red-ivy'?'redivy':window.location.hash==='#characters'?'prepare':'home');
+ const [directChat,setDirectChat]=useState<StoryChat | undefined>(undefined);
  const [redIvyStart,setRedIvyStart]=useState<string|undefined>(undefined); // episode to open directly (from the teaser)
  const [look,setLook]=useState<Look>(readLook);
  // v7 world state (separate versioned key): look, map, feet position, day/night. The old look key above is kept untouched.
@@ -151,9 +155,17 @@ export default function Prototype(){
  function stopAudio(){recognition.current?.abort();setListening(false);window.speechSynthesis?.cancel();setSpeaking(false);}
  function go(next:Page){keyboard.hide();stopAudio();setCue(null);setSheet(null);setCloset(null);setError('');setPage(next);}
  function openPaywall(name:string,detail:string,art:string,back:Page){setPayTarget({name,detail,art,back});go('paywall');}
- function pickPerson(i:number){setCharacter(i);setScene(0);setSceneFilter('all');if(people[i].locked){openPaywall(withAnd(people[i].name)+' 친밀도 쌓기',people[i].description,people[i].art,'prepare');}else go('profile');}
- // Met on the map: keep the place in mind (scene at this place if one exists) and come back to the same spot afterwards.
- function talkFromWorld(i:number,s:WorldState){setWorld(s);setOrigin('world');setCharacter(i);const here=stories[i].findIndex(sc=>!sc.locked&&sc.mapId===s.mapId);setScene(here>=0?here:0);setSceneFilter('all');if(people[i].locked){openPaywall(withAnd(people[i].name)+' 친밀도 쌓기',people[i].description,people[i].art,'world');}else go('profile');}
+ function pickPerson(i:number){setOrigin('home');setCharacter(i);setScene(0);setSceneFilter('all');go('profile');}
+ function talkFromWorld(i:number,s:WorldState){setWorld(s);setOrigin('world');setCharacter(i);setScene(0);setSceneFilter('all');go('profile');}
+ function startCharacterChat(){
+  const ep=catalog.find(e=>e.number===1)?.data;
+  let completed=null;
+  try { if(ep) completed=readProgress(localStorage,ep); } catch { /* first meeting */ }
+  setDirectChat(completed?.finished
+   ? {character:chosen.id,episodeId:'red_ivy_s1_ep01',choices:completed.choices,place:origin==='world'?world.mapId:'campus'}
+   : {character:chosen.id,episodeId:'red_ivy_s1_ep01',choices:{},entry:'meet',place:origin==='world'?world.mapId:'campus'});
+  go('freechat');
+ }
  function startFromHome(){setOrigin('home');go('prepare');}
  function start(){
   if(chosen.locked||chosenScene.locked){openPaywall(chosenScene.title,chosenScene.detail,chosenScene.art,'scenes');return;}
@@ -222,10 +234,10 @@ export default function Prototype(){
  {page==='world'&&<><WorldMap initial={world} people={people} look={presetSel.look} lookName={lookName||presetSel.look} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);setOrigin('home');go('home');}} paused={!!closet} onWardrobe={()=>{keyboard.hide();closetSnap.current=presetSel;setClosetFrom('world');setCloset('look');}}/>{closetFrom==='world'&&closetPanel}</>}
  {page==='prepare'&&<>
   {heading('누구와 이야기할까?','서로 다른 여섯 사람, 너와 이어질 이야기.')}
-  <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>지금 만날 수 있는 3명</span><span><LockSimple size={13}/>친밀도 쌓기 3명</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">친밀도 쌓기는 유료 콘텐츠 이름이에요.<br/>현재는 결제 흐름을 살펴볼 수 있는 체험 버전이에요.</p></main></MobileScroll>
+  <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>Red Ivy의 여섯 인물</span><span>실제 AI 대화 · 시험</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">현재는 여섯 인물 모두 실제 AI 대화를 시험할 수 있어요.<br/>인물의 성격과 말투에 맞춰 영어로 답해요.</p></main></MobileScroll>
  </>}
- {page==='profile'&&<section className="profile-screen" aria-label={`${chosen.name} 소개`}><img className="profile-room" src={artOf(homeMapOf(character))} alt=""/><div className="profile-dim"/><header className="profile-top"><button className="icon-button" aria-label={origin==='world'?'맵으로 돌아가기':'캐릭터 목록으로'} onClick={()=>go(origin==='world'?'world':'prepare')}><ArrowLeft size={22}/></button><span>MEET YOUR PERSON</span><button className="icon-button" aria-label="메모장 열기" onClick={()=>go('notebook')}><BookOpen size={21}/></button></header><img className="profile-portrait" src={chosen.art} alt={chosen.name}/><div className="profile-info"><p className="eyebrow">{chosen.en}</p><div className="profile-name"><h1>{chosen.name}</h1><span>{chosen.relation}</span></div><p className="profile-quote">{chosen.role}</p><p className="profile-description">{chosen.description}</p><div className="profile-tags">{chosen.tags.map(t=><span key={t}>{t}</span>)}</div><button className="gold-button" onClick={()=>{if(origin!=='world')setScene(0);setSceneFilter('all');go('scenes');}}>대화하러 가기<ArrowRight size={19}/></button>{chosen.id==='sophie'&&origin==='world'&&world.mapId==='living-room'&&<button className="text-button freechat-entry" onClick={()=>go('freechat')}>거실에서 자유롭게 대화하기 · 실제 AI 시험 <ArrowRight size={15}/></button>}</div></section>}
- {page==='freechat'&&<FreeChat background={artOf('living-room')} portrait={people[1].art} timeOfDay={world.timeOfDay} onBack={()=>go('world')}/>}
+ {page==='profile'&&<section className="profile-screen" aria-label={`${chosen.name} 소개`}><img className="profile-room" src={artOf(homeMapOf(character))} alt=""/><div className="profile-dim"/><header className="profile-top"><button className="icon-button" aria-label={origin==='world'?'맵으로 돌아가기':'캐릭터 목록으로'} onClick={()=>go(origin==='world'?'world':'prepare')}><ArrowLeft size={22}/></button><span>MEET YOUR PERSON</span><button className="icon-button" aria-label="메모장 열기" onClick={()=>go('notebook')}><BookOpen size={21}/></button></header><img className="profile-portrait" src={chosen.art} alt={chosen.name}/><div className="profile-info"><p className="eyebrow">{chosen.en}</p><div className="profile-name"><h1>{chosen.name}</h1><span>{chosen.relation}</span></div><p className="profile-quote">{chosen.role}</p><p className="profile-description">{chosen.description}</p><div className="profile-tags">{chosen.tags.map(t=><span key={t}>{t}</span>)}</div><button className="gold-button" onClick={startCharacterChat}>실제 AI와 대화하기<ArrowRight size={19}/></button><p className="cast-footnote">직접 입력한 말에 Gemini가 답해요. 본편의 선택과 결말은 바뀌지 않아요.</p></div></section>}
+ {page==='freechat'&&directChat&&<FreeChat key={directChat.character} story={directChat} characterName={chosen.name} background={artOf(origin==='world'?world.mapId:'campus')} portrait={chosen.art} timeOfDay={world.timeOfDay} backLabel="인물 소개로 돌아가기" onBack={()=>go('profile')} isCardSaved={en=>notes.some(n=>n.en.trim().toLowerCase()===en.trim().toLowerCase())} onSaveCard={card=>{if(!notes.some(n=>n.en.trim().toLowerCase()===card.expression.trim().toLowerCase()))setNotes(n=>[...n,{id:crypto.randomUUID(),en:card.expression,ko:card.meaning_ko,context:`${chosen.name}와 자유 대화 · ${card.usage_note}`}]);}}/>}
  {page==='scenes'&&<>
   {heading('우리의 장면 고르기',`${chosen.name} · ${chosen.relation}`,'profile')}
   <MobileScroll className="pw-scroll"><main className="scenes-content">{origin==='world'&&<p className="scene-here"><MapPin size={12}/>지금 있는 곳 · {worldMaps[world.mapId].name} · {world.timeOfDay==='day'?'낮':'밤'}</p>}<div className="scene-hero"><img src={artOf(chosenScene.mapId)} alt={chosenScene.place}/><div><span><MapPin size={12}/>{chosenScene.place}</span><h2>{chosenScene.title}</h2></div></div><div className="scene-filter" aria-label="상황 필터">{([['all','전체 10'],['free','무료 7'],['premium','특별한 순간 3']] as const).map(([key,label])=><button key={key} aria-pressed={sceneFilter===key} onClick={()=>setSceneFilter(key)}>{label}</button>)}</div><div className="story-scenes">{stories[character].map((sc,i)=>({sc,i})).filter(({sc})=>sceneFilter==='all'||(sceneFilter==='free'?!sc.locked:sc.locked)).map(({sc,i})=><button key={sc.title} className={`story-scene ${scene===i?'selected':''}`} aria-pressed={scene===i} aria-label={`${sc.title}${sc.locked?' 유료':''}`} onClick={()=>{if(sc.locked){openPaywall(sc.title,sc.detail,artOf(sc.mapId),'scenes');}else setScene(i);}}><img src={artOf(sc.mapId)} alt=""/><div><small>{sc.place}{sc.locked&&<span><LockSimple size={10}/>유료</span>}</small><h3>{sc.title}</h3><p>{sc.detail}</p></div>{sc.locked?<LockSimple size={18}/>:scene===i?<Check size={18}/>:<ArrowRight size={16}/>}</button>)}</div><p className="cast-footnote">같은 사람과도, 매일 다른 이야기를.<br/>일부 장면은 같은 장소를 공유해요.</p></main></MobileScroll><footer className="fixed-footer scene-footer"><span>선택한 장면 · {chosen.name} · {chosenScene.title}</span><button className="gold-button" onClick={start}>이 장면에서 시작하기<ArrowRight size={18}/></button></footer>
