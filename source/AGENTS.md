@@ -170,3 +170,7 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - The profile's primary button goes directly to FreeChat with selected character, current map and time; it no longer opens scripted scenes. #characters opens the catalog for direct verification.
 - Valid completed EP01 progress supplies its choices. Otherwise entry=meet with empty choices starts a spoiler-free first meeting, with no invented shared history. The server allowlists places and entry modes; no arbitrary client-supplied persona or scene text.
 - Legacy stored demo conversations remain readable. New profile entry uses actual Gemini; errors never fall back to scripted replies. Voice synthesis is not part of this change.
+
+## Contextual chat portraits (2026-11-19)
+- FreeChat maps validated reply emotion to existing complete Red Ivy portraits for all six characters, with preload, stale-load cancellation, a 300ms fade and reduced-motion support. No extra image/API generation, no face compositing. Failed images retain the last valid portrait. New sessions reset the pose.
+- Hide the AI test badge and automatic Gemini introduction banner. Keep privacy/session information in a collapsed 대화 이용 안내; errors and participation-code controls remain usable.

@@ -112,7 +112,6 @@ test('all six characters open isolated chats, contextual replies save and errors
   await expect(page.getByText(`I am ${id}. What did you think of the party?`,{exact:true})).toBeVisible();
   expect(reqs.at(-1).mode).toBe('red-ivy-chat');expect(reqs.at(-1).character).toBe(id);expect(reqs.at(-1).turns).toEqual([]);
   if(id==='chloe') {
-   await page.getByRole('button',{name:'확인',exact:true}).click();
    await page.getByRole('button',{name:'한국어 뜻'}).click();
    await expect(page.getByText('파티는 어땠어?',{exact:true})).toBeVisible();
    await page.getByRole('button',{name:'이 표현 저장',exact:true}).click();
@@ -160,7 +159,6 @@ test('each updated character profile opens real chat directly without the script
   await expect(page.getByText(`I am ${id}. What did you think of the party?`,{exact:true})).toBeVisible();
   expect(calls.at(-1)).toMatchObject({mode:'red-ivy-chat',character:id,entry:'meet',choices:{},place:'campus'});
   if(id==='sophie') {
-   await page.getByRole('button',{name:'확인',exact:true}).click();
    await page.getByRole('textbox',{name:'소피에게 영어로 말하기'}).fill('I started painting yesterday.');
    await page.getByRole('button',{name:'보내기',exact:true}).click();
    await expect(page.getByText('I would like to hear more about your painting.',{exact:true})).toBeVisible();
@@ -169,4 +167,29 @@ test('each updated character profile opens real chat directly without the script
   await page.getByRole('button',{name:'인물 소개로 돌아가기'}).click();
   await page.getByRole('button',{name:'캐릭터 목록으로',exact:true}).click();
  }
+});
+
+test('chat changes complete portraits with reply mood, keeps valid art on failure and resets on restart',async({page})=>{
+ let count=0;
+ await page.route('**/api/ai',async route=>{count++;const reply=characterReply('chloe');reply.emotion=count===1?'curious':count===2?'firm':count===3?'disappointed':'neutral';await route.fulfill({json:{ok:true,mode:'gemini',reply}});});
+ await page.goto('/#characters');
+ await page.getByRole('button',{name:'클로이 소개 보기',exact:true}).click();
+ await page.getByRole('button',{name:'실제 AI와 대화하기',exact:true}).click();
+ const art=page.locator('.chat-portrait-current');
+ await expect(art).toHaveAttribute('src',/02_question_front/);
+ await expect(page.locator('.freechat-notice,.freechat-badge')).toHaveCount(0);
+ await expect(page.getByText(/대화 내용은 Google Gemini/)).not.toBeVisible();
+ const input=page.getByRole('textbox',{name:'클로이에게 영어로 말하기'});
+ await input.fill('Please respect my privacy.');await page.getByRole('button',{name:'보내기',exact:true}).click();
+ await expect(art).toHaveAttribute('src',/03_challenge/);
+ await page.route('**/06_defensive_down.webp',route=>route.abort());
+ await input.fill('I need some space.');await page.getByRole('button',{name:'보내기',exact:true}).click();
+ await expect(page.locator('.freechat-portrait')).toHaveAttribute('data-image-error','true');
+ await expect(art).toHaveAttribute('src',/03_challenge/);
+ await page.getByRole('button',{name:'새 대화',exact:true}).click();
+ await expect(art).toHaveAttribute('src',/00_base/);
+ await expect(page.locator('.bubble.sophie').first()).toBeVisible();
+ await expect(art).toHaveJSProperty('complete',true);
+ await page.waitForTimeout(500);
+ await page.screenshot({path:'/tmp/persona-chat-expressions.png'});
 });
