@@ -145,3 +145,28 @@ test('invalid saved invite can be replaced in chat without leaving the screen',a
  await expect(page.getByText('I am sophie. What did you think of the party?',{exact:true})).toBeVisible();
  expect(n).toBe(2);
 });
+
+test('each updated character profile opens real chat directly without the scripted scene chooser',async({page})=>{
+ test.setTimeout(60000);
+ await page.setViewportSize({width:390,height:844});
+ const calls:any[]=[];
+ await page.route('**/api/ai',async route=>{const b=route.request().postDataJSON();calls.push(b);const reply=characterReply(b.character);if(!b.opening)reply.speech_text='I would like to hear more about your painting.';await route.fulfill({json:{ok:true,mode:'gemini',reply}});});
+ await page.goto('/#characters');
+ for(const [id,name] of [['chloe','클로이'],['sophie','소피'],['ethan','이든'],['luna','루나'],['julian','줄리언'],['oliver','올리버']]) {
+  await page.getByRole('button',{name:`${name} 소개 보기`,exact:true}).click();
+  await expect(page.locator('.profile-portrait')).toHaveAttribute('src',new RegExp(`/red-ivy/characters/${id}/`));
+  await expect(page.locator('.profile-info')).not.toContainText(/고등학교 절친|1년 된 남자친구|가족 서점/);
+  await page.getByRole('button',{name:'실제 AI와 대화하기',exact:true}).click();
+  await expect(page.getByText(`I am ${id}. What did you think of the party?`,{exact:true})).toBeVisible();
+  expect(calls.at(-1)).toMatchObject({mode:'red-ivy-chat',character:id,entry:'meet',choices:{},place:'campus'});
+  if(id==='sophie') {
+   await page.getByRole('button',{name:'확인',exact:true}).click();
+   await page.getByRole('textbox',{name:'소피에게 영어로 말하기'}).fill('I started painting yesterday.');
+   await page.getByRole('button',{name:'보내기',exact:true}).click();
+   await expect(page.getByText('I would like to hear more about your painting.',{exact:true})).toBeVisible();
+   expect(calls.at(-1).turns.at(-1).text).toBe('I started painting yesterday.');
+  }
+  await page.getByRole('button',{name:'인물 소개로 돌아가기'}).click();
+  await page.getByRole('button',{name:'캐릭터 목록으로',exact:true}).click();
+ }
+});

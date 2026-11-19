@@ -17,9 +17,9 @@ function load(): Saved {
 
 const MAX = 500, WARN_AT = 450;   // same limit as the server (LIMITS.userChars)
 
-type Props = { background: string; portrait: string; timeOfDay: 'day' | 'night'; onBack: () => void; story?: StoryChat; characterName?: string; onSaveCard?: (card: NonNullable<LearningCard>) => void; isCardSaved?: (en: string) => boolean };
+type Props = { background: string; portrait: string; timeOfDay: 'day' | 'night'; onBack: () => void; story?: StoryChat; characterName?: string; backLabel?: string; onSaveCard?: (card: NonNullable<LearningCard>) => void; isCardSaved?: (en: string) => boolean };
 
-export default function FreeChat({ background, portrait, timeOfDay, onBack, story, characterName = '소피', onSaveCard, isCardSaved }: Props) {
+export default function FreeChat({ background, portrait, timeOfDay, onBack, story, characterName = '소피', backLabel, onSaveCard, isCardSaved }: Props) {
   const keyboard = useKeyboard();
   const { bottomInset, isKeyboardVisible } = useKeyboardInsets();
   const [state, setState] = useState<Saved>(() => story ? fresh() : load());
@@ -94,12 +94,12 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack, stor
       <div className="conversation-shade" />
       <img className="freechat-portrait" src={portrait} alt={characterName} data-emotion={lastSophie?.emotion ?? 'neutral'} />
       <header className="freechat-header">
-        <button className="icon-button" aria-label={story ? "1화 피드백으로 돌아가기" : "맵으로 돌아가기"} onClick={() => { keyboard.hide(); onBack(); }}><ArrowLeft size={19} /></button>
-        <div><strong>{characterName}</strong><span>{story ? "1화 이후 · 본편과 별개의 대화" : "거실 · 오랜 친구"}</span></div>
+        <button className="icon-button" aria-label={backLabel ?? (story ? "1화 피드백으로 돌아가기" : "맵으로 돌아가기")} onClick={() => { keyboard.hide(); onBack(); }}><ArrowLeft size={19} /></button>
+        <div><strong>{characterName}</strong><span>{story ? (story.entry === "meet" ? "첫 만남 · 자유 대화" : "1화 이후 · 본편과 별개의 대화") : "거실 · 오랜 친구"}</span></div>
         <span className="freechat-badge" title="Gemini 무료 티어로 실제 응답을 받아요">실제 AI 대화 · 시험</span>
         <button className="text-chip" onClick={restart}>새 대화</button>
       </header>
-      {!state.noticeSeen && <div className="freechat-notice" role="note"><Info size={14} /><p>무료 Gemini API로 실제 답을 받아요. 무료 서비스는 입력 내용을 Google 서비스 개선에 쓸 수 있으니 이름·연락처 같은 개인정보는 쓰지 마세요. 최근 대화 일부만 참고해요. {story ? '이 화면을 나가면 대화가 초기화돼요. 저장한 표현은 메모장에 남아요.' : '대화는 이 탭에서만 기억해요.'}</p><button onClick={() => setState(p => ({ ...p, noticeSeen: true }))}>확인</button></div>}
+      {!state.noticeSeen && !isKeyboardVisible && <div className="freechat-notice" role="note"><Info size={14} /><p>무료 Gemini API로 실제 답을 받아요. 무료 서비스는 입력 내용을 Google 서비스 개선에 쓸 수 있으니 이름·연락처 같은 개인정보는 쓰지 마세요. 최근 대화 일부만 참고해요. {story ? '이 화면을 나가면 대화가 초기화돼요. 저장한 표현은 메모장에 남아요.' : '대화는 이 탭에서만 기억해요.'}</p><button onClick={() => setState(p => ({ ...p, noticeSeen: true }))}>확인</button></div>}
       <MobileScroll className="freechat-log">
         <div className="freechat-log-inner">
           {state.turns.map((t, i) => t.role === 'you'
@@ -108,22 +108,25 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack, stor
           {pending && <p className="bubble you pending">{pending}</p>}
           {busy && <p className="bubble sophie typing" aria-live="polite">{busy === 'opening' ? `${characterName}의 첫 답변을 기다리는 중…` : `${characterName}의 답변을 기다리는 중…`}</p>}
           {state.card && !busy && <div className="freechat-card"><Sparkle size={15} /><div><b>{state.card.expression}</b><p>{state.card.meaning_ko}</p><small>{state.card.usage_note}</small>{onSaveCard && <button className="text-chip" disabled={isCardSaved?.(state.card.expression)} onClick={() => state.card && onSaveCard(state.card)}>{isCardSaved?.(state.card.expression) ? "메모장에 저장됨" : "이 표현 저장"}</button>}</div></div>}
-          {error && <div className="freechat-error" role="alert"><p>{errorText(error.code)}</p>
-            {needInvite
-              ? <form onSubmit={e => { e.preventDefault(); saveInvite(invite.trim()); setError(null); if (error.retry === 'opening') void opening(state); else void send(); }}><KeyboardInput aria-label="시험 참여 코드" type="password" autoComplete="off" value={invite} onChange={e => setInvite(e.target.value)} placeholder="참여 코드" /><button className="text-chip">확인</button></form>
-              : !['session_limit', 'daily_limit', 'invite_not_configured', 'too_long'].includes(error.code) && <button className="text-chip" onClick={() => error.retry === 'opening' ? opening(state) : send()}><ArrowClockwise size={13} /> 다시 시도</button>}
+          {error && !needInvite && <div className="freechat-error" role="alert"><p>{errorText(error.code)}</p>
+            {!['session_limit', 'daily_limit', 'invite_not_configured', 'too_long'].includes(error.code) && <button className="text-chip" onClick={() => error.retry === 'opening' ? opening(state) : send()}><ArrowClockwise size={13} /> 다시 시도</button>}
           </div>}
           <div ref={endRef} />
         </div>
       </MobileScroll>
       <footer className="freechat-composer" style={{ paddingBottom: Math.max(12, bottomInset + 8) }}>
-        {!!state.suggestions.length && !busy && <div className="freechat-suggestions" aria-label="추천 답변">
+        {error && needInvite && <div className="freechat-error" role="alert"><p>{errorText(error.code)}</p>
+          <form onSubmit={e => { e.preventDefault(); keyboard.hide(); saveInvite(invite.trim()); setError(null); if (error.retry === 'opening') void opening(state); else void send(); }}>
+            <KeyboardInput aria-label="시험 참여 코드" type="password" autoComplete="off" value={invite} onChange={e => setInvite(e.target.value)} placeholder="참여 코드" /><button className="text-chip">확인</button>
+          </form>
+        </div>}
+        {!!state.suggestions.length && !busy && !needInvite && <div className="freechat-suggestions" aria-label="추천 답변">
           {state.suggestions.map(sg => <button key={sg.en} className="suggestion" onClick={() => pickSuggestion(sg)}><small>{sg.intent}</small><span>{sg.en}</span><em>{sg.ko}</em></button>)}
         </div>}
-        <form onSubmit={e => { e.preventDefault(); void send(); }}>
+        {!needInvite && <form onSubmit={e => { e.preventDefault(); void send(); }}>
           <KeyboardInput aria-label={`${characterName}에게 영어로 말하기`} placeholder="영어로 자유롭게 써 보세요" value={draft} maxLength={500} onChange={e => { setDraft(e.target.value.slice(0, MAX)); setHint(null); }} disabled={busy === 'opening'} />
           <button className="send-button" aria-label="보내기" disabled={!!busy || !state.turns.length}><PaperPlaneTilt size={18} /></button>
-        </form>
+        </form>}
         {(hint || draft.length >= WARN_AT) && <p className="freechat-hint" role="status">{hint ?? `${draft.length}/${MAX}자 · ${MAX - draft.length}자 남았어요`}</p>}
       </footer>
     </section>

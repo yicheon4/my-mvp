@@ -164,3 +164,9 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Chat is a non-canon side conversation after EP01. Role and style are behavioral rules, not repeated sample lines. No relationship punishment for grammar, no forced romance, no pronunciation scoring from text.
 - Reuses FreeChat with keyed, memory-only Red Ivy sessions. Leaving or starting over clears this chat; only explicit notebook saves persist. Legacy Sophie keeps its existing tab session. Client sends last 16 turns; server also caps history at 6000 chars.
 - Existing /api/ai, invite and limits remain. Invalid invite can be corrected inline. 35s browser timeout, 25s upstream timeout, output schema and no fake fallback. Feedback and chat use the same configured model.
+
+## Character profiles route to real chat (2026-11-19)
+- Map NPC → profile and character catalog → profile now use the six Red Ivy portraits and spoiler-light introductions in story-data.ts. Preserve people array order for saved legacy sessions. All six are open for the current AI test.
+- The profile's primary button goes directly to FreeChat with selected character, current map and time; it no longer opens scripted scenes. #characters opens the catalog for direct verification.
+- Valid completed EP01 progress supplies its choices. Otherwise entry=meet with empty choices starts a spoiler-free first meeting, with no invented shared history. The server allowlists places and entry modes; no arbitrary client-supplied persona or scene text.
+- Legacy stored demo conversations remain readable. New profile entry uses actual Gemini; errors never fall back to scripted replies. Voice synthesis is not part of this change.
