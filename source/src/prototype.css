@@ -167,3 +167,10 @@ button.world-notice{text-align:left;border:0;width:auto}
 /* Home footer (2026-11-19): 스토리 시작하기 is the main action; 나의 세계로 나가기 sits at the bottom as a clear secondary button. */
 .home-footer .world-start{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:48px;margin-top:12px;border-radius:12px;background:#2a1c33e6!important;border:1px solid #e2c38f!important;color:#fbecd2!important;font-size:15px!important;font-weight:500!important;letter-spacing:.5px;backdrop-filter:blur(12px);box-shadow:0 4px 18px #1a1022aa}
 .home-footer .world-start svg{color:#ecd09b}
+
+/* Complete portrait frames share one fixed box; reveal only after decoding. */
+.freechat-portrait>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top}
+.chat-portrait-current{animation:chat-portrait-reveal .3s ease both}
+@keyframes chat-portrait-reveal{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.chat-portrait-current{animation:none}}
+.chat-information{font-size:10px;color:#cbbccb;margin-top:6px}.chat-information summary{cursor:pointer}.chat-information p{margin:6px 0;line-height:1.5}

@@ -156,3 +156,21 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Feedback distinguishes sentence naturalness from alignment with the chosen intention; action choices are coached as things the learner can say, phone choices as messages. Never infer pronunciation from transcripts or change story outcomes based on English quality.
 - Already-natural sentences are labelled. Missing utterances after refresh are explicitly unevaluated; progress remains, no invented feedback. Saving originals/feedback or alternatives is explicit and uses the existing notebook.
 - Browser regression: tests/expression-feedback.spec.ts includes EP1 A/B/A/B playthrough, one batch request, quota retry, cached revisit, selective notebook saving and refresh-without-input behavior. Mock responses only; live Gemini verification requires local server credentials or a configured deployment.
+
+## Red Ivy six-character chat (2026-11-19)
+- EP01 feedback → six-character picker → actual Gemini one-to-one text chat. All six are available as a test; this does not implement payments or change legacy locked map profiles.
+- Server mode `red-ivy-chat` uses `RED_IVY_PERSONAS` in server/sophie-chat-core.mjs, separate from legacy share-house personas. Only EP01 is accepted, with all four valid A/B choice IDs. Browser progress is not proof of purchase or a secure entitlement.
+- Context is reconstructed from the selected path: shared club dialogue and public/group posts; private corridor/messages only for Luna. Audience-only terrace lines, the unknown private message and future episodes are excluded. This is prompt-based canon protection, not a guarantee against model hallucinations.
+- Chat is a non-canon side conversation after EP01. Role and style are behavioral rules, not repeated sample lines. No relationship punishment for grammar, no forced romance, no pronunciation scoring from text.
+- Reuses FreeChat with keyed, memory-only Red Ivy sessions. Leaving or starting over clears this chat; only explicit notebook saves persist. Legacy Sophie keeps its existing tab session. Client sends last 16 turns; server also caps history at 6000 chars.
+- Existing /api/ai, invite and limits remain. Invalid invite can be corrected inline. 35s browser timeout, 25s upstream timeout, output schema and no fake fallback. Feedback and chat use the same configured model.
+
+## Character profiles route to real chat (2026-11-19)
+- Map NPC → profile and character catalog → profile now use the six Red Ivy portraits and spoiler-light introductions in story-data.ts. Preserve people array order for saved legacy sessions. All six are open for the current AI test.
+- The profile's primary button goes directly to FreeChat with selected character, current map and time; it no longer opens scripted scenes. #characters opens the catalog for direct verification.
+- Valid completed EP01 progress supplies its choices. Otherwise entry=meet with empty choices starts a spoiler-free first meeting, with no invented shared history. The server allowlists places and entry modes; no arbitrary client-supplied persona or scene text.
+- Legacy stored demo conversations remain readable. New profile entry uses actual Gemini; errors never fall back to scripted replies. Voice synthesis is not part of this change.
+
+## Contextual chat portraits (2026-11-19)
+- FreeChat maps validated reply emotion to existing complete Red Ivy portraits for all six characters, with preload, stale-load cancellation, a 300ms fade and reduced-motion support. No extra image/API generation, no face compositing. Failed images retain the last valid portrait. New sessions reset the pose.
+- Hide the AI test badge and automatic Gemini introduction banner. Keep privacy/session information in a collapsed 대화 이용 안내; errors and participation-code controls remain usable.

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, PaperPlaneTilt, ArrowClockwise, Sparkle, Info, CaretDown } from '@phosphor-icons/react';
+import { ArrowLeft, PaperPlaneTilt, ArrowClockwise, Sparkle, CaretDown } from '@phosphor-icons/react';
 import { KeyboardInput, MobileScroll, useKeyboard, useKeyboardInsets } from '../mobile';
 import { requestReply, errorText, readInvite, saveInvite } from './api';
-import type { ChatTurn, Suggestion, LearningCard } from './api';
+import type { ChatTurn, Suggestion, LearningCard, StoryChat } from './api';
 
 // Real AI test: Sophie visiting the living room. Session data lives only in this tab (sessionStorage);
 // nothing here is long-term memory, and other sessions are never sent to the server.
@@ -15,14 +15,52 @@ function load(): Saved {
   return fresh();
 }
 
+// Reuse complete approved EP01 portraits; never splice faces or request new images.
+const CHAT_POSES: Record<string, string[]> = {
+  chloe: ['00_base','01_toast_front','01_toast_front','02_question_front','04_guarded_front','06_defensive_down','03_challenge'],
+  sophie: ['02_attentive','00_neutral','03_dry_humor','04_explain','02_attentive','05_tense','05_tense'],
+  ethan: ['00_neutral','01_dry_joke','01_dry_joke','02_skeptical','02_skeptical','02_skeptical','04_challenge'],
+  luna: ['00_neutral','05_trust','01_arrival','03_ask_player','04_elena','02_pushback','02_pushback'],
+  julian: ['00_neutral','01_joking','02_wry_observer','02_wry_observer','04_defend_luna','03_embarrassed','05_stop_game'],
+  oliver: ['00_neutral','04_welcome','01_toast','02_wry','03_im_fine','05_elena','03_im_fine'],
+};
+const MOODS = ['neutral','warm','playful','curious','concerned','disappointed','firm'];
+function ChatPortrait({ base, character, emotion, name }: {base:string; character?:string; emotion:string; name:string}) {
+  const [frame,setFrame] = useState({src:base, previous:base});
+  const [failed,setFailed] = useState(false);
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timer = window.setTimeout(() => setFrame(f => ({...f,previous:f.src})), reduced ? 0 : 320);
+    return () => window.clearTimeout(timer);
+  }, [frame.src]);
+  const index = Math.max(0, MOODS.indexOf(emotion));
+  const pose = character && CHAT_POSES[character]?.[index];
+  const wanted = pose ? `/red-ivy/characters/${character}/${pose}.webp` : base;
+  useEffect(() => {
+    let active = true;
+    const img = new Image();
+    img.onload = async () => {
+      try { await img.decode(); } catch { /* loaded pixels remain usable */ }
+      if (active) { setFailed(false); setFrame(f => f.src === wanted ? f : {src:wanted,previous:f.src}); }
+    };
+    img.onerror = () => { if(active) setFailed(true); }; // retain the last valid portrait
+    img.src = wanted;
+    return () => { active=false; img.onload=null; img.onerror=null; };
+  }, [wanted]);
+  return <div className="freechat-portrait" data-emotion={emotion} data-image-error={failed || undefined}>
+    {frame.previous !== frame.src && <img src={frame.previous} alt="" aria-hidden="true" draggable={false}/>}
+    <img key={frame.src} className="chat-portrait-current" src={frame.src} alt={name} draggable={false}/>
+  </div>;
+}
+
 const MAX = 500, WARN_AT = 450;   // same limit as the server (LIMITS.userChars)
 
-type Props = { background: string; portrait: string; timeOfDay: 'day' | 'night'; onBack: () => void };
+type Props = { background: string; portrait: string; timeOfDay: 'day' | 'night'; onBack: () => void; story?: StoryChat; characterName?: string; backLabel?: string; onSaveCard?: (card: NonNullable<LearningCard>) => void; isCardSaved?: (en: string) => boolean };
 
-export default function FreeChat({ background, portrait, timeOfDay, onBack }: Props) {
+export default function FreeChat({ background, portrait, timeOfDay, onBack, story, characterName = '소피', backLabel, onSaveCard, isCardSaved }: Props) {
   const keyboard = useKeyboard();
   const { bottomInset, isKeyboardVisible } = useKeyboardInsets();
-  const [state, setState] = useState<Saved>(load);
+  const [state, setState] = useState<Saved>(() => story ? fresh() : load());
   const [draft, setDraft] = useState('');
   const [busy, setBusy] = useState<null | 'opening' | 'reply'>(null);
   const [pending, setPending] = useState<string | null>(null);   // player line waiting for Sophie (not saved yet)
@@ -33,7 +71,7 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
   const live = useRef({ sessionId: state.sessionId, mounted: true });
   const endRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { try { sessionStorage.setItem(STORE, JSON.stringify(state)); } catch { /* optional */ } }, [state]);
+  useEffect(() => { if (story) return; try { sessionStorage.setItem(STORE, JSON.stringify(state)); } catch { /* optional */ } }, [state]);
   useEffect(() => { live.current.sessionId = state.sessionId; }, [state.sessionId]);
   useEffect(() => { live.current.mounted = true; return () => { live.current.mounted = false; }; }, []);
   useEffect(() => { endRef.current?.scrollIntoView({ block: 'end' }); }, [state.turns.length, pending, busy]);
@@ -43,7 +81,7 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
 
   async function opening(s: Saved) {
     setBusy('opening'); setError(null);
-    const res = await requestReply(`${s.sessionId}:opening`, { sessionId: s.sessionId, timeOfDay, turns: [], opening: true });
+    const res = await requestReply(`${s.sessionId}:opening`, { sessionId: s.sessionId, timeOfDay, turns: [], opening: true, story });
     if (!stillHere(s.sessionId)) return;
     setBusy(null);
     if (!res.ok) { setError({ code: res.error, retry: 'opening' }); return; }
@@ -64,7 +102,7 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
     const s = state;
     const turns: ChatTurn[] = [...s.turns, { role: 'you', text }];
     setPending(text); setDraft(''); setBusy('reply'); setError(null);
-    const res = await requestReply(`${s.sessionId}:${s.turns.length}:${text}`, { sessionId: s.sessionId, timeOfDay, turns, opening: false });
+    const res = await requestReply(`${s.sessionId}:${s.turns.length}:${text}`, { sessionId: s.sessionId, timeOfDay, turns, opening: false, story });
     if (!stillHere(s.sessionId)) return;
     setBusy(null); setPending(null);
     if (!res.ok) { setDraft(d => d || text); setError({ code: res.error, retry: 'send' }); return; } // keep the draft; nothing saved, so a retry cannot duplicate it
@@ -87,44 +125,48 @@ export default function FreeChat({ background, portrait, timeOfDay, onBack }: Pr
   }
 
   const lastSophie = [...state.turns].reverse().find(t => t.role === 'sophie');
-  const needInvite = error?.code === 'invite_required';
+  const needInvite = error?.code === 'invite_required' || error?.code === 'invite_invalid';
   return (
-    <section className={`freechat-screen ${isKeyboardVisible ? 'kb-open' : ''}`} aria-label="소피와 자유 대화">
-      <img className="scene-art" src={background} alt="거실" />
+    <section className={`freechat-screen ${isKeyboardVisible ? 'kb-open' : ''}`} aria-label={`${characterName}와 자유 대화`}>
+      <img className="scene-art" src={background} alt={story ? "크림슨 클럽" : "거실"} />
       <div className="conversation-shade" />
-      <img className="freechat-portrait" src={portrait} alt="소피" data-emotion={lastSophie?.emotion ?? 'neutral'} />
+      <ChatPortrait key={`${state.sessionId}:${portrait}`} base={portrait} character={story?.character} emotion={lastSophie?.emotion ?? 'neutral'} name={characterName} />
       <header className="freechat-header">
-        <button className="icon-button" aria-label="맵으로 돌아가기" onClick={() => { keyboard.hide(); onBack(); }}><ArrowLeft size={19} /></button>
-        <div><strong>소피</strong><span>거실 · 오랜 친구</span></div>
-        <span className="freechat-badge" title="Gemini 무료 티어로 실제 응답을 받아요">실제 AI 대화 · 시험</span>
+        <button className="icon-button" aria-label={backLabel ?? (story ? "1화 피드백으로 돌아가기" : "맵으로 돌아가기")} onClick={() => { keyboard.hide(); onBack(); }}><ArrowLeft size={19} /></button>
+        <div><strong>{characterName}</strong><span>{story ? (story.entry === "meet" ? "첫 만남" : "이야기 이후") : "거실 · 오랜 친구"}</span></div>
+
         <button className="text-chip" onClick={restart}>새 대화</button>
       </header>
-      {!state.noticeSeen && <div className="freechat-notice" role="note"><Info size={14} /><p>무료 Gemini API로 실제 답을 받아요. 무료 서비스는 입력 내용을 Google 서비스 개선에 쓸 수 있으니 이름·연락처 같은 개인정보는 쓰지 마세요. 대화는 이 창에서만 기억해요.</p><button onClick={() => setState(p => ({ ...p, noticeSeen: true }))}>확인</button></div>}
+
       <MobileScroll className="freechat-log">
         <div className="freechat-log-inner">
           {state.turns.map((t, i) => t.role === 'you'
             ? <p key={i} className="bubble you">{t.text}</p>
             : <div key={i} className="bubble sophie"><p>{t.text}</p>{t.ko && <button className="ko-toggle" aria-expanded={openKo === i} onClick={() => setOpenKo(openKo === i ? null : i)}>한국어 뜻 <CaretDown size={11} /></button>}{openKo === i && <p className="ko">{t.ko}</p>}</div>)}
           {pending && <p className="bubble you pending">{pending}</p>}
-          {busy && <p className="bubble sophie typing" aria-live="polite">{busy === 'opening' ? '소피가 다가오는 중…' : '소피가 답하는 중…'}</p>}
-          {state.card && !busy && <div className="freechat-card"><Sparkle size={15} /><div><b>{state.card.expression}</b><p>{state.card.meaning_ko}</p><small>{state.card.usage_note}</small></div></div>}
-          {error && <div className="freechat-error" role="alert"><p>{errorText(error.code)}</p>
-            {needInvite
-              ? <form onSubmit={e => { e.preventDefault(); saveInvite(invite.trim()); setError(null); if (error.retry === 'opening') void opening(state); }}><KeyboardInput aria-label="시험 참여 코드" value={invite} onChange={e => setInvite(e.target.value)} placeholder="참여 코드" /><button className="text-chip">확인</button></form>
-              : !['session_limit', 'daily_limit', 'invite_not_configured', 'too_long'].includes(error.code) && <button className="text-chip" onClick={() => error.retry === 'opening' ? opening(state) : send()}><ArrowClockwise size={13} /> 다시 시도</button>}
+          {busy && <p className="bubble sophie typing" aria-live="polite">{busy === 'opening' ? `${characterName}의 첫 답변을 기다리는 중…` : `${characterName}의 답변을 기다리는 중…`}</p>}
+          {state.card && !busy && <div className="freechat-card"><Sparkle size={15} /><div><b>{state.card.expression}</b><p>{state.card.meaning_ko}</p><small>{state.card.usage_note}</small>{onSaveCard && <button className="text-chip" disabled={isCardSaved?.(state.card.expression)} onClick={() => state.card && onSaveCard(state.card)}>{isCardSaved?.(state.card.expression) ? "메모장에 저장됨" : "이 표현 저장"}</button>}</div></div>}
+          {error && !needInvite && <div className="freechat-error" role="alert"><p>{errorText(error.code)}</p>
+            {!['session_limit', 'daily_limit', 'invite_not_configured', 'too_long'].includes(error.code) && <button className="text-chip" onClick={() => error.retry === 'opening' ? opening(state) : send()}><ArrowClockwise size={13} /> 다시 시도</button>}
           </div>}
           <div ref={endRef} />
         </div>
       </MobileScroll>
       <footer className="freechat-composer" style={{ paddingBottom: Math.max(12, bottomInset + 8) }}>
-        {!!state.suggestions.length && !busy && <div className="freechat-suggestions" aria-label="추천 답변">
+        {error && needInvite && <div className="freechat-error" role="alert"><p>{errorText(error.code)}</p>
+          <form onSubmit={e => { e.preventDefault(); keyboard.hide(); saveInvite(invite.trim()); setError(null); if (error.retry === 'opening') void opening(state); else void send(); }}>
+            <KeyboardInput aria-label="시험 참여 코드" type="password" autoComplete="off" value={invite} onChange={e => setInvite(e.target.value)} placeholder="참여 코드" /><button className="text-chip">확인</button>
+          </form>
+        </div>}
+        {!!state.suggestions.length && !busy && !needInvite && <div className="freechat-suggestions" aria-label="추천 답변">
           {state.suggestions.map(sg => <button key={sg.en} className="suggestion" onClick={() => pickSuggestion(sg)}><small>{sg.intent}</small><span>{sg.en}</span><em>{sg.ko}</em></button>)}
         </div>}
-        <form onSubmit={e => { e.preventDefault(); void send(); }}>
-          <KeyboardInput aria-label="소피에게 영어로 말하기" placeholder="영어로 자유롭게 써 보세요" value={draft} maxLength={500} onChange={e => { setDraft(e.target.value.slice(0, MAX)); setHint(null); }} disabled={busy === 'opening'} />
+        {!needInvite && <form onSubmit={e => { e.preventDefault(); void send(); }}>
+          <KeyboardInput aria-label={`${characterName}에게 영어로 말하기`} placeholder="영어로 자유롭게 써 보세요" value={draft} maxLength={500} onChange={e => { setDraft(e.target.value.slice(0, MAX)); setHint(null); }} disabled={busy === 'opening'} />
           <button className="send-button" aria-label="보내기" disabled={!!busy || !state.turns.length}><PaperPlaneTilt size={18} /></button>
-        </form>
+        </form>}
         {(hint || draft.length >= WARN_AT) && <p className="freechat-hint" role="status">{hint ?? `${draft.length}/${MAX}자 · ${MAX - draft.length}자 남았어요`}</p>}
+        {!isKeyboardVisible && <details className="chat-information"><summary>대화 이용 안내</summary><p>대화 내용은 Google Gemini로 전송되며 무료 서비스에서는 서비스 개선에 쓰일 수 있어요. 개인정보는 입력하지 마세요. 최근 대화 일부를 참고하며, 이 화면을 나가면 대화가 초기화돼요. 직접 저장한 표현은 메모장에 남아요.</p></details>}
       </footer>
     </section>
   );

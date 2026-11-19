@@ -1,16 +1,106 @@
-import { portraits, mapArt } from './world/world-data';
+import { mapArt } from './world/world-data';
 import type { MapId } from './world/world-data';
 export type StoryScene={title:string;place:string;detail:string;art:string;mapId:MapId;opening:string;translation:string;locked:boolean};
 // id matches characters/character-prompts.json; the array order is the saved session index and must not change.
-// description = public intro from 캐릭터_설정집 v3. No quote/catchphrase field: character voice comes from style prompts, not fixed lines.
+// Public Red Ivy introductions: spoiler-light, matching the live server personas. No fixed catchphrases.
 export type Person={id:'chloe'|'sophie'|'ethan'|'luna'|'julian'|'oliver';name:string;en:string;art:string;relation:string;role:string;trait:string;description:string;tags:string[];locked:boolean};
 export const people:Person[]=[
- {id:'chloe',name:'클로이',en:'CHLOE',art:portraits.chloe,relation:'같은 집 룸메이트',role:'23세 · 환경디자인 3학년',trait:'다정한 현실주의자',description:'같은 쉐어하우스에 사는 동갑내기 룸메이트. 말보다 행동으로 마음을 전한다. 냉장고에는 날짜를 써두지만, 자기 마음에는 좀처럼 이름을 붙이지 못한다.',tags:['같은 집, 다른 하루','차분한 공감','함께 사는 친구'],locked:false},
- {id:'sophie',name:'소피',en:'SOPHIE',art:portraits.sophie,relation:'고등학교 절친',role:'23세 · 미디어커뮤니케이션 3학년 · 캠퍼스 라디오',trait:'내 마음을 먼저 알아채는',description:'고등학교 때부터 알던 절친. 조용한 모임도 금세 떠들썩하게 만든다. 네가 웃는 이유는 잘 알지만, 자신이 웃지 않을 때 어떻게 보여야 할지는 아직 서툴다.',tags:['오래된 우리','유쾌한 솔직함','설명하지 않아도'],locked:false},
- {id:'ethan',name:'이든',en:'ETHAN',art:portraits.ethan,relation:'연애한 지 1년 된 남자친구',role:'24세 · 기계공학 4학년 · 자전거 수리점 아르바이트',trait:'서두르지 않는 다정함',description:'교제한 지 1년 된 남자친구. 좋아하는 메뉴와 자주 걷는 길을 기억한다. 다정한 대답 뒤에 자기 생각을 잠시 미뤄두는 버릇이 있다.',tags:['함께한 1년','서로의 속도','다정한 연인'],locked:false},
- {id:'luna',name:'루나',en:'LUNA',art:portraits.luna,relation:'여행에서 만난 친구',role:'25세 · 시각인류학 휴학 · 지역 이야기 기록',trait:'낯선 곳에서도 나답게',description:'여행 중 우연히 친해진 뒤 이 도시에서 다시 만난 친구. 낯선 골목을 발견하는 감각이 좋다. 다음 목적지는 쉽게 말하면서, 다음 주의 약속에는 잠시 망설인다.',tags:['새로운 시선','여행의 우연','자유로운 대화'],locked:true},
- {id:'julian',name:'줄리언',en:'JULIAN',art:portraits.julian,relation:'예술 동아리 선배',role:'24세 · 시각예술 4학년 · 동아리 전시 총괄',trait:'좋은 질문을 건네는',description:'예술 동아리의 한 학년 선배. 네가 무심코 고른 색에서도 이야깃거리를 찾는다. 좋은 질문을 건네지만, 자기 작품의 제목을 물으면 대답이 길어진다.',tags:['취향을 나누는 사이','차분한 호기심','나만의 방향'],locked:true},
- {id:'oliver',name:'올리버',en:'OLIVER',art:portraits.oliver,relation:'동네 서점에서 사귄 친구',role:'25세 · 문헌정보학 졸업 · 가족 서점 운영 보조',trait:'이야기를 오래 기억하는',description:'동네 서점에서 책을 추천받다 친해진 친구. 네가 고른 책은 잘 기억하지만 자기 추천이 늘 맞는다고 생각하지는 않는다. 조용한 얼굴로 엉뚱한 농담을 한다.',tags:['책으로 이어진 사이','조용한 유머','느긋한 오후'],locked:true},
+  {
+    "id": "chloe",
+    "name": "클로이",
+    "en": "CHLOE",
+    "art": "/red-ivy/characters/chloe/00_base.webp",
+    "relation": "크림슨 클럽의 호스트",
+    "role": "St. Jude University · 성인 대학생",
+    "trait": "우아한 자신감, 쉽게 보이지 않는 속마음",
+    "description": "사람들의 시선과 분위기를 누구보다 빠르게 읽는 클로이. 매끄러운 농담과 당당한 태도로 자리를 이끌지만, 남들이 자신을 어떻게 보는지에는 예민하다. 진심 어린 말에는 잠시 경계를 내려놓기도 한다.",
+    "tags": [
+      "정제된 말투",
+      "날카로운 장난",
+      "감춰 둔 불안"
+    ],
+    "locked": false
+  },
+  {
+    "id": "sophie",
+    "name": "소피",
+    "en": "SOPHIE",
+    "art": "/red-ivy/characters/sophie/02_attentive.webp",
+    "relation": "작은 변화를 알아채는 클럽 멤버",
+    "role": "St. Jude University · 성인 대학생",
+    "trait": "조용한 관찰과 눈에 띄지 않는 배려",
+    "description": "빈 잔이나 흐트러진 소매처럼 남들이 지나치는 것을 먼저 알아챈다. 큰 위로보다 필요한 도움을 건네고, 차분한 말 사이에 건조한 농담을 섞는다. 조용하다고 해서 자기 생각까지 없는 것은 아니다.",
+    "tags": [
+      "세심한 관찰",
+      "실질적인 배려",
+      "담담한 유머"
+    ],
+    "locked": false
+  },
+  {
+    "id": "ethan",
+    "name": "이든",
+    "en": "ETHAN",
+    "art": "/red-ivy/characters/ethan/00_neutral.webp",
+    "relation": "거리를 두고 지켜보는 클럽 멤버",
+    "role": "St. Jude University · 성인 대학생",
+    "trait": "짧은 농담 뒤에 남는 진지함",
+    "description": "분위기에 쉽게 휩쓸리지 않고, 그럴듯한 말에 숨은 모순을 짚는다. 무심하고 냉소적으로 보이지만 중요한 순간에는 농담을 멈추고 직설적으로 말한다. 가까워지는 데는 조금 시간이 필요하다.",
+    "tags": [
+      "건조한 유머",
+      "솔직한 직설",
+      "느리게 여는 마음"
+    ],
+    "locked": false
+  },
+  {
+    "id": "luna",
+    "name": "루나",
+    "en": "LUNA",
+    "art": "/red-ivy/characters/luna/00_neutral.webp",
+    "relation": "새롭게 합류한 편입생",
+    "role": "St. Jude University · 성인 대학생",
+    "trait": "쉽게 믿지 않지만 끝까지 듣는 사람",
+    "description": "낯선 자리에서도 자신의 속도를 잃지 않는다. 사람들이 당연하게 넘기는 일에 이유를 묻고, 직접 본 사실과 추측을 구분한다. 진지하게 들어 주는 사람에게는 질문만큼 자신의 생각도 나눈다.",
+    "tags": [
+      "신중한 질문",
+      "흔들리지 않는 태도",
+      "차분한 호기심"
+    ],
+    "locked": false
+  },
+  {
+    "id": "julian",
+    "name": "줄리언",
+    "en": "JULIAN",
+    "art": "/red-ivy/characters/julian/00_neutral.webp",
+    "relation": "분위기를 읽는 클럽 멤버",
+    "role": "St. Jude University · 성인 대학생",
+    "trait": "가벼운 농담, 가볍지 않은 배려",
+    "description": "어색한 순간에 적절한 농담을 건네고 새로운 사람도 대화에 끼워 준다. 하지만 누군가 몰리는 상황에서는 웃음을 거두고 선을 긋는다. 사교적인 모습 안에 자기만의 기준이 있다.",
+    "tags": [
+      "재치 있는 말투",
+      "갈등 중재",
+      "필요할 때 단호함"
+    ],
+    "locked": false
+  },
+  {
+    "id": "oliver",
+    "name": "올리버",
+    "en": "OLIVER",
+    "art": "/red-ivy/characters/oliver/00_neutral.webp",
+    "relation": "친절하게 신입을 맞는 클럽 멤버",
+    "role": "St. Jude University · 성인 대학생",
+    "trait": "다정한 미소 뒤의 작은 망설임",
+    "description": "처음 만난 사람도 편하게 해 주려 노력한다. 알기 쉬운 말과 소박한 농담을 좋아하지만, 모두가 기대하는 모습에 맞추느라 지칠 때도 있다. 자기 이야기를 꺼낼 때는 잠시 말을 고르곤 한다.",
+    "tags": [
+      "편안한 환대",
+      "솔직한 망설임",
+      "감춰 둔 긴장"
+    ],
+    "locked": false
+  }
 ];
 const art={cafe:'bar',campus:'campus',park:'park',kitchen:'kitchen',seaside:'park',street:'campus',terrace:'living-room',room:'bedroom',sun:'living-room'} satisfies Record<string,MapId>;
 type Row=[string,string,string,keyof typeof art,string,string];
