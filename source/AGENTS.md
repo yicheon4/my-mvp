@@ -174,3 +174,6 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 ## Contextual chat portraits (2026-11-19)
 - FreeChat maps validated reply emotion to existing complete Red Ivy portraits for all six characters, with preload, stale-load cancellation, a 300ms fade and reduced-motion support. No extra image/API generation, no face compositing. Failed images retain the last valid portrait. New sessions reset the pose.
 - Hide the AI test badge and automatic Gemini introduction banner. Keep privacy/session information in a collapsed 대화 이용 안내; errors and participation-code controls remain usable.
+
+## Episode feedback calibration (2026-11-24)
+- Evaluate intention coverage, naturalness and scene/register independently, with evidence and one prioritized revision. Correct sentences need no forced criticism: teach optional nuance. No generic praise banner. Alternatives preserve all material intentions. No pronunciation or proficiency scores from text.

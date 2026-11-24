@@ -493,7 +493,7 @@ function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onL
             <dt>상황</dt><dd>{pl ? <>{speakerName(pl) && <b>{speakerName(pl)}: </b>}“{pl.text}”{pl.ko && <small>{pl.ko}</small>}</> : '—'}</dd>
             <dt>의도</dt><dd>{c.options.find(o => o.id === (u?.option ?? picks[c.choice_id]))?.intent_ko ?? '—'}</dd>
             <dt>내 문장</dt><dd className="ri-said">{u ? u.text : '입력 기록 없음 · 평가하지 않아요'}</dd>
-            {f && <><dt>의미</dt><dd>{f.meaning_ko}</dd><dt>피드백</dt><dd>{f.already_natural && <strong>이미 자연스러운 표현이에요. </strong>}{f.coaching_ko}</dd></>}
+            {f && <><dt>의미</dt><dd>{f.meaning_ko}</dd><dt>피드백</dt><dd>{f.coaching_ko}</dd></>}
           </dl>
           {f && <>
             {f.alternatives.map((a, k) => <div key={a.en} className="ri-alt"><h3>{a.en}</h3><p>{a.ko}</p><small>{a.nuance_ko}</small>
