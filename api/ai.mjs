@@ -11,7 +11,10 @@ export const LIMITS = {
   historyChars: 6000,      // rough token budget for the recent turns
   perSession: 40,          // requests per chat session
   minIntervalMs: 1500,     // per session
-  timeoutMs: 25000,
+  timeoutMs: 25000,        // total budget for one request, all Gemini attempts included (browser waits 35–45s for chat/feedback)
+  retryStatuses: [500, 503], // Google's "temporarily overloaded" answers; quota (429), auth and model errors are never retried
+  retryDelaysMs: [800, 2000],
+  retryMinLeftMs: 8000,    // start another attempt only if this much of the budget is still left after the pause
 };
 export const EMOTIONS = ['neutral', 'warm', 'playful', 'curious', 'concerned', 'disappointed', 'firm'];
 
@@ -399,8 +402,18 @@ export function tokenUsage(meta) {
   return { sent, received, answer, thinking, total, check: total === null ? 'no_total' : sent + extra + received === total ? 'ok' : 'mismatch' };
 }
 
-/** Returns async ({ body, headers }) => { status, json }. env: GEMINI_API_KEY, GEMINI_MODEL, SOPHIE_INVITE_CODE, SOPHIE_DAILY_LIMIT, hosted */
-export function createSophieHandler({ env, prompts, redIvy, fetchImpl = fetch, now, log = () => {} }) {
+/** Abortable pause used between retries. */
+function pause(ms, signal) {
+  return new Promise(resolve => {
+    if (signal?.aborted) return resolve();
+    const t = setTimeout(done, ms); signal?.addEventListener('abort', done, { once: true });
+    function done() { clearTimeout(t); signal?.removeEventListener('abort', done); resolve(); }
+  });
+}
+
+/** Returns async ({ body, headers, signal }) => { status, json }. `signal` aborts when the browser leaves or cancels:
+ *  the Gemini call in flight is aborted and no further retry starts. env: GEMINI_API_KEY, GEMINI_MODEL, SOPHIE_INVITE_CODE, SOPHIE_DAILY_LIMIT, hosted */
+export function createSophieHandler({ env, prompts, redIvy, fetchImpl = fetch, now, log = () => {}, wait = pause, clock = Date.now }) {
   const rawInvite = env.SOPHIE_INVITE_CODE;
   env = { ...env, SOPHIE_INVITE_CODE: typeof rawInvite === 'string' ? rawInvite.trim() : rawInvite, GEMINI_MODEL: typeof env.GEMINI_MODEL === 'string' ? env.GEMINI_MODEL.trim() : env.GEMINI_MODEL };
   const limit = createLimiter(Number(env.SOPHIE_DAILY_LIMIT) || 150, now);
@@ -410,7 +423,7 @@ export function createSophieHandler({ env, prompts, redIvy, fetchImpl = fetch, n
     log('fail', status, error + (reason ? ' ' + safeReason(reason, secrets) : ''));
     return { status, json: { ok: false, error } };
   };
-  return async ({ body, headers }) => {
+  return async ({ body, headers, signal }) => {
     if (env.hosted && !env.SOPHIE_INVITE_CODE) return fail(503, 'invite_not_configured');
     const providedInvite = typeof headers['x-invite-code'] === 'string' ? headers['x-invite-code'].trim() : '';
     if (env.SOPHIE_INVITE_CODE && !providedInvite) return fail(401, 'invite_required');
@@ -433,25 +446,42 @@ export function createSophieHandler({ env, prompts, redIvy, fetchImpl = fetch, n
       contents: buildContents(turns, opening),
       generationConfig: { responseMimeType: 'application/json', responseSchema: RESPONSE_SCHEMA, temperature: 0.9, maxOutputTokens: 4096 },
     };
-    const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), LIMITS.timeoutMs);
-    let res;
-    try {
-      res = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(env.GEMINI_MODEL)}:generateContent`, {
-        method: 'POST', signal: ctrl.signal,
-        headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-        body: JSON.stringify(request),
-      });
-    } catch (e) {
-      return e?.name === 'AbortError' ? fail(504, 'timeout', 'gemini AbortError') : fail(504, 'network', 'gemini ' + (e?.name ?? 'error'));
-    } finally { clearTimeout(timer); }
+    // Google sometimes answers 500/503 when the model is briefly overloaded. Retry the same request on the
+    // same model a couple of times inside one total time budget; never switch models or fake a reply.
+    // Logs carry only attempt count, status codes and elapsed ms (no key, invite code or learner text).
+    const started = clock(), deadline = started + LIMITS.timeoutMs;
+    let res, attempts = 0;
+    const stats = () => `attempts=${attempts} ms=${clock() - started}`;
+    const failT = (status, error, reason = '') => fail(status, error, (reason ? reason + ' ' : '') + stats());
+    for (;;) {
+      if (signal?.aborted) return failT(499, 'cancelled', 'client gone');
+      attempts++;
+      const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), Math.max(1, deadline - clock()));
+      const stop = () => ctrl.abort(); signal?.addEventListener('abort', stop, { once: true });
+      try {
+        res = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(env.GEMINI_MODEL)}:generateContent`, {
+          method: 'POST', signal: ctrl.signal,
+          headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+          body: JSON.stringify(request),
+        });
+      } catch (e) {
+        if (signal?.aborted) return failT(499, 'cancelled', 'client gone');
+        return e?.name === 'AbortError' ? failT(504, 'timeout', 'gemini AbortError') : failT(504, 'network', 'gemini ' + (e?.name ?? 'error'));
+      } finally { clearTimeout(timer); signal?.removeEventListener('abort', stop); }
+      const delay = LIMITS.retryDelaysMs[attempts - 1];
+      if (!LIMITS.retryStatuses.includes(res.status) || delay === undefined || deadline - clock() - delay < LIMITS.retryMinLeftMs) break;
+      log('retry', `gemini ${res.status}`, stats());
+      try { await res.body?.cancel?.(); } catch { /* nothing to free */ }
+      await wait(delay, signal);
+    }
     let data = null; try { data = await res.json(); } catch { /* handled below */ }
     if (!res.ok) {
       const g = data?.error ?? {}, msg = typeof g.message === 'string' ? g.message : '';
       const reason = `gemini ${res.status} ${String(g.status ?? '').replace(/[^A-Z_]/g, '').slice(0,50)}`;
-      if (res.status === 429) return fail(429, 'quota', reason);
-      if (res.status === 401 || res.status === 403 || /API_KEY|api key/i.test(`${g.status} ${msg}`)) return fail(502, 'auth', reason);
+      if (res.status === 429) return failT(429, 'quota', reason);
+      if (res.status === 401 || res.status === 403 || /API_KEY|api key/i.test(`${g.status} ${msg}`)) return failT(502, 'auth', reason);
       if (res.status === 404 || (res.status === 400 && /model/i.test(msg))) {
-        const failure = fail(502, 'model_not_found', reason);
+        const failure = failT(502, 'model_not_found', reason);
         // Diagnose with Google's actual catalog; never guess or silently switch models.
         // This authenticated, rate-limited path does not send learner text to the catalog endpoint.
         if (!catalogCache || Date.now() - catalogCache.at > 300000) {
@@ -474,23 +504,23 @@ export function createSophieHandler({ env, prompts, redIvy, fetchImpl = fetch, n
         log('model_catalog', catalogCache.names.join(','));
         return failure;
       }
-      return fail(502, 'upstream', reason);
+      return failT(502, 'upstream', reason);
     }
-    if (data?.promptFeedback?.blockReason) return fail(422, 'blocked', 'gemini prompt ' + data.promptFeedback.blockReason);
+    if (data?.promptFeedback?.blockReason) return failT(422, 'blocked', 'gemini prompt ' + data.promptFeedback.blockReason);
     const cand = data?.candidates?.[0];
-    if (!cand) return fail(502, 'empty', 'gemini no candidate');
+    if (!cand) return failT(502, 'empty', 'gemini no candidate');
     if (cand.finishReason && !['STOP', 'FINISH_REASON_UNSPECIFIED'].includes(cand.finishReason)) {
       const blocked = ['SAFETY', 'PROHIBITED_CONTENT', 'BLOCKLIST'].includes(cand.finishReason);
-      return fail(blocked ? 422 : 502, blocked ? 'blocked' : 'bad_output', 'gemini finish ' + cand.finishReason);
+      return failT(blocked ? 422 : 502, blocked ? 'blocked' : 'bad_output', 'gemini finish ' + cand.finishReason);
     }
     const text = (cand.content?.parts ?? []).filter(p => !p.thought).map(p => p.text ?? '').join('');
-    if (!text.trim()) return fail(502, 'empty', 'gemini empty text');
-    let out; try { out = JSON.parse(text); } catch { return fail(502, 'bad_output', 'gemini json parse failed'); }
+    if (!text.trim()) return failT(502, 'empty', 'gemini empty text');
+    let out; try { out = JSON.parse(text); } catch { return failT(502, 'bad_output', 'gemini json parse failed'); }
     const why = body.mode === 'red-ivy-check' ? validateRedIvyCheck(out) : body.mode === 'red-ivy-feedback' ? validateRedIvyFeedback(out, body.items)
       : feedback ? validateFeedback(out) : validateOutput(out);
-    if (why) return fail(502, 'bad_output', 'output invalid: ' + why);
+    if (why) return failT(502, 'bad_output', 'output invalid: ' + why);
     const u = tokenUsage(data.usageMetadata);
-    log('ok', 200, `model=${env.GEMINI_MODEL} sent_tokens=${u.sent} received_tokens=${u.received} (answer ${u.answer} + thinking ${u.thinking}) total=${u.total ?? '-'} check=${u.check}`);
+    log('ok', 200, `model=${env.GEMINI_MODEL} sent_tokens=${u.sent} received_tokens=${u.received} (answer ${u.answer} + thinking ${u.thinking}) total=${u.total ?? '-'} check=${u.check} ${stats()}`);
     if (body.mode === 'red-ivy-check') return { status: 200, json: { ok: true, mode: 'gemini', check: { verdict: out.verdict, reason_ko: out.reason_ko.trim() } } };
     if (body.mode === 'red-ivy-feedback') return { status: 200, json: { ok: true, mode: 'gemini', feedback: { items: out.items } } };
     if (feedback) return { status: 200, json: { ok: true, mode: 'gemini', feedback: out } };
@@ -507,12 +537,19 @@ const RED_IVY = {"episodes": {"red_ivy_s1_ep01": {"story_id": "red_ivy_s1", "epi
 // Appended after sophie-chat-core.mjs (with PROMPTS inlined) to form the Vercel function api/ai.mjs (POST /api/ai).
 // Env vars (Vercel → Settings → Environment Variables, Production): GEMINI_API_KEY, GEMINI_MODEL, SOPHIE_INVITE_CODE,
 // optional SOPHIE_DAILY_LIMIT. Logs (Vercel → Logs) start with [ai] and never contain the key, invite code or chat text.
+// Declared limit for this function (Vercel docs: Node.js /api routes use an exported config object). One request spends at
+// most LIMITS.timeoutMs (25s) on Gemini, retries included, so 60s leaves headroom and stays within every Hobby limit.
+export const config = { maxDuration: 60 };
 let handle;
 export default async function handler(req, res) {
   res.setHeader('cache-control', 'no-store');
   if (req.method !== 'POST') { res.status(405).json({ ok: false, error: 'method' }); return; }
   handle ??= createSophieHandler({ env: { ...process.env, hosted: true }, prompts: PROMPTS, redIvy: RED_IVY, log: (...a) => console.log('[ai]', ...a) });
   let body = req.body; if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
-  const out = await handle({ body, headers: req.headers });
+  // If the browser leaves or cancels, stop the Gemini call in flight and start no further retry.
+  const gone = new AbortController();
+  res.on('close', () => { if (!res.writableEnded) gone.abort(); });
+  const out = await handle({ body, headers: req.headers, signal: gone.signal });
+  if (gone.signal.aborted) return;
   res.status(out.status).json(out.json);
 }

@@ -23,10 +23,13 @@ function sophieChatDev(): Plugin {
       server.middlewares.use("/api/ai", (req, res) => {
         if (req.method !== "POST") { res.statusCode = 405; res.end(); return; }
         let raw = "";
+        const gone = new AbortController();
+        res.on("close", () => { if (!res.writableEnded) gone.abort(); }); // browser left/cancelled → stop retries
         req.on("data", c => { raw += c; if (raw.length > 200_000) req.destroy(); });
         req.on("end", async () => {
           let body = null; try { body = JSON.parse(raw); } catch { /* invalid → 400 */ }
-          const out = await handle({ body, headers: req.headers as Record<string, string> });
+          const out = await handle({ body, headers: req.headers as Record<string, string>, signal: gone.signal });
+          if (gone.signal.aborted) return;
           res.statusCode = out.status; res.setHeader("content-type", "application/json"); res.setHeader("cache-control", "no-store");
           res.end(JSON.stringify(out.json));
         });

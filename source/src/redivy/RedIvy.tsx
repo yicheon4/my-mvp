@@ -141,7 +141,14 @@ function InviteField() {
 }
 
 // Shared across mounts so a StrictMode remount or a quick re-entry does not send the same feedback request twice.
-const inflight = new Map<string, Promise<{ ok: true; value: FeedbackItem[] } | { ok: false; error: string; message: string }>>();
+type FeedbackResult = { ok: true; value: FeedbackItem[] } | { ok: false; error: string; message: string };
+// One shared request per feedback key (survives the dev double-mount). It is aborted once no screen is waiting for it,
+// so leaving the feedback screen also stops any server-side retry. The short delay lets an immediate remount reuse it.
+const inflight = new Map<string, { p: Promise<FeedbackResult>; ctrl: AbortController; users: number; drop?: ReturnType<typeof setTimeout> }>();
+function releaseFeedback(k: string) {
+  const f = inflight.get(k); if (!f) return;
+  if (--f.users <= 0) f.drop = setTimeout(() => { if (f.users <= 0) f.ctrl.abort(); }, 0);
+}
 
 export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes: NotePhrase[]; onSaveNote: (p: NotePhrase) => boolean; onExit: () => void; autoStart?: string }) {
   const keyboard = useKeyboard();
@@ -459,17 +466,22 @@ function FeedbackView({ ep, utterances, picks, saved, onSaveNote, onRestart, onL
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState('');
   const [confirm, setConfirm] = useState(false);
+  const waiting = useRef<string | null>(null);
+  useEffect(() => () => { if (waiting.current) releaseFeedback(waiting.current); waiting.current = null; }, []);
   async function load() {
     if (!items.length || busy) return;
     setBusy(true); setError('');
     const k = r.sessionId + key;
-    let p = inflight.get(k);
-    if (!p) {
+    let f = inflight.get(k);
+    if (!f) {
       const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 45000);
-      p = requestFeedback({ sessionId: r.sessionId, episodeId: ep.episode_id, items: items.map(u => ({ choiceId: u.choice_id, option: u.option, text: u.text })) }, ctrl.signal).finally(() => { clearTimeout(t); inflight.delete(k); });
-      inflight.set(k, p);
+      const p = requestFeedback({ sessionId: r.sessionId, episodeId: ep.episode_id, items: items.map(u => ({ choiceId: u.choice_id, option: u.option, text: u.text })) }, ctrl.signal).finally(() => { clearTimeout(t); inflight.delete(k); });
+      f = { p, ctrl, users: 0 }; inflight.set(k, f);
     }
-    const out = await p;
+    f.users++; clearTimeout(f.drop); waiting.current = k;
+    const out = await f.p;
+    if (waiting.current !== k) return; // screen already left; nothing to show
+    waiting.current = null; f.users--;
     setBusy(false);
     if (!out.ok) { setError(out.message); return; }
     r.feedback = { key, items: out.value }; setResult(out.value);

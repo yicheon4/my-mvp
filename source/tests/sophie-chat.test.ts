@@ -11,7 +11,7 @@ const good = { speech_text: 'Oh, nice timing! I just got here. How was your day?
 const gemini = (obj: unknown, extra: Record<string, unknown> = {}) => ({ ok: true, status: 200, json: async () => ({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(obj) }] } }], ...extra }) });
 function setup(env: Record<string, unknown> = {}, respond: (req: any) => any = () => gemini(good)) {
   const calls: any[] = []; const logs: string[] = [];
-  const handle = createSophieHandler({ env: { GEMINI_API_KEY: KEY, GEMINI_MODEL: 'test-model', ...env }, prompts, fetchImpl: (async (url: string, init: any) => { calls.push({ url, init, body: JSON.parse(init.body) }); return respond(init); }) as any, log: (...a: unknown[]) => logs.push(a.join(' ')) });
+  const handle = createSophieHandler({ env: { GEMINI_API_KEY: KEY, GEMINI_MODEL: 'test-model', ...env }, prompts, fetchImpl: (async (url: string, init: any) => { calls.push({ url, init, body: JSON.parse(init.body) }); return respond(init); }) as any, wait: async () => {}, log: (...a: unknown[]) => logs.push(a.join(' ')) });
   return { handle, calls, logs };
 }
 let n = 0;
@@ -157,7 +157,7 @@ test('logs keep status and a short reason, never the key, invite code or convers
   }
   const { handle, logs } = setup({}, () => ({ ok: false, status: 503, json: async () => ({ error: { status: 'UNAVAILABLE', message: 'overloaded' } }) }));
   await handle({ body: body(), headers: {} });
-  assert.match(logs[0], /^fail 502 upstream gemini 503 UNAVAILABLE$/);
+  assert.match(logs.at(-1)!, /^fail 502 upstream gemini 503 UNAVAILABLE attempts=3 ms=\d+$/);
   assert.equal(safeReason('k=AIzaSyAAAAAAAAAAAAAAAAAA tail', []), 'k=[key] tail');
 });
 
@@ -235,3 +235,59 @@ test('model error queries authenticated catalog, never switches models or sends 
  assert.equal(inv.calls.length,1);
  assert.ok(!inv.logs.join(' ').includes('Test-Code'));
  });
+
+test('temporary Gemini 503 is retried on the same model, then reported honestly', async () => {
+  const busy = { ok: false, status: 503, json: async () => ({ error: { status: 'UNAVAILABLE', message: 'overloaded' } }) };
+  let k = 0;
+  const once = setup({}, () => (k++ === 0 ? busy : gemini(good)));
+  const ok = await once.handle({ body: body(), headers: {} });
+  assert.equal(ok.status, 200); assert.equal(once.calls.length, 2);
+  assert.ok(once.calls.every(c => c.url.includes('/models/test-model:')));
+  const down = setup({}, () => busy);
+  const res = await down.handle({ body: body(), headers: {} });
+  assert.equal(res.status, 502); assert.equal(res.json.error, 'upstream'); assert.equal(down.calls.length, 3);
+  const quota = setup({}, () => ({ ok: false, status: 429, json: async () => ({ error: { status: 'RESOURCE_EXHAUSTED' } }) }));
+  await quota.handle({ body: body(), headers: {} });
+  assert.equal(quota.calls.length, 1);
+});
+
+test('retries stay inside one total time budget (no retry when too little time is left)', async () => {
+  const busy = { ok: false, status: 503, json: async () => ({ error: { status: 'UNAVAILABLE' } }) };
+  let t = 0; const calls: number[] = []; const logs: string[] = [];
+  const handle = createSophieHandler({ env: { GEMINI_API_KEY: KEY, GEMINI_MODEL: 'test-model' }, prompts, clock: () => t,
+    wait: async (ms: number) => { t += ms; }, log: (...a: unknown[]) => logs.push(a.join(' ')),
+    fetchImpl: (async () => { calls.push(t); t += 9000; return busy; }) as any });   // each slow 503 takes 9s
+  const res = await handle({ body: body(), headers: {} });
+  assert.equal(res.status, 502);
+  // 9s + 0.8s pause leaves 15.2s ≥ 8s → second try; 18.8s + 2s pause leaves 4.2s < 8s → stop. Total stays ≤ 25s.
+  assert.equal(calls.length, 2); assert.ok(t <= 25000, `elapsed ${t}`);
+  assert.match(logs.at(-1)!, /^fail 502 upstream gemini 503 UNAVAILABLE attempts=2 ms=18800$/);
+});
+
+test('cancelled request stops the call in flight and starts no further retry', async () => {
+  const busy = { ok: false, status: 503, json: async () => ({ error: { status: 'UNAVAILABLE' } }) };
+  const gone = new AbortController(); let calls = 0; const logs: string[] = [];
+  const handle = createSophieHandler({ env: { GEMINI_API_KEY: KEY, GEMINI_MODEL: 'test-model' }, prompts, log: (...a: unknown[]) => logs.push(a.join(' ')),
+    wait: async () => { gone.abort(); },          // browser leaves during the pause
+    fetchImpl: (async () => { calls++; return busy; }) as any });
+  const res = await handle({ body: body(), headers: {}, signal: gone.signal });
+  assert.equal(calls, 1); assert.equal(res.json.error, 'cancelled');
+  const inflight = new AbortController(); let seen: AbortSignal | undefined;
+  const h2 = createSophieHandler({ env: { GEMINI_API_KEY: KEY, GEMINI_MODEL: 'test-model' }, prompts,
+    fetchImpl: ((_: string, init: any) => { seen = init.signal; return new Promise((_r, rej) => init.signal.addEventListener('abort', () => rej(Object.assign(new Error('x'), { name: 'AbortError' })))); }) as any });
+  const p = h2({ body: body(), headers: {}, signal: inflight.signal });
+  await new Promise(r => setTimeout(r, 5)); inflight.abort();
+  assert.equal((await p).json.error, 'cancelled'); assert.equal(seen?.aborted, true);
+});
+
+test('retry logs hold only attempts, status codes and time — never key, invite code or learner text', async () => {
+  const busy = { ok: false, status: 503, json: async () => ({ error: { status: 'UNAVAILABLE', message: 'overloaded ' + KEY } }) };
+  const logs: string[] = []; let k = 0;
+  const handle = createSophieHandler({ env: { GEMINI_API_KEY: KEY, GEMINI_MODEL: 'test-model', SOPHIE_INVITE_CODE: 'class-code-77' }, prompts, wait: async () => {},
+    log: (...a: unknown[]) => logs.push(a.join(' ')), fetchImpl: (async () => (k++ < 2 ? busy : gemini(good))) as any });
+  const res = await handle({ body: body({ turns: [{ role: 'sophie', text: 'Hey!' }, { role: 'you', text: 'my secret diary sentence' }] }), headers: { 'x-invite-code': 'class-code-77' } });
+  assert.equal(res.status, 200);
+  assert.match(logs[0], /^retry gemini 503 attempts=1 ms=\d+$/); assert.match(logs[1], /^retry gemini 503 attempts=2 ms=\d+$/);
+  assert.match(logs[2], /attempts=3 ms=\d+$/);
+  for (const l of logs) for (const bad of [KEY, 'class-code-77', 'secret diary', 'Hey!']) assert.ok(!l.includes(bad), l);
+});
