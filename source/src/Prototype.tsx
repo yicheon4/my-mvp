@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Microphone, Stop, SpeakerHigh, Keyboard, ArrowLeft, ArrowRight, BookOpen, Sparkle, Check, X, PencilSimple, Trash, LockSimple, Chats, PaperPlaneTilt, House, TShirt, Scissors, Flower, BookmarkSimple, Heart, MapPin, Crown, CreditCard, Sun, MoonStars, Footprints, FilmSlate } from '@phosphor-icons/react';
+import { Microphone, Stop, SpeakerHigh, Keyboard, ArrowLeft, ArrowRight, BookOpen, Sparkle, Check, X, PencilSimple, Trash, LockSimple, Chats, PaperPlaneTilt, House, TShirt, Scissors, Flower, Heart, MapPin, Crown, CreditCard, Sun, Moon, Play, HouseLine, BookOpenText, MapTrifold, Notebook } from '@phosphor-icons/react';
 import { BottomSheet, Carousel, KeyboardInput, KeyboardTextarea, MobileScroll, useKeyboard, useScreenPortal } from './mobile';
 import { people, stories, withAnd } from './story-data';
 import type { StoryScene } from './story-data';
@@ -12,7 +12,11 @@ import RedIvy from './redivy/RedIvy';
 import Teaser from './redivy/Teaser';
 import type { StoryChat } from './freechat/api';
 import { readProgress } from './redivy/engine';
-import { catalog } from './redivy/episodes';
+import type { Progress } from './redivy/engine';
+import { catalog, isOpen } from './redivy/episodes';
+import type { CatalogEntry } from './redivy/episodes';
+import { backgroundFile } from './redivy/art-manifest';
+type StoryNext={entry:CatalogEntry;mode:'start'|'continue'|'next'|'done';label:string};
 import { readInvite, saveInvite, errorText } from './freechat/api';
 import { chloeDemo, chloeHubChoices, chloeOpening, expressionArt, normalizeExpression, normalizeMotion } from './expressions/expressions';
 import type { Choice, Motion } from './expressions/expressions';
@@ -167,6 +171,25 @@ export default function Prototype(){
   go('freechat');
  }
  function startFromHome(){setOrigin('home');go('prepare');}
+ // Home story panel: the latest valid Red Ivy save decides the button. Old demo chats (session) are a different thing
+ // and stay reachable from the notebook's 「대화 마저 이어하기」. Locks are untouched: only isOpen episodes count.
+ function storyNext():StoryNext{
+  let s:Storage|null=null;try{s=window.localStorage;}catch{/* private mode */}
+  const read=(e:CatalogEntry)=>{if(!s||!e.data)return null;try{return readProgress(s,e.data);}catch{return null;}};
+  const open=catalog.filter(isOpen);
+  let latest:{e:CatalogEntry;p:Progress}|null=null;
+  for(const e of open){const p=read(e);if(p&&(!latest||p.updated_at>latest.p.updated_at))latest={e,p};}
+  if(!latest)return {entry:open[0]??catalog[0],mode:'start',label:'이야기 시작'};
+  if(!latest.p.finished)return {entry:latest.e,mode:'continue',label:'이어서 플레이'};
+  const next=catalog.find(x=>x.number===latest!.e.number+1);
+  if(next&&isOpen(next)){const np=read(next);return np&&!np.finished?{entry:next,mode:'continue',label:'이어서 플레이'}:{entry:next,mode:'next',label:'다음 화 시작'};}
+  return {entry:latest.e,mode:'done',label:'회차 목록'};
+ }
+ function openStory(st:StoryNext){
+  if(st.mode==='done'){setRedIvyStart(undefined);go('redivy');return;}
+  if(st.mode==='start'&&st.entry.number===1){go('teaser');return;} // first time: the existing EP01 trailer, then 1화
+  setRedIvyStart(st.entry.episode_id);go('redivy'); // RedIvy opens this episode at its saved spot (or its start)
+ }
  function start(){
   if(chosen.locked||chosenScene.locked){openPaywall(chosenScene.title,chosenScene.detail,chosenScene.art,'scenes');return;}
   if(timer.current)clearTimeout(timer.current);setBusy(false);
@@ -210,31 +233,44 @@ export default function Prototype(){
  }
  function finish(){if(busy)return;setSelected([]);go('feedback');}
  function save(){const additions=(session?.phrases??[]).filter(p=>selected.includes(p.id));setNotes(n=>[...n,...additions.filter(p=>!n.some(x=>x.id===p.id))]);setToast(`${additions.length}개 표현을 메모장에 남겼어요`);go('notebook');}
- const heading=(title:string,subtitle:string,back:Page=origin)=><header className="page-header"><button className="icon-button" onClick={()=>go(back)} aria-label="뒤로"><ArrowLeft size={22}/></button><div><p className="eyebrow">PERSONA WORLD</p><h1>{title}</h1><p className="muted">{subtitle}</p></div></header>;
+ const heading=(title:string,subtitle:string,back:Page=origin)=><header className="page-header"><button className="icon-button" onClick={()=>go(back)} aria-label="뒤로"><ArrowLeft size={22}/></button><div><p className="eyebrow">PERSONA WORLD</p><h1>{title}</h1>{subtitle&&<p className="muted">{subtitle}</p>}</div></header>;
  const closetPanel=closet?<section className="closet-panel preset-panel" aria-label="꾸미기"><div className="closet-heading"><div><p className="eyebrow">MAKE IT YOURS</p><h2>나의 캐릭터</h2></div><button className="icon-button" aria-label="꾸미기 닫기" onClick={()=>setCloset(null)}><X size={20}/></button></div><div className="closet-tabs preset-tabs" role="tablist" aria-label="꾸미기 종류">{([['head','인물'],['look','착장'],['extra','추가 아이템']] as const).map(([t,label])=><button role="tab" aria-selected={closet===t} key={t} onClick={()=>setCloset(t)}>{label}</button>)}</div>
    {!presetData?<p className="closet-help">{presetError?<>목록을 불러오지 못했어요. <button className="text-link" onClick={loadPresets}>다시 시도</button></>:'불러오는 중…'}</p>:closet==='head'?<Carousel ariaLabel="인물 선택" className="preset-rail" contentClassName="preset-track">{presetData.catalog.heads.map(h=>{const on=h.id===presetSel.head;return <button key={h.id} className={`preset-card head-card ${on?'selected':''}`} aria-pressed={on} aria-label={`인물 ${h.name}`} onClick={()=>pickPreset({head:h.id})}><span className="preset-face"><img src={headThumb(h.id)} alt="" loading="lazy" draggable={false}/></span><span>{h.name}</span>{on&&<Check size={13}/>}</button>;})}</Carousel>
    :closet==='look'?<Carousel ariaLabel="착장 선택" className="preset-rail" contentClassName="preset-track">{presetData.catalog.looks.map(l=>{const on=l.id===presetSel.look;return <button key={l.id} className={`preset-card look-card ${on?'selected':''}`} aria-pressed={on} aria-label={`착장 ${l.name}`} onClick={()=>pickPreset({look:l.id})}><span className="preset-body"><img src={lookThumb(presetSel.head,l.id)} alt="" loading="lazy" draggable={false}/></span><span>{l.name}</span>{on&&<Check size={13}/>}</button>;})}</Carousel>
    :<div className="preset-extras"><div className="extra-free" role="radiogroup" aria-label="무료 추가 아이템 (하나만 선택)">{presetData.catalog.extras.filter(e=>!e.locked).map(e=>{const on=e.id===presetSel.extra;return <button key={e.id} role="radio" aria-checked={on} className={on?'selected':''} onClick={()=>pickPreset({extra:e.id as Extra})}>{e.name}</button>;})}</div><p className="extra-note">무료 아이템은 한 번에 하나만 착용할 수 있어요.</p><p className="extra-locked-title"><LockSimple size={12}/>유료 예정 · 잠김 {presetData.catalog.extras.filter(e=>e.locked).length}종 <small>착용 그림 준비 전 · 구매 불가</small></p><Carousel ariaLabel="유료 예정 아이템" className="preset-rail locked-rail" contentClassName="preset-track">{presetData.catalog.extras.filter(e=>e.locked).map(e=><button key={e.id} className="locked-chip" disabled aria-disabled="true" aria-label={`${e.name} 잠김`}><LockSimple size={11}/>{e.name}</button>)}</Carousel></div>}
    {closetFrom==='world'?<><p className="closet-help"><Check size={12}/>고른 착장은 방의 미니에도 바로 보여요. 「되돌리고 닫기」를 누르면 옷장을 열기 전 모습으로 돌아가요.</p><div className="closet-actions"><button className="text-button" onClick={()=>{if(closetSnap.current)setPresetSel(closetSnap.current);setCloset(null);}}>되돌리고 닫기</button><button className="gold-button" onClick={()=>setCloset(null)}>적용</button></div></>:<p className="closet-help"><Check size={12}/>얼굴·헤어는 인물로, 옷·신발은 착장으로 함께 바뀌어요. 선택은 자동 저장돼요.</p>}</section>:null;
- return <div className={`persona-app ${page==='notebook'?'paper-theme':''}`}>
- {page==='home'&&<section className={`home-screen ${closet?'is-customizing':''}`} aria-label="나의 방">
+ return <div className={`persona-app ${page==='notebook'?'notebook-theme':''}`}>
+ {page==='home'&&(()=>{const st=storyNext();const homeCloset=!!closet&&closetFrom==='home';const art=backgroundFile(st.entry.data?.scenes[0]?.background);return <section className={`home-screen home-lobby is-${world.timeOfDay} ${homeCloset?'is-customizing':''}`} aria-label="나의 방">
   <img className="home-background" src={artOf('bedroom')} alt={world.timeOfDay==='day'?'햇살이 드는 나의 방':'불빛이 켜진 밤의 나의 방'}/>
-  <div className="home-shade"/>
-  <header className="home-header"><div className="wordmark"><Sparkle size={23} weight="thin"/><span>PERSONA WORLD</span></div></header>
-  
-  <CharacterFrame className="player-avatar" selection={presetSel} manifest={presetData?.manifest??null} label={characterLabel} dataError={presetError} onRetryData={loadPresets}/>
-  <nav className="home-left" aria-label="나의 기록"><button className="home-menu diary-shortcut" onClick={()=>go('notebook')}><BookOpen size={25} weight="thin"/><span>나의 메모장</span>{notes.length>0&&<small>{notes.length}</small>}</button></nav>
-  <nav className="home-right" aria-label="나의 캐릭터 꾸미기"><span className="rail-label">MY STYLE</span><button className={`home-menu ${closet?'active':''}`} aria-label="꾸미기 열기" aria-expanded={!!closet} onClick={()=>{keyboard.hide();setClosetFrom('home');setCloset(closet?null:'head');}}><TShirt size={24} weight="thin"/><span>꾸미기</span></button><button className="home-menu" aria-label={world.timeOfDay==='day'?'밤으로 바꾸기':'낮으로 바꾸기'} onClick={()=>setWorld(w=>({...w,timeOfDay:w.timeOfDay==='day'?'night':'day'}))}>{world.timeOfDay==='day'?<Sun size={24} weight="thin"/>:<MoonStars size={24} weight="thin"/>}<span>{world.timeOfDay==='day'?'낮':'밤'}</span></button></nav>
-  {!closet||closetFrom!=='home'?<footer className="home-footer"><button className="gold-button story-start" onClick={()=>go('teaser')}><FilmSlate size={19}/>스토리 시작하기<ArrowRight size={20}/></button>{session&&<button className="home-resume" onClick={()=>{setOrigin('home');go('voice');}}>지난 이야기 이어하기</button>}<button className="world-start" onClick={()=>go('world')}><Footprints size={18}/>나의 세계로 나가기<ArrowRight size={17}/></button></footer>:closetPanel}
+  <div className="lobby-wash" aria-hidden="true"/>
+  <header className="lobby-top"><p className="lobby-logo">Persona World</p>
+   <div className="lobby-time" role="group" aria-label="방의 시간">{(['day','night'] as const).map(t=><button key={t} aria-pressed={world.timeOfDay===t} onClick={()=>setWorld(w=>({...w,timeOfDay:t}))}>{t==='day'?<Sun size={16} weight={world.timeOfDay==='day'?'fill':'regular'}/>:<Moon size={16} weight={world.timeOfDay==='night'?'fill':'regular'}/>}{t==='day'?'낮':'밤'}</button>)}</div>
+  </header>
+  <div className="lobby-shadow" aria-hidden="true"/>
+  <CharacterFrame className="player-avatar lobby-avatar" selection={presetSel} manifest={presetData?.manifest??null} label={characterLabel} dataError={presetError} onRetryData={loadPresets}/>
+  {!homeCloset&&<button className="lobby-style" aria-label="꾸미기 열기" aria-expanded={false} onClick={()=>{keyboard.hide();setClosetFrom('home');setCloset('head');}}><TShirt size={24}/><span>꾸미기</span></button>}
+  {homeCloset?closetPanel:<>
+   <section className="lobby-story" aria-label="이야기">
+    {art&&<img src={art} alt="" draggable={false}/>}
+    <div className="lobby-story-text"><h2>Red Ivy</h2><p className="lobby-episode">{st.entry.number}화 · {st.entry.title}</p></div>
+    <button className="lobby-play" onClick={()=>openStory(st)}>{st.label}{st.mode==='done'?<ArrowRight size={17} weight="bold"/>:<Play size={16} weight="fill"/>}</button>
+   </section>
+   <nav className="lobby-tabs" aria-label="주요 메뉴">
+    <button aria-current="page"><HouseLine size={24} weight="fill"/><span>나의 방</span></button>
+    <button onClick={()=>{setRedIvyStart(undefined);go('redivy');}}><BookOpenText size={24}/><span>스토리</span></button>
+    <button onClick={()=>go('world')}><MapTrifold size={24}/><span>월드</span></button>
+    <button onClick={()=>go('notebook')}><Notebook size={24}/><span>나의 메모장</span></button>
+   </nav>
+  </>}
   {error&&<div role="alert" className="home-error">{error}</div>}
- </section>}
+ </section>;})()}
  {page==='teaser'&&<Teaser onClose={()=>go('home')} onStart={()=>{setRedIvyStart('red_ivy_s1_ep01');go('redivy');}}/>}
  {page==='redivy'&&<RedIvy autoStart={redIvyStart} notes={notes} onExit={()=>go('home')} onSaveNote={p=>{if(notes.some(x=>x.en.trim().toLowerCase()===p.en.trim().toLowerCase()))return false;setNotes(n=>[...n,p]);return true;}}/>}
  {page==='practice'&&<ExpressionPractice onBack={()=>go('home')} onNotebook={()=>go('notebook')} notes={notes} onSave={p=>{setNotes(n=>n.some(x=>x.en.toLowerCase()===p.en.toLowerCase())?n:[...n,p]);setToast('표현을 메모장에 남겼어요');}}/>}
  {page==='world'&&<><WorldMap initial={world} people={people} look={presetSel.look} lookName={lookName||presetSel.look} onSave={setWorld} onTalk={talkFromWorld} onHome={s=>{setWorld(s);setOrigin('home');go('home');}} paused={!!closet} onWardrobe={()=>{keyboard.hide();closetSnap.current=presetSel;setClosetFrom('world');setCloset('look');}}/>{closetFrom==='world'&&closetPanel}</>}
  {page==='prepare'&&<>
-  {heading('누구와 이야기할까?','서로 다른 여섯 사람, 너와 이어질 이야기.')}
-  <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>Red Ivy의 여섯 인물</span><span>실제 AI 대화 · 시험</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">현재는 여섯 인물 모두 실제 AI 대화를 시험할 수 있어요.<br/>인물의 성격과 말투에 맞춰 영어로 답해요.</p></main></MobileScroll>
+  {heading('직접 대화할 인물을 골라보세요','')}
+  <MobileScroll className="pw-scroll"><main className="cast-content"><div className="cast-intro"><span><Heart size={14}/>Red Ivy의 여섯 인물</span></div><div className="cast-grid">{people.map((p,i)=><button className={`cast-card ${p.locked?'locked':''}`} key={p.en} aria-label={`${p.name} ${p.locked?'친밀도 쌓기':'소개 보기'}`} onClick={()=>pickPerson(i)}><div className="cast-image"><img src={p.art} alt={`${p.name}, ${p.relation}`}/><span className="cast-badge">{p.locked?<><LockSimple size={11}/>친밀도 쌓기</>:'바로 대화 가능'}</span></div><div className="cast-label"><span>{p.en}</span><h2>{p.name}<ArrowRight size={15}/></h2><p>{p.relation}</p><small>{p.trait}</small></div></button>)}</div><p className="cast-footnote">현재는 여섯 인물 모두 실제 AI 대화를 시험할 수 있어요.<br/>인물의 성격과 말투에 맞춰 영어로 답해요.</p></main></MobileScroll>
  </>}
  {page==='profile'&&<section className="profile-screen" aria-label={`${chosen.name} 소개`}><img className="profile-room" src={artOf(homeMapOf(character))} alt=""/><div className="profile-dim"/><header className="profile-top"><button className="icon-button" aria-label={origin==='world'?'맵으로 돌아가기':'캐릭터 목록으로'} onClick={()=>go(origin==='world'?'world':'prepare')}><ArrowLeft size={22}/></button><span>MEET YOUR PERSON</span><button className="icon-button" aria-label="메모장 열기" onClick={()=>go('notebook')}><BookOpen size={21}/></button></header><img className="profile-portrait" src={chosen.art} alt={chosen.name}/><div className="profile-info"><p className="eyebrow">{chosen.en}</p><div className="profile-name"><h1>{chosen.name}</h1><span>{chosen.relation}</span></div><p className="profile-quote">{chosen.role}</p><p className="profile-description">{chosen.description}</p><div className="profile-tags">{chosen.tags.map(t=><span key={t}>{t}</span>)}</div><button className="gold-button" onClick={startCharacterChat}>실제 AI와 대화하기<ArrowRight size={19}/></button><p className="cast-footnote">직접 입력한 말에 Gemini가 답해요. 본편의 선택과 결말은 바뀌지 않아요.</p></div></section>}
  {page==='freechat'&&directChat&&<FreeChat key={directChat.character} story={directChat} characterName={chosen.name} background={artOf(origin==='world'?world.mapId:'campus')} portrait={chosen.art} timeOfDay={world.timeOfDay} backLabel="인물 소개로 돌아가기" onBack={()=>go('profile')} isCardSaved={en=>notes.some(n=>n.en.trim().toLowerCase()===en.trim().toLowerCase())} onSaveCard={card=>{if(!notes.some(n=>n.en.trim().toLowerCase()===card.expression.trim().toLowerCase()))setNotes(n=>[...n,{id:crypto.randomUUID(),en:card.expression,ko:card.meaning_ko,context:`${chosen.name}와 자유 대화 · ${card.usage_note}`}]);}}/>}
@@ -264,15 +300,19 @@ export default function Prototype(){
   </main></MobileScroll><footer className="fixed-footer"><button className="gold-button" disabled={!selected.length} onClick={save}><BookOpen size={19}/>{selected.length?`${selected.length}개 표현 내 메모장에 추가`:'저장할 표현을 골라 주세요'}</button><button className="text-button" onClick={()=>go('notebook')}>내 메모장 보기</button></footer>
  </>}
  {page==='notebook'&&<>
-  {heading('나의 메모장','마음에 남은 말을, 한 장씩.')}
-  <MobileScroll className="pw-scroll notebook-scroll"><main className="notebook-content"><div className="diary-binding" aria-hidden="true"/><div className="notebook-intro"><BookmarkSimple size={25} weight="fill" className="diary-bookmark"/><p className="eyebrow">MY WORDS, MY LITTLE DIARY</p><h2>오늘의 마음을<br/>오래 기억하는 방법.</h2><Flower size={32} weight="thin" className="diary-flower"/></div>
-   {!notes.length?null:notes.map((n,i)=><article className="note" key={n.id}><div className="note-top"><span>PAGE {String(i+1).padStart(2,'0')}</span><button aria-label={`${n.en} 듣기`} className="icon-button" onClick={()=>speak(n.en)}><SpeakerHigh size={20}/></button></div><h3>{n.en}</h3><p className="note-meaning">{n.ko}</p><p className="note-context">{n.context}</p><button className="edit-note" onClick={()=>{setEdit(n);setDraft(n.ko);setSheet('edit');}}><PencilSimple size={14}/> 나만의 뜻으로 수정</button></article>)}
-  </main></MobileScroll><footer className="fixed-footer paper-footer">{session&&<button className="gold-button" onClick={()=>go('voice')}>대화 마저 이어하기 <ArrowRight size={18}/></button>}<button className={session?'text-button':'gold-button'} onClick={()=>go('prepare')}>새 대화하기</button></footer>
+  <header className="nb-header"><button className="icon-button" onClick={()=>go(origin)} aria-label="뒤로"><ArrowLeft size={22}/></button><h1>나의 메모장</h1>{notes.length>0&&<span className="nb-count">{notes.length}개</span>}</header>
+  <MobileScroll className="pw-scroll notebook-scroll"><main className="nb-content">
+   {!notes.length?<p className="nb-empty">아직 저장한 표현이 없어요.</p>:notes.map(n=><article className="nb-note" key={n.id}>
+    <div className="nb-note-top"><h3>{n.en}</h3><button aria-label={`${n.en} 듣기`} className="nb-listen" onClick={()=>speak(n.en)}><SpeakerHigh size={20}/></button></div>
+    <p className="nb-meaning">{n.ko}</p><p className="nb-context">{n.context}</p>
+    <button className="nb-edit" onClick={()=>{setEdit(n);setDraft(n.ko);setSheet('edit');}}><PencilSimple size={15}/>나만의 뜻으로 수정</button>
+   </article>)}
+  </main></MobileScroll><footer className="nb-footer">{session&&<button className="nb-primary" onClick={()=>go('voice')}>대화 마저 이어하기 <ArrowRight size={18}/></button>}<button className={session?'nb-secondary':'nb-primary'} onClick={()=>go('prepare')}>새 대화하기</button></footer>
  </>}
  {toast&&<div className="toast" role="status"><Check size={16}/>{toast}{undo&&<button className="toast-undo" onClick={()=>{const u=undo;setNotes(n=>n.some(p=>p.id===u.note.id)?n:[...n.slice(0,u.index),u.note,...n.slice(u.index)]);setUndo(null);setToast('표현을 되돌렸어요');}}>되돌리기</button>}</div>}
  <BottomSheet open={sheet==='compose'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="네 이야기를 들려줘" description="영어로 입력하거나 아래 예시를 골라 보세요." snap={.72}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}>{error&&<p className="inline-error" role="alert">{error}</p>}<form onSubmit={e=>{e.preventDefault();send(draft);}}><KeyboardInput aria-label="영어로 내 이야기" placeholder="Today, I felt…" value={draft} maxLength={500} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" type="submit" disabled={!draft.trim()||busy}>이야기 전하기 <PaperPlaneTilt size={18}/></button></form><p className="muted">이렇게 시작해도 좋아요</p>{(session?.version===2&&people[session.character]?.id==='chloe'?(chloeDemo[session.node??'']?.choices??chloeHubChoices):['I’m overwhelmed by my assignments.','I’m worried my friend misunderstood me.','I’m not sure about my future.','Thank you for listening to me.'].map(t=>({text:t,next:''}))).map(c=><button className="sample" key={c.text} onClick={()=>send(c.text,c.next?c:undefined)}>{c.text}<ArrowRight size={16}/></button>)}<p className="demo-note">준비된 답변으로 흐름을 경험하는 체험 모드예요.<br/>음성 입력은 브라우저의 인식 서비스를 사용해요.</p></div></BottomSheet>
  <BottomSheet open={sheet==='history'} onOpenChange={open=>{if(!open)setSheet(null);}} title="우리의 대화" description={session?.sceneDetails?.title??"함께 나눈 이야기"} snap={.8}><div className="history-list">{session?.turns.map((t,i)=><div key={i} className={`history-turn ${t.role}`}><small>{t.role==='you'?'나':person.name}</small><p>{t.text}</p>{t.ko&&<small>{t.ko}</small>}</div>)}</div></BottomSheet>
- <BottomSheet open={sheet==='edit'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="나만의 뜻으로 기록하기" description={edit?.en} snap={.6}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}><form onSubmit={e=>{e.preventDefault();if(!draft.trim()||!edit)return;setNotes(n=>n.map(p=>p.id===edit.id?{...p,ko:draft.trim()}:p));keyboard.hide();setSheet(null);setToast('나만의 뜻을 저장했어요');}}><KeyboardInput aria-label="나만의 한국어 뜻" value={draft} maxLength={200} onChange={e=>setDraft(e.target.value)}/><button className="gold-button" disabled={!draft.trim()}>뜻 저장하기 <Check size={18}/></button></form><button className="delete-note" onClick={()=>{const index=notes.findIndex(p=>p.id===edit?.id);if(index>=0)setUndo({note:notes[index],index});setNotes(n=>n.filter(p=>p.id!==edit?.id));keyboard.hide();setSheet(null);setToast('표현을 메모장에서 지웠어요');}}><Trash size={16}/> 이 표현 지우기</button></div></BottomSheet>
+ <BottomSheet open={sheet==='edit'} onOpenChange={open=>{if(!open){keyboard.hide();setSheet(null);}}} title="나만의 뜻으로 기록하기" description={edit?.en} snap={.6}><div className="sheet-body" onPointerDown={e=>{if((e.target as HTMLElement).closest("button"))e.preventDefault();}}><form onSubmit={e=>{e.preventDefault();if(!draft.trim()||!edit)return;setNotes(n=>n.map(p=>p.id===edit.id?{...p,ko:draft.trim()}:p));keyboard.hide();setSheet(null);setToast('나만의 뜻을 저장했어요');}}><KeyboardInput aria-label="나만의 한국어 뜻" value={draft} maxLength={200} onChange={e=>setDraft(e.target.value)}/><button className="gold-button nb-sheet-save" disabled={!draft.trim()}>뜻 저장하기 <Check size={18}/></button></form><button className="delete-note" onClick={()=>{const index=notes.findIndex(p=>p.id===edit?.id);if(index>=0)setUndo({note:notes[index],index});setNotes(n=>n.filter(p=>p.id!==edit?.id));keyboard.hide();setSheet(null);setToast('표현을 메모장에서 지웠어요');}}><Trash size={16}/> 이 표현 지우기</button></div></BottomSheet>
  </div>;
 }
 

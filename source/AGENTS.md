@@ -177,3 +177,11 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 
 ## Episode feedback calibration (2026-11-24)
 - Evaluate intention coverage, naturalness and scene/register independently, with evidence and one prioritized revision. Correct sentences need no forced criticism: teach optional nuance. No generic praise banner. Alternatives preserve all material intentions. No pronunciation or proficiency scores from text.
+
+## Home lobby, notebook and picker restyle (2026-11-25, user-approved mockup A)
+- Home = game lobby in my room. Palette: room art's ivory/wood; plum (#6e3566) only for the main action and selected states; gold only as a tiny accent. No glass panels, double borders, heavy shadows, sparkle wordmark or decorative English (`MY STYLE`, `PAGE 01`, `MY WORDS…`). No floating/zooming character; motion = short press feedback only.
+- Layout: small Cormorant logo + labeled 「낮 | 밤」 switch on top; character ~41% height standing on the rug with a soft floor shadow; 「꾸미기」 is a right-edge side tab (not a round chip near the body); Red Ivy story panel (episode's first scene background, title, `N화 · title`, plum button — no tagline); bottom tabs 나의 방 · 스토리 · 월드 · 나의 메모장 (home only). Customizing hides the panel and tabs and lifts the preview above the 296–326px panel.
+- Story panel state comes only from valid Red Ivy saves (`readProgress`, open episodes): none → 「이야기 시작」 (EP01 trailer → 1화); unfinished latest → 「이어서 플레이」 at the saved node; finished latest → next open episode 「다음 화 시작」; nothing further → 「회차 목록」. Legacy demo chat (`session`) is never shown as story progress; it resumes from the notebook's 「대화 마저 이어하기」. No progress %, affinity, currency, alerts or lock changes.
+- Notebook uses the same palette: plain title (no tagline, no diary card, bookmark or flower icons), simple ivory cards, plum buttons; the edit sheet's save button is plum too.
+- Character picker title: 「직접 대화할 인물을 골라보세요」 with no subtitle and no 「실제 AI 대화 · 시험」 label. Page titles wrap between Korean words.
+- Known limit: on real phones the protected PhoneFrame scales the whole device to ~0.6–0.67, so 12px labels render ~7–8px. Changing that is a runtime change and needs explicit user approval.

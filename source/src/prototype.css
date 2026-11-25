@@ -174,3 +174,79 @@ button.world-notice{text-align:left;border:0;width:auto}
 @keyframes chat-portrait-reveal{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.chat-portrait-current{animation:none}}
 .chat-information{font-size:10px;color:#cbbccb;margin-top:6px}.chat-information summary{cursor:pointer}.chat-information p{margin:6px 0;line-height:1.5}
+
+/* Home lobby (2026-11-25, approved mockup A): the room and character lead, one story panel, one tab bar.
+   Ivory/wood from the room art; plum only for the main action and selected states; no glass, gold frames or float. */
+.home-lobby{--lb-ivory:#f8f2e9;--lb-line:#e3d6c4;--lb-ink:#2b2026;--lb-sub:#75676d;--lb-plum:#6e3566;--lb-plum-ink:#4a2245;--lb-plum-soft:#efe0ec;--lb-safe:var(--device-safe-area-bottom,34px);--lb-tabs:calc(58px + var(--lb-safe));--lb-story:128px;--lb-feet:calc(var(--lb-tabs) + 164px);background:var(--lb-ivory);color:var(--lb-ink)}
+.home-lobby .home-background{object-position:42% center}
+.home-lobby .lobby-wash{position:absolute;inset:0 0 auto;height:140px;z-index:-2;pointer-events:none;background:linear-gradient(#f8f2e9e0,#f8f2e900)}
+.home-lobby.is-night .lobby-wash{background:linear-gradient(#1c1420d9,#1c142000)}
+.home-lobby .lobby-top{position:absolute;top:56px;left:20px;right:14px;height:44px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+.home-lobby .lobby-logo{font:500 19px/1 'Cormorant Garamond',serif;letter-spacing:.06em;color:var(--lb-plum-ink)}
+.home-lobby.is-night .lobby-logo{color:#f6ecdf}
+.home-lobby .lobby-time{display:flex;height:44px;padding:3px;border-radius:22px;background:var(--lb-ivory);box-shadow:0 1px 3px #3b28301f}
+.home-lobby .lobby-time button{display:flex;align-items:center;gap:4px;min-width:58px;justify-content:center;padding:0 12px;border-radius:19px;background:transparent;color:var(--lb-sub)!important;font-size:14px!important;font-weight:500}
+.home-lobby .lobby-time button[aria-pressed=true]{background:var(--lb-plum);color:#fff!important}
+/* Character: smaller than before so face and outfit sit clear of the menus, feet on the rug with a soft floor shadow. */
+.home-lobby .lobby-avatar{height:41%;bottom:var(--lb-feet);animation:none;filter:drop-shadow(0 6px 8px #3b2a221f)}
+.home-lobby .lobby-shadow{position:absolute;left:50%;bottom:calc(var(--lb-feet) - 12px);width:150px;height:26px;margin-left:-75px;border-radius:50%;background:radial-gradient(#3b2a2266,#3b2a2200 70%);z-index:-1;pointer-events:none}
+.home-lobby .lobby-style{position:absolute;right:0;top:46%;transform:translateY(-50%);width:64px;min-height:72px;padding:10px 4px 9px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px 0 0 14px;background:var(--lb-ivory);border:1px solid var(--lb-line)!important;border-right:0!important;color:var(--lb-plum-ink)!important;font-size:13px!important;font-weight:500;line-height:1.2;z-index:2;box-shadow:-1px 1px 3px #3b28301a} /* right-edge side tab, clear of the character */
+/* Story panel: the Red Ivy mood stays inside this panel. */
+.home-lobby .lobby-story{position:absolute;left:12px;right:12px;bottom:calc(var(--lb-tabs) + 10px);height:var(--lb-story);border-radius:16px;overflow:hidden;background:#1d1418;color:#f6eee6;z-index:2}
+.home-lobby .lobby-story>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%}
+.home-lobby .lobby-story::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1a1216f2 0,#1a1216cc 52%,#1a121640 100%)}
+.home-lobby .lobby-story-text{position:absolute;left:18px;top:50%;transform:translateY(-50%);right:150px;z-index:1}
+.home-lobby .lobby-story h2{font:500 28px/1.15 'Cormorant Garamond',serif;letter-spacing:.02em}
+.home-lobby .lobby-episode{font-size:14px;line-height:1.4;color:#eadfd6;margin-top:4px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-lobby .lobby-play{position:absolute;right:14px;bottom:16px;z-index:1;height:48px;padding:0 18px;display:flex;align-items:center;gap:6px;border-radius:24px;background:var(--lb-plum);color:#fff!important;font-size:15px!important;font-weight:500!important}
+/* Tab bar: ivory, selected tab gets a soft plum pill behind its icon. */
+.home-lobby .lobby-tabs{position:absolute;left:0;right:0;bottom:0;height:var(--lb-tabs);padding:5px 8px var(--lb-safe);display:grid;grid-template-columns:repeat(4,1fr);background:var(--lb-ivory);border-top:1px solid var(--lb-line);z-index:2}
+.home-lobby .lobby-tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;background:transparent;color:#7d6f74!important;font-size:12px!important;font-weight:500;line-height:1.2;white-space:nowrap}
+.home-lobby .lobby-tabs svg{width:56px;height:30px;padding:3px 16px;border-radius:15px;box-sizing:border-box}
+.home-lobby .lobby-tabs button[aria-current=page]{color:var(--lb-plum)!important}
+.home-lobby .lobby-tabs button[aria-current=page] svg{background:var(--lb-plum-soft)}
+/* Short press feedback only. */
+.home-lobby .lobby-time button,.home-lobby .lobby-style,.home-lobby .lobby-play,.home-lobby .lobby-tabs button{transition:transform .12s ease,background-color .15s ease}
+.home-lobby .lobby-play:active,.home-lobby .lobby-tabs button:active,.home-lobby .lobby-time button:active{transform:scale(.97)}
+.home-lobby button:focus-visible{outline:2px solid var(--lb-plum)!important;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.home-lobby *{transition:none!important}}
+.home-lobby .lobby-style:active{background:var(--lb-plum-soft)}
+/* Customizing from home: the existing panel replaces the story panel and tabs; the preview stays above it. */
+.home-lobby.is-customizing .lobby-avatar{height:42%;bottom:336px} /* panel is 296–326px tall (outfit tab tallest) */
+.home-lobby.is-customizing .lobby-shadow{bottom:324px}
+.home-lobby .closet-panel{color:var(--ink)} /* the panel keeps its own light-on-dark text inside the ivory home */
+.home-lobby .lobby-tabs{align-items:center}
+.mobile-app-viewport[data-platform="android"] .home-lobby{--lb-safe:0px} /* Android viewport already reserves its nav bar */
+
+/* Notebook (2026-11-25): same ivory / wood / plum palette as the home lobby. Plain cards, no diary ornaments. */
+.notebook-theme{--nb-bg:#f4ede2;--nb-card:#fffaf3;--nb-line:#e3d6c4;--nb-ink:#2b2026;--nb-sub:#75676d;--nb-plum:#6e3566;--nb-plum-ink:#4a2245;--nb-plum-soft:#efe0ec;background:var(--nb-bg);color:var(--nb-ink)}
+.notebook-theme .nb-header{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;gap:4px;padding:58px 16px 10px 8px;background:var(--nb-bg);border-bottom:1px solid var(--nb-line)}
+.notebook-theme .nb-header .icon-button{width:44px;height:44px;color:var(--nb-plum-ink)!important}
+.notebook-theme .nb-header h1{font-size:20px;font-weight:500;line-height:1.3;color:var(--nb-ink)}
+.notebook-theme .nb-count{margin-left:auto;font-size:13px;color:var(--nb-sub)}
+.notebook-theme .nb-content{padding:126px 16px 170px;min-height:100%}
+.notebook-theme .nb-empty{padding:56px 8px;text-align:center;font-size:15px;color:var(--nb-sub)}
+.notebook-theme .nb-note{margin:0 0 12px;padding:16px 16px 10px 18px;background:var(--nb-card);border:1px solid var(--nb-line);border-radius:14px}
+.notebook-theme .nb-note-top{display:flex;align-items:flex-start;gap:8px}
+.notebook-theme .nb-note h3{flex:1;font:500 24px/1.25 'Cormorant Garamond',serif;color:var(--nb-plum-ink);padding-top:4px}
+.notebook-theme .nb-listen{flex:none;width:44px;height:44px;margin:-6px -8px 0 0;display:grid;place-items:center;border-radius:22px;background:transparent;color:var(--nb-plum)!important}
+.notebook-theme .nb-meaning{margin-top:8px!important;font-size:15px;line-height:1.7;color:var(--nb-ink)}
+.notebook-theme .nb-context{margin-top:10px!important;padding-top:10px;border-top:1px solid var(--nb-line);font-size:12.5px;line-height:1.7;color:var(--nb-sub)}
+.notebook-theme .nb-edit{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:2px;padding:0 2px;background:transparent;color:var(--nb-plum)!important;font-size:14px!important;font-weight:500}
+.notebook-theme .nb-footer{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;flex-direction:column;gap:6px;padding:12px 16px calc(var(--device-safe-area-bottom,34px) + 6px);background:var(--nb-bg);border-top:1px solid var(--nb-line)}
+.mobile-app-viewport[data-platform="android"] .notebook-theme .nb-footer{padding-bottom:14px}
+.notebook-theme .nb-primary,.notebook-theme .nb-secondary{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:48px;border-radius:24px;font-size:15px!important;font-weight:500}
+.notebook-theme .nb-primary{background:var(--nb-plum);color:#fff!important}
+.notebook-theme .nb-secondary{background:transparent;color:var(--nb-plum-ink)!important}
+.notebook-theme .nb-listen,.notebook-theme .nb-edit,.notebook-theme .nb-primary,.notebook-theme .nb-secondary{transition:transform .12s ease,background-color .15s ease}
+.notebook-theme .nb-primary:active,.notebook-theme .nb-secondary:active{transform:scale(.98)}
+.notebook-theme .nb-listen:active{background:var(--nb-plum-soft)}
+.notebook-theme button:focus-visible{outline:2px solid var(--nb-plum)!important;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.notebook-theme *{transition:none!important}}
+.notebook-theme .toast{background:#fffaf3;color:var(--nb-ink);border:1px solid var(--nb-line);box-shadow:0 4px 14px #3b283022}
+.notebook-theme .toast svg{color:var(--nb-plum)}
+.notebook-theme .toast-undo{color:var(--nb-plum)!important}
+/* The notebook's edit sheet renders in the phone portal (outside .notebook-theme); match its main button to the plum one. */
+.nb-sheet-save{background:#6e3566!important;color:#fff!important;border:0!important;border-radius:24px!important;min-height:48px;font-size:15px!important}
+/* Korean titles wrap between words, never leaving one syllable alone on a line. */
+.page-header h1{word-break:keep-all}
