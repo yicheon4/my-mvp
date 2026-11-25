@@ -21,3 +21,6 @@
 .is-ended .rt-letterbox{box-shadow:inset 0 130px 90px -60px #050304d9}
 @keyframes rt-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){.rt-end{animation:none}.rt-progress span{transition:none}}
+
+/* English dialogue captions remain attached to the media clock, including seek/replay. */
+.rt-video::cue{color:#fff;background:rgba(0,0,0,.78);font-family:'Noto Sans KR',sans-serif;font-size:18px;font-weight:500;text-shadow:0 1px 2px #000}

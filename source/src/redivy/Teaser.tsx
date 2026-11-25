@@ -6,6 +6,7 @@ import { ArrowRight, ArrowCounterClockwise, Play, SpeakerHigh, SpeakerSlash, X }
 import './teaser.css';
 
 const SRC = '/red-ivy/video/teaser-ep01.mp4';
+const SUBTITLES = '/red-ivy/video/teaser-ep01.en.vtt';
 const POSTER = '/red-ivy/video/teaser-ep01-poster.jpg';
 
 export default function Teaser({ onStart, onClose }: { onStart: () => void; onClose: () => void }) {
@@ -33,7 +34,10 @@ export default function Teaser({ onStart, onClose }: { onStart: () => void; onCl
       onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
       onTimeUpdate={e => { const v = e.currentTarget; if (v.duration) setProgress(v.currentTime / v.duration); }}
       onEnded={() => { setEnded(true); setPlaying(false); setProgress(1); }}
-      onError={() => { setFailed(true); setEnded(true); }} />
+      onError={() => { setFailed(true); setEnded(true); }}>
+      <track kind="subtitles" src={SUBTITLES} srcLang="en" label="English" default
+        onLoad={e => { e.currentTarget.track.mode = 'showing'; }} />
+    </video>
     <div className="rt-letterbox" aria-hidden="true" />
 
     <header className="rt-top">
