@@ -189,3 +189,6 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 ## Home refinements (2026-11-26, supersedes preceding home size/control placement)
 - User requests a larger player, room-matched Red Ivy panel and integrated customize control. Uniform avatar height is 51%, feet remain anchored; no art edits or composite changes.
 - Customize is a horizontal pill below the top-right day/night group, not an isolated mid-screen edge tab. Story card uses warm cream/wood by day and warm brown by night. Existing copy, navigation and closet behavior remain unchanged.
+
+## Episode 1 opening (2026-11-26)
+- Opening EP01 from the catalog or home always shows the existing subtitled trailer, even with saved progress. Other episodes do not. Watching/skipping/closing the trailer does not reset story progress. Catalog entry continues to the intro; home resume continues its saved position after the trailer.

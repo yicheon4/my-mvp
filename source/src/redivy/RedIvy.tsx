@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Chats, Check, LockSimple, Microphone, PaperPlaneTilt, Sparkle, SpeakerHigh, Stop, Translate, X, ArrowCounterClockwise, Lightbulb, DeviceMobile, Eye } from '@phosphor-icons/react';
 import { BottomSheet, KeyboardInput, KeyboardTextarea, MobileScroll, useKeyboard, useKeyboardInsets } from '../mobile';
 import FreeChat from '../freechat/FreeChat';
+import Teaser from './Teaser';
 import type { StoryChat } from '../freechat/api';
 import { readInvite, saveInvite } from '../freechat/api';
 import { backgroundFile, backgrounds, cast, cgFile, cgs, portraitFile, splitPortrait, voices } from './art-manifest';
@@ -19,7 +20,7 @@ import { checkMeaning, requestFeedback } from './api';
 import './redivy.css';
 
 export type NotePhrase = { id: string; en: string; ko: string; context: string };
-type View = 'list' | 'intro' | 'play' | 'feedback';
+type View = 'list' | 'teaser' | 'intro' | 'play' | 'feedback';
 type Phase = 'pick' | 'input' | 'checking' | 'opposite' | 'check_failed';
 
 const CHAT_CAST: { id: StoryChat['character']; slot: string; description: string }[] = [
@@ -215,14 +216,16 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
   }, [ep, current?.id]);
   useEffect(() => { if (ep && current?.kind === 'choice') run(ep.episode_id).draft = { choice_id: current.choice_id, option, text: draft }; }, [ep, current?.id, option, draft]);
 
-  // Opened from the teaser's "1화 시작하기": go straight into that episode (continues saved progress if any).
+  // All EP01 entry paths show the opening; watching it never clears saved progress.
   const pendingStart = useRef(false);
+  const resumeAfterTeaser = useRef(false);
   useEffect(() => { const e = autoStart ? catalog.find(x => x.episode_id === autoStart) : undefined; if (e && isOpen(e)) { pendingStart.current = true; setEntry(e); } }, [autoStart]);
-  useEffect(() => { if (pendingStart.current && ep) { pendingStart.current = false; startEpisode('continue'); } }, [ep]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (pendingStart.current && ep) { pendingStart.current = false; if (ep.number === 1) { resumeAfterTeaser.current = true; setView('teaser'); } else startEpisode('continue'); } }, [ep]); // eslint-disable-line react-hooks/exhaustive-deps
   function stopMic() { recognition.current?.abort(); recognition.current = null; setListening(false); }
   function openEpisode(e: CatalogEntry) {
     if (!isOpen(e)) return;
-    setEntry(e); setConfirmRestart(false); setView('intro');
+    keyboard.hide(); resumeAfterTeaser.current = false;
+    setEntry(e); setConfirmRestart(false); setView(e.number === 1 ? 'teaser' : 'intro');
   }
   function startEpisode(mode: 'continue' | 'restart') {
     if (!ep) return;
@@ -305,6 +308,8 @@ export default function RedIvy({ notes, onSaveNote, onExit, autoStart }: { notes
   if (!ep || !entry) return null;
   const s = safeStorage();
   const saveState = s ? readProgress(s, ep) : null;
+
+  if (view === 'teaser') return <Teaser onClose={onExit} onStart={() => { if (resumeAfterTeaser.current) startEpisode('continue'); else setView('intro'); }} />;
 
   // ---------- intro ----------
   if (view === 'intro') return <div className="ri-root ri-intro">

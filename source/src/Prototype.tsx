@@ -187,7 +187,6 @@ export default function Prototype(){
  }
  function openStory(st:StoryNext){
   if(st.mode==='done'){setRedIvyStart(undefined);go('redivy');return;}
-  if(st.mode==='start'&&st.entry.number===1){go('teaser');return;} // first time: the existing EP01 trailer, then 1화
   setRedIvyStart(st.entry.episode_id);go('redivy'); // RedIvy opens this episode at its saved spot (or its start)
  }
  function start(){
