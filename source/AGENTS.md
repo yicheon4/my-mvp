@@ -185,3 +185,7 @@ When any text-entry control loses focus, dismiss the simulated keyboard. If the 
 - Notebook uses the same palette: plain title (no tagline, no diary card, bookmark or flower icons), simple ivory cards, plum buttons; the edit sheet's save button is plum too.
 - Character picker title: 「직접 대화할 인물을 골라보세요」 with no subtitle and no 「실제 AI 대화 · 시험」 label. Page titles wrap between Korean words.
 - Known limit: on real phones the protected PhoneFrame scales the whole device to ~0.6–0.67, so 12px labels render ~7–8px. Changing that is a runtime change and needs explicit user approval.
+
+## Home refinements (2026-11-26, supersedes preceding home size/control placement)
+- User requests a larger player, room-matched Red Ivy panel and integrated customize control. Uniform avatar height is 51%, feet remain anchored; no art edits or composite changes.
+- Customize is a horizontal pill below the top-right day/night group, not an isolated mid-screen edge tab. Story card uses warm cream/wood by day and warm brown by night. Existing copy, navigation and closet behavior remain unchanged.

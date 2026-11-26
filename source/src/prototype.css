@@ -187,18 +187,24 @@ button.world-notice{text-align:left;border:0;width:auto}
 .home-lobby .lobby-time{display:flex;height:44px;padding:3px;border-radius:22px;background:var(--lb-ivory);box-shadow:0 1px 3px #3b28301f}
 .home-lobby .lobby-time button{display:flex;align-items:center;gap:4px;min-width:58px;justify-content:center;padding:0 12px;border-radius:19px;background:transparent;color:var(--lb-sub)!important;font-size:14px!important;font-weight:500}
 .home-lobby .lobby-time button[aria-pressed=true]{background:var(--lb-plum);color:#fff!important}
-/* Character: smaller than before so face and outfit sit clear of the menus, feet on the rug with a soft floor shadow. */
-.home-lobby .lobby-avatar{height:41%;bottom:var(--lb-feet);animation:none;filter:drop-shadow(0 6px 8px #3b2a221f)}
+/* Larger complete avatar, uniformly scaled with feet anchored to the rug. */
+.home-lobby .lobby-avatar{height:51%;bottom:var(--lb-feet);animation:none;filter:drop-shadow(0 6px 8px #3b2a221f)}
 .home-lobby .lobby-shadow{position:absolute;left:50%;bottom:calc(var(--lb-feet) - 12px);width:150px;height:26px;margin-left:-75px;border-radius:50%;background:radial-gradient(#3b2a2266,#3b2a2200 70%);z-index:-1;pointer-events:none}
-.home-lobby .lobby-style{position:absolute;right:0;top:46%;transform:translateY(-50%);width:64px;min-height:72px;padding:10px 4px 9px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px 0 0 14px;background:var(--lb-ivory);border:1px solid var(--lb-line)!important;border-right:0!important;color:var(--lb-plum-ink)!important;font-size:13px!important;font-weight:500;line-height:1.2;z-index:2;box-shadow:-1px 1px 3px #3b28301a} /* right-edge side tab, clear of the character */
-/* Story panel: the Red Ivy mood stays inside this panel. */
-.home-lobby .lobby-story{position:absolute;left:12px;right:12px;bottom:calc(var(--lb-tabs) + 10px);height:var(--lb-story);border-radius:16px;overflow:hidden;background:#1d1418;color:#f6eee6;z-index:2}
-.home-lobby .lobby-story>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%}
-.home-lobby .lobby-story::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1a1216f2 0,#1a1216cc 52%,#1a121640 100%)}
+.home-lobby .lobby-style{position:absolute;right:14px;top:108px;min-width:122px;height:44px;padding:0 16px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:22px;background:var(--lb-ivory);border:1px solid var(--lb-line)!important;color:#66513e!important;font-size:14px!important;font-weight:500;line-height:1.2;z-index:2;box-shadow:0 1px 3px #3b283014}
+.home-lobby .lobby-style svg{width:20px;height:20px}
+/* Warm paper and wood tones connect the story card to the room. */
+.home-lobby .lobby-story{position:absolute;left:12px;right:12px;bottom:calc(var(--lb-tabs) + 10px);height:var(--lb-story);border-radius:16px;overflow:hidden;background:#f4e8d7;color:#45382e;z-index:2;border:1px solid #dbc7ac;box-shadow:0 3px 12px #624a3214}
+.home-lobby .lobby-story>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%;opacity:.28}
+.home-lobby .lobby-story::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#f6edde 0,#f6eddef5 38%,#f0e1cba6 72%,#ead8be52 100%)}
 .home-lobby .lobby-story-text{position:absolute;left:18px;top:50%;transform:translateY(-50%);right:150px;z-index:1}
 .home-lobby .lobby-story h2{font:500 28px/1.15 'Cormorant Garamond',serif;letter-spacing:.02em}
-.home-lobby .lobby-episode{font-size:14px;line-height:1.4;color:#eadfd6;margin-top:4px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.home-lobby .lobby-play{position:absolute;right:14px;bottom:16px;z-index:1;height:48px;padding:0 18px;display:flex;align-items:center;gap:6px;border-radius:24px;background:var(--lb-plum);color:#fff!important;font-size:15px!important;font-weight:500!important}
+.home-lobby .lobby-episode{font-size:14px;line-height:1.4;color:#73614e;margin-top:4px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-lobby .lobby-play{position:absolute;right:14px;bottom:16px;z-index:1;height:48px;padding:0 18px;display:flex;align-items:center;gap:6px;border-radius:24px;background:#795b43;color:#fffaf3!important;font-size:15px!important;font-weight:500!important}
+/* Night retains the same warm material palette with lower luminance. */
+.home-lobby.is-night .lobby-story{background:#3e342c;border-color:#73604c;color:#f8eddd}
+.home-lobby.is-night .lobby-story::after{background:linear-gradient(90deg,#3e342c 0,#3e342cf5 38%,#3e342cb3 72%,#3e342c70 100%)}
+.home-lobby.is-night .lobby-episode{color:#dfceba}
+.home-lobby.is-night .lobby-play{background:#dfc6a4;color:#392b21!important}
 /* Tab bar: ivory, selected tab gets a soft plum pill behind its icon. */
 .home-lobby .lobby-tabs{position:absolute;left:0;right:0;bottom:0;height:var(--lb-tabs);padding:5px 8px var(--lb-safe);display:grid;grid-template-columns:repeat(4,1fr);background:var(--lb-ivory);border-top:1px solid var(--lb-line);z-index:2}
 .home-lobby .lobby-tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;background:transparent;color:#7d6f74!important;font-size:12px!important;font-weight:500;line-height:1.2;white-space:nowrap}
